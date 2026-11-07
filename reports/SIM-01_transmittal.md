@@ -8,7 +8,7 @@
 | Subject | SIM-01 (array geometry and idealized acoustic performance): delivery for review |
 | Date | 2026-11-07 |
 | Repository | `keithatulmo/picket-sim`, branch `claude/beautiful-darwin-vbeoue` |
-| Run of record | `RUNID` (code commit `CODESHA`, clean tree) |
+| Run of record | `20261107T203522Z_d64d297c_8043684` (code commit `8043684`, clean tree) |
 | Prepared by | Claude Code (AI-generated engineering work product). It requires review by a qualified acoustic engineer before any of it is used to set requirements. |
 | Requested action | Technical review of method, verification and conclusions; decisions on the open items in Section 6 |
 
@@ -85,7 +85,7 @@ Status: **Met**, **Met with note**, or **Not met**. Evidence paths are relative 
 | 5 | Correct frequency, length, time and angular units | Met | `test_units_wavelength_wavenumber`, `test_arrival_time_sign_and_units`, `test_degrees_not_radians`, `test_unit_errors_rejected`, `test_geometry_unit_errors_rejected` |
 | 5 | Consistent results under fixed configurations | Met | `test_full_pipeline_is_bitwise_reproducible` (two full runs, identical bytes), `test_metrics_depend_only_on_f_over_c` |
 | 5 | Checks against incorrect normalization, angular-convention errors and plotting artifacts | Met | `test_normalization_and_bounds_all_candidates`, `test_di_closed_form_equals_sphere_quadrature`, `test_unit_vector_cardinal_directions`, `test_horizontal_cut_plot_peak_at_steering_and_no_seam`, `test_sphere_map_orientation`, `test_display_db_floor_and_normalization_guard`; run self-checks in `05_verification/self_checks.json` |
-| 5 | Tests pass before output is used | Met | `05_verification/pytest_log.txt` (TESTCOUNT passed at code commit `CODESHA`); `make sim01` runs the tests first |
+| 5 | Tests pass before output is used | Met | `05_verification/pytest_log.txt` (131 passed at code commit `8043684`); `make sim01` runs the tests first |
 | 6 | Version control, dependency specification, machine-readable configuration, tests, reproduction command | Met | Git; `07_source/requirements.lock`; YAML configuration; `make sim01` |
 | 6 | Saved figures and tables; experiment records with configuration, assumptions and software version | Met | `02_figures`, `03_tables`, `04_run_record/record.json` |
 | 6 | Technical report | Met | `01_SIM-01_Engineering_Report.pdf` |
@@ -100,7 +100,7 @@ Status: **Met**, **Met with note**, or **Not met**. Evidence paths are relative 
 | # | Criterion | Status | Evidence |
 |---|---|---|---|
 | 1 | All five candidates simulated through the same interface | Met | One code path (`ArrayGeometry` -> `PlaneWaveManifold` -> DAS -> metrics); `test_all_five_candidates_through_one_interface` |
-| 2 | Core numerical methods pass automated verification | Met | TESTCOUNT tests passing; self-checks embedded in the run |
+| 2 | Core numerical methods pass automated verification | Met | 131 tests passing; self-checks embedded in the run |
 | 3 | Results reproducible from documented configurations | Met | `make sim01`; two identical end-to-end runs produce byte-identical outputs; numeric tables of the first and final runs agree (report Section 9) |
 | 4 | Comparative plots and tables generated | Met | `02_figures`, `03_tables` |
 | 5 | Assumptions and limitations documented | Met | `06_documentation/assumptions.md`; report Sections 1 and 8 |
@@ -112,7 +112,7 @@ Status: **Met**, **Met with note**, or **Not met**. Evidence paths are relative 
 | # | Principle | How it was applied |
 |---|---|---|
 | 1 | First principles, established theory | Plane-wave array theory; every threshold cross-checked against closed forms (c/(Nd), c/(2d), c/(8d), Dirichlet patterns) |
-| 2 | Correctness and verification over visualization | TESTCOUNT tests plus run self-checks; two defects found by checking were fixed before reporting (Section 5) |
+| 2 | Correctness and verification over visualization | 131 tests plus run self-checks; two defects found by checking were fixed before reporting (Section 5) |
 | 3 | Modeled effects versus assumptions | `docs/assumptions.md` separates modeled, assumed, excluded and placeholder items |
 | 4 | No fabricated results or specifications | Every number in the report comes from the run tables; the A4 coordinates are labelled a placeholder; no hardware specifications are asserted |
 | 5 | Numerical and analytical baselines | Closed-form DI versus quadrature; brute-force versus algorithmic sidelobes and aliasing |
@@ -144,7 +144,7 @@ retained unmodified in the repository. A floating-point residue (half-power sphe
 1 + 2e-16) combined with a Pareto comparison that had no tie tolerance made A1 appear non-dominated by
 A3 in one attribute set. The code was corrected (normalization by the quadrature weight sum, explicit
 tie tolerances) and both fixes are covered by tests. Two figure annotations were also corrected.
-CROSSRUN
+The first complete run (`20261107T200834Z_cf0574c6_059a354`, code `059a354`) and the run of record share 26 tables. 16 are byte-identical, including the full 29,040-row sweep, all regime thresholds, the sensitivity sweeps and the robustness tables. The other 10 differ only by the added exact-grating column, the corrected Pareto result and their Markdown renderings. Every numeric value present in both runs is identical.
 
 ## 6. Decisions requested from the reviewer
 

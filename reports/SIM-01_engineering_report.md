@@ -1,23 +1,19 @@
 # PCK-SIM-001 / SIM-01 Engineering Report
 
-> **DRAFT.** Placeholders in capitals (RUNID, CODESHA, CFGSHA, SELFCHECKS, COMPARISON_TABLE,
-> PARETO_SUMMARY, SSCHECK, SQ_A4_*, CROSSRUN) are filled from the run of record when it completes.
-> Do not use this version.
-
 **Array Geometry and Idealized Acoustic Performance of Candidate Picket Arrays**
 
 | | |
 |---|---|
 | Program | Ulmo / Picket, PCK-SIM-001 |
 | Increment | SIM-01 (array geometry, idealized narrowband performance) |
-| Run of record | `RUNID` |
-| Code | `picket_sim` 0.1.0, git `CODESHA` (clean tree) |
-| Configuration | `configs/sim01/sim01_baseline.yaml` (sha256 `CFGSHA`) |
+| Run of record | `20261107T203522Z_d64d297c_8043684` |
+| Code | `picket_sim` 0.1.0, git `8043684` (clean tree) |
+| Configuration | `configs/sim01/sim01_baseline.yaml` (sha256 `d64d297cb705eeae...`) |
 | Reproduce | `make sim01` (equivalently `python -m picket_sim run configs/sim01/sim01_baseline.yaml`) |
 | Status | Complete for SIM-01 scope. Not a design selection. |
 
 All numbers in this report are read from the tables of the run of record
-(`results/sim01/RUNID/tables/`). Figures are in `results/sim01/RUNID/figures/`. Confidence levels
+(`results/sim01/20261107T203522Z_d64d297c_8043684/tables/`). Figures are in `results/sim01/20261107T203522Z_d64d297c_8043684/figures/`. Confidence levels
 refer to the statement *as a property of the stated model*; transfer to hardware is addressed
 separately in Section 8.
 
@@ -98,7 +94,7 @@ placeholder for elements spread around a small host and have no survey basis; Se
 how A4 conclusions scale with size. Orientation is an assumption: lines along x, square
 horizontal. Figure: `fig01_geometries.png`.
 
-![Figure 1. Candidate geometries, top and side views at a common scale.](../results/sim01/RUNID/figures/fig01_geometries.png)
+![Figure 1. Candidate geometries, top and side views at a common scale.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig01_geometries.png)
 *Figure 1. Candidate geometries, top and side views at a common scale.*
 
 ---
@@ -164,7 +160,14 @@ bisection to 0.1 %.
   onset against independent line and square derivations; f_SL = c/(Nd); f_HP = c/(8d) for a pair at
   endfire; f/c scaling; sound-speed mismatch against closed form; unit-error rejection; plotting
   orientation and normalization; byte-identical outputs from two identical end-to-end runs.
-* **Self-checks embedded in the run of record** (`record.json`): SELFCHECKS
+* **Self-checks embedded in the run of record** (`record.json`):
+    * DI closed form versus sphere quadrature: max |difference| 1.3e-13 dB (tolerance 0.01 dB) over all 29,040 sweep rows.
+    * Normalized power at the steering direction: max |P(u0) - 1| = 2.2e-16.
+    * Exact grating onset (reciprocal lattice) versus c/(2d) for the declared lattices: max relative difference 2.2e-16.
+    * Worst-case aliasing onset never exceeds a steering-specific onset (max relative excess 0.0).
+    * Threshold scaling with sound speed: max deviation from the exact ratio c/c0 = 4.2e-04 (bisection tolerance 1e-3).
+    * Line-array HPSF, exact 1-D value versus sphere-grid quadrature: max |difference| 0.0024 (grid resolution effect, informational).
+    * Rows with fewer than 4 grid samples per lobe width: 0. Warnings: none.
 
 ### 3.5 Errors found and corrected during SIM-01
 
@@ -183,7 +186,7 @@ record (Section 9).
 
 `fig07_regime_map.png`; `tables/thresholds_summary.md`.
 
-![Figure 2. Directional regimes versus frequency (horizon steering).](../results/sim01/RUNID/figures/fig07_regime_map.png)
+![Figure 2. Directional regimes versus frequency (horizon steering).](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig07_regime_map.png)
 *Figure 2. Directional regimes versus frequency (horizon steering).*
 
 | ID | f_HP best / median / worst (Hz) | f_SL median (Hz) | f_amb -3 dB earliest horizon steering (Hz) | f_amb -3 dB any steering (Hz) | Exact grating, any steering (Hz) | f_amb / f_SL |
@@ -212,7 +215,7 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
 
 `fig06_metrics_vs_frequency.png` (a); `tables/comparison.md`.
 
-![Figure 3. DI, horizontal half-power width, half-power sphere fraction and worst observable ambiguity lobe versus frequency.](../results/sim01/RUNID/figures/fig06_metrics_vs_frequency.png)
+![Figure 3. DI, horizontal half-power width, half-power sphere fraction and worst observable ambiguity lobe versus frequency.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig06_metrics_vs_frequency.png)
 *Figure 3. DI, horizontal half-power width, half-power sphere fraction and worst observable ambiguity lobe versus frequency.*
 
 | ID | WNG (dB) | DI median 0.1-1 kHz (dB) | DI median 1-3 kHz (dB) | DI median 3-10 kHz (dB) |
@@ -230,7 +233,7 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
   and lambda (negatively correlated noise). The line-array study reaches about 7.7 dB for N = 4 and
   14.3 dB for N = 16 at d/lambda near 0.8 to 0.93 on the analysis grid (`fig08` (b)), consistent with
   the classical long-line value 2L/lambda. That regime sits immediately below grating-lobe onset.
-* DI says nothing about ambiguity. A4 holds a median DI between 5.9 and 6.1 dB at 2, 2.5, 5 and
+* DI says nothing about ambiguity. A4 holds a median DI of 5.94 to 6.10 dB at 2, 2.5, 5 and
   10 kHz while carrying 12 to 276 ambiguity lobes within 3 dB of the mainlobe. Gain and direction
   finding must be assessed separately.
 
@@ -240,16 +243,16 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
 `fig04_frequency_azimuth_maps.png`, `fig05_sphere_ambiguity_maps.png`;
 `tables/representative_frequencies.md`.
 
-![Figure 4. Horizontal-plane beampatterns at representative frequencies, steered to az = 60 deg.](../results/sim01/RUNID/figures/fig02_horizontal_beampatterns.png)
+![Figure 4. Horizontal-plane beampatterns at representative frequencies, steered to az = 60 deg.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig02_horizontal_beampatterns.png)
 *Figure 4. Horizontal-plane beampatterns at representative frequencies, steered to az = 60 deg.*
 
-![Figure 5. Horizontal-plane response versus frequency (steered to az = 60 deg) with the -3 dB contour.](../results/sim01/RUNID/figures/fig04_frequency_azimuth_maps.png)
+![Figure 5. Horizontal-plane response versus frequency (steered to az = 60 deg) with the -3 dB contour.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig04_frequency_azimuth_maps.png)
 *Figure 5. Horizontal-plane response versus frequency (steered to az = 60 deg) with the -3 dB contour.*
 
-![Figure 6. Full-sphere response for a target at az = 60, el = -20 deg: cone (lines), mirror (square) and lattice aliasing (A4).](../results/sim01/RUNID/figures/fig05_sphere_ambiguity_maps.png)
+![Figure 6. Full-sphere response for a target at az = 60, el = -20 deg: cone (lines), mirror (square) and lattice aliasing (A4).](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig05_sphere_ambiguity_maps.png)
 *Figure 6. Full-sphere response for a target at az = 60, el = -20 deg: cone (lines), mirror (square) and lattice aliasing (A4).*
 
-![Figure 7. Vertical-plane beampatterns through the same target; dotted line marks the up/down mirror elevation.](../results/sim01/RUNID/figures/fig03_vertical_beampatterns.png)
+![Figure 7. Vertical-plane beampatterns through the same target; dotted line marks the up/down mirror elevation.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig03_vertical_beampatterns.png)
 *Figure 7. Vertical-plane beampatterns through the same target; dotted line marks the up/down mirror elevation.*
 
 Median horizontal half-power width over horizon steering (deg):
@@ -301,10 +304,10 @@ This matters most for A4-like distributed layouts and is not evaluated in SIM-01
 `fig08_line_array_sensitivity.png`, `fig09_aperture_scaling.png`;
 `tables/sensitivity_*.md`.
 
-![Figure 8. Line-array sensitivity to element count and spacing.](../results/sim01/RUNID/figures/fig08_line_array_sensitivity.png)
+![Figure 8. Line-array sensitivity to element count and spacing.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig08_line_array_sensitivity.png)
 *Figure 8. Line-array sensitivity to element count and spacing.*
 
-![Figure 9. Threshold scaling with aperture for the A4 layout and the 2x2 square.](../results/sim01/RUNID/figures/fig09_aperture_scaling.png)
+![Figure 9. Threshold scaling with aperture for the A4 layout and the 2x2 square.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig09_aperture_scaling.png)
 *Figure 9. Threshold scaling with aperture for the A4 layout and the 2x2 square.*
 
 * **Aperture sets resolution; spacing sets aliasing; element count sets the ratio between them.**
@@ -312,8 +315,8 @@ This matters most for A4-like distributed layouts and is not evaluated in SIM-01
   The broadside first-sidelobe onset is c/(Nd) and the worst-case grating onset c/(2d), so the
   conventional band ratio is N/2 for worst-case steering: 2 for N = 4, 8 for N = 16.
 * **Scaling a fixed shape moves every threshold as 1/size and leaves their ratios unchanged.**
-  A4 scaled from 0.27 m to 4.28 m maximum dimension moves f_SL from SQ_A4_FSL_LO to SQ_A4_FSL_HI and the -3 dB ambiguity onset
-  from SQ_A4_AMB_LO to SQ_A4_AMB_HI. The square with side 0.15, 0.30, 0.60 m has f_SL 2,680 / 1,340 / 670 Hz and
+  A4 scaled from 0.27 m to 4.28 m maximum dimension moves f_SL from 2,084 Hz to 130 Hz and the -3 dB ambiguity onset
+  from 2,491 Hz to 156 Hz. The square with side 0.15, 0.30, 0.60 m has f_SL 2,680 / 1,340 / 670 Hz and
   -3 dB onset 3,754 / 1,877 / 938 Hz (30 deg steering step). No choice of scale widens a 4-element
   array's conventional band. Only more elements do.
 * **Orientation decides which angle is lost** (`tables/sensitivity_orientation.md`). A vertical line
@@ -325,11 +328,11 @@ This matters most for A4-like distributed layouts and is not evaluated in SIM-01
 
 `fig10_sound_speed_robustness.png`; `tables/robustness_sound_speed*.md`.
 
-![Figure 10. Sound-speed scaling of thresholds and peak bias under sound-speed mismatch.](../results/sim01/RUNID/figures/fig10_sound_speed_robustness.png)
+![Figure 10. Sound-speed scaling of thresholds and peak bias under sound-speed mismatch.](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig10_sound_speed_robustness.png)
 *Figure 10. Sound-speed scaling of thresholds and peak bias under sound-speed mismatch.*
 
 * **Thresholds scale exactly with c**, as the model depends only on f/c. Over 1450 to 1550 m/s every
-  threshold moves by -3.3 % to +3.3 % (largest deviation from the exact ratio: SSCHECK). The ordering
+  threshold moves by -3.3 % to +3.3 % (largest deviation from the exact ratio: 4.2e-04). The ordering
   of candidates on every threshold is unchanged across the range.
 * **Mismatch between the true and assumed sound speed biases the peak deterministically**, matching
   the closed form p_est = (c_assumed / c_true) p_true in the observable space:
@@ -452,12 +455,31 @@ In priority order:
 
 `tables/comparison.md`, `tables/pareto.md`, `tables/pareto_leave_one_out.md`.
 
-COMPARISON_TABLE
+| ID | N | Max dim (m) | Geometric ambiguity | WNG (dB) | DI 0.1-1 kHz (dB) | DI 1-3 kHz (dB) | DI 3-10 kHz (dB) | HPSF 0.1-1 kHz | HPSF 1-3 kHz | HPSF 3-10 kHz | HPBW_h 1 kHz (deg) | HPBW_h 2.5 kHz (deg) | HPBW_h 5 kHz (deg) | f_HP (Hz) | f_SL (Hz) | f_amb -3 dB horizon (Hz) | f_amb -3 dB any steering (Hz) | Exact grating onset (Hz) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A0 | 1 | 0.00 | omnidirectional | 0.0 | 0.00 | 0.00 | 0.00 | 1.00 | 1.00 | 1.00 | inf | inf | inf | n/a | n/a | n/a | n/a | n/a |
+| A1 | 4 | 0.45 | conical | 6.0 | 0.17 | 3.19 | 5.48 | 1.00 | 0.48 | 0.27 | 231 | 116 | 41 | 667 | 1,465 | 4,432 | 4,432 | 5,000 |
+| A2 | 4 | 0.90 | conical | 6.0 | 0.65 | 5.09 | 5.81 | 1.00 | 0.31 | 0.24 | 139 | 41 | 19 | 334 | 733 | 2,216 | 2,216 | 2,500 |
+| A3 | 4 | 0.42 | mirror | 6.0 | 0.27 | 5.48 | 5.90 | 1.00 | 0.24 | 0.21 | 157 | 59 | 29 | 633 | 1,306 | 1,877 | 1,876 | 2,500 |
+| A4 | 4 | 1.07 | none | 6.0 | 1.73 | 5.95 | 6.00 | 0.79 | 0.15 | 0.14 | 64 | 25 | 13 | 270 | 527 | 623 | 596 | 857 |
+
+* DI: directivity index vs spherically isotropic noise (ideal DAS), median over horizon steering, then median over frequencies in the band. Not detection performance.
+* HPSF: fraction of all directions within 3 dB of the steered response (includes every ambiguity); 1.0 = no half-power discrimination anywhere.
+* HPBW_h: half-power width on the horizontal great circle, median over horizon steering; inf = half-power region wraps the circle for most steering directions (includes merged left/right mirror lobes for line arrays).
+* WNG: white-noise gain of uniform DAS = 10 log10 N, independent of geometry and frequency.
 
 **Pareto dominance** (attributes evaluated in SIM-01 only; cost not evaluated; attribute lists in
 the configuration):
 
-PARETO_SUMMARY
+| Attribute set | Attributes | Dominated (numerical ties) | Dominated (engineering tolerances) |
+|---|---|---|---|
+| all_candidates (A0 to A4) | channels, maximum dimension, observable dimensions, DI and HPSF band medians (low, mid, high) | A1 (by A3) | A1 (by A3) |
+| multichannel (A1 to A4) | the above plus median f_HP and worst-case -3 dB ambiguity onset | none | none |
+
+Leave-one-attribute-out (`tables/pareto_leave_one_out.md`): in the multichannel set, dropping the
+worst-case ambiguity onset makes A1 dominated by A3; dropping any other single attribute dominates
+nothing. In the all_candidates set, dropping maximum dimension makes A4 dominate A1, A2 and A3
+(A1 is also dominated by A2 and A3), and dropping the low-band DI makes A3 dominate A2 as well as A1.
 
 Interpretation: on the attributes defined for every candidate (channels, maximum dimension,
 observable dimensions, DI and HPSF band medians) A3 is at least as good as A1 everywhere. A1 survives
@@ -519,4 +541,4 @@ approach and the noise environment (Section 5.6).
   output file. Pinned dependencies: `requirements.lock`.
 * `results/sim01/RUN_INDEX.csv` lists every run. `results/sim01/ERRATA.md` records known problems
   in historical runs.
-* Cross-run consistency: CROSSRUN
+* Cross-run consistency: The first complete run (`20261107T200834Z_cf0574c6_059a354`, code `059a354`) and the run of record share 26 tables. 16 are byte-identical, including the full 29,040-row sweep, all regime thresholds, the sensitivity sweeps and the robustness tables. The other 10 differ only by the added exact-grating column, the corrected Pareto result and their Markdown renderings. Every numeric value present in both runs is identical.

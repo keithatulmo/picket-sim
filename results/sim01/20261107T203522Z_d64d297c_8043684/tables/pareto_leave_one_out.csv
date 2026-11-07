@@ -1,0 +1,41 @@
+set,tolerance,attribute_removed,dominated
+all_candidates,numerical ties,n_elements,A1 (by A3)
+all_candidates,numerical ties,aperture_m,A1 (by A2;A3;A4);A2 (by A4);A3 (by A4)
+all_candidates,numerical ties,rank,A1 (by A3)
+all_candidates,numerical ties,di_band_low_db,A1 (by A3);A2 (by A3)
+all_candidates,numerical ties,di_band_mid_db,A1 (by A3)
+all_candidates,numerical ties,di_band_high_db,A1 (by A3)
+all_candidates,numerical ties,hpsf_band_low,A1 (by A3)
+all_candidates,numerical ties,hpsf_band_mid,A1 (by A3)
+all_candidates,numerical ties,hpsf_band_high,A1 (by A3)
+all_candidates,engineering tolerances,n_elements,A1 (by A3)
+all_candidates,engineering tolerances,aperture_m,A1 (by A2;A3;A4);A2 (by A4);A3 (by A4)
+all_candidates,engineering tolerances,rank,A1 (by A3)
+all_candidates,engineering tolerances,di_band_low_db,A1 (by A3);A2 (by A3)
+all_candidates,engineering tolerances,di_band_mid_db,A1 (by A3)
+all_candidates,engineering tolerances,di_band_high_db,A1 (by A3)
+all_candidates,engineering tolerances,hpsf_band_low,A1 (by A3)
+all_candidates,engineering tolerances,hpsf_band_mid,A1 (by A3)
+all_candidates,engineering tolerances,hpsf_band_high,A1 (by A3)
+multichannel,numerical ties,n_elements,none
+multichannel,numerical ties,aperture_m,none
+multichannel,numerical ties,rank,none
+multichannel,numerical ties,di_band_low_db,none
+multichannel,numerical ties,di_band_mid_db,none
+multichannel,numerical ties,di_band_high_db,none
+multichannel,numerical ties,hpsf_band_low,none
+multichannel,numerical ties,hpsf_band_mid,none
+multichannel,numerical ties,hpsf_band_high,none
+multichannel,numerical ties,f_hp_median_hz,none
+multichannel,numerical ties,f_alias_m3db_hz,A1 (by A3)
+multichannel,engineering tolerances,n_elements,none
+multichannel,engineering tolerances,aperture_m,none
+multichannel,engineering tolerances,rank,none
+multichannel,engineering tolerances,di_band_low_db,none
+multichannel,engineering tolerances,di_band_mid_db,none
+multichannel,engineering tolerances,di_band_high_db,none
+multichannel,engineering tolerances,hpsf_band_low,none
+multichannel,engineering tolerances,hpsf_band_mid,none
+multichannel,engineering tolerances,hpsf_band_high,none
+multichannel,engineering tolerances,f_hp_median_hz,none
+multichannel,engineering tolerances,f_alias_m3db_hz,A1 (by A3)
