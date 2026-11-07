@@ -18,7 +18,9 @@ import yaml
 from .acoustics import validate_sound_speed
 from .geometry import (
     ArrayGeometry,
+    envelope_volumetric,
     from_coordinates,
+    uniform_circular,
     rotation_matrix_from_axes,
     single_hydrophone,
     uniform_linear,
@@ -91,6 +93,15 @@ def build_array(spec: dict) -> ArrayGeometry:
             float(_req(spec, "dx_m", ctx)), float(_req(spec, "dy_m", ctx)),
             spec.get("axis_u", (1.0, 0.0, 0.0)), spec.get("axis_v", (0.0, 1.0, 0.0)), aid, desc,
         )
+    elif kind == "circular":
+        geom = uniform_circular(int(_req(spec, "n_elements", ctx)), float(_req(spec, "diameter_m", ctx)), aid, desc,
+                                spec.get("axis_u", (1.0, 0.0, 0.0)), spec.get("axis_v", (0.0, 1.0, 0.0)),
+                                float(spec.get("start_angle_deg", 0.0)))
+    elif kind == "envelope":
+        env = _req(spec, "envelope_m", ctx)
+        if len(env) != 3:
+            raise ConfigError(f"{ctx}: envelope_m must be [length, width, height]")
+        geom = envelope_volumetric(float(env[0]), float(env[1]), float(env[2]), aid, desc)
     elif kind == "coordinates":
         pos = np.asarray(_req(spec, "positions_m", ctx), dtype=float)
         if pos.ndim != 2 or pos.shape[1] != 3:

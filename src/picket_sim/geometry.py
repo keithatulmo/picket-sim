@@ -30,6 +30,9 @@ __all__ = [
     "uniform_linear",
     "uniform_rectangular",
     "from_coordinates",
+    "uniform_circular",
+    "envelope_volumetric",
+    "A4_PATTERN",
     "rotation_matrix_from_axes",
     "RANK_TOL_M",
 ]
@@ -299,6 +302,38 @@ def uniform_rectangular(
     gu, gv = np.meshgrid(iu * dx_m, iv * dy_m, indexing="xy")
     pos = gu.reshape(-1, 1) * au + gv.reshape(-1, 1) * av
     return ArrayGeometry(array_id, pos, description)
+
+
+def uniform_circular(n_elements: int, diameter_m: float, array_id: str = "UCA", description: str = "",
+                     axis_u=(1.0, 0.0, 0.0), axis_v=(0.0, 1.0, 0.0), start_angle_deg: float = 0.0):
+    """``n_elements`` equally spaced on a circle of ``diameter_m`` in the plane of ``axis_u``, ``axis_v``.
+
+    For even N the maximum inter-element distance equals the diameter.
+    """
+    if n_elements < 3:
+        raise ValueError("a circular array needs at least 3 elements")
+    if diameter_m <= 0:
+        raise ValueError("diameter must be positive")
+    au, av = _unit(axis_u), _unit(axis_v)
+    if abs(np.dot(au, av)) > 1e-12:
+        raise ValueError("axis_u and axis_v must be orthogonal")
+    t = np.deg2rad(start_angle_deg) + 2 * np.pi * np.arange(n_elements) / n_elements
+    pos = 0.5 * diameter_m * (np.cos(t)[:, None] * au + np.sin(t)[:, None] * av)
+    return ArrayGeometry(array_id, pos, description)
+
+
+#: Element pattern of the SIM-01 A4 layout, as fractions of an (L, W, H) envelope:
+#: A4 = envelope_volumetric(1.00, 0.85, 0.75) exactly.
+A4_PATTERN = ((0.00, 0.0, 0.0), (1.00, 0.0, 0.0), (0.35, 1.0, 0.0), (0.40, 0.30 / 0.85, -1.0))
+
+
+def envelope_volumetric(length_m: float, width_m: float, height_m: float, array_id: str = "VOL",
+                        description: str = "", pattern=A4_PATTERN) -> ArrayGeometry:
+    """Four-element non-coplanar layout scaled into an envelope of length (x), width (y), height (z, downward)."""
+    if min(length_m, width_m, height_m) <= 0:
+        raise ValueError("envelope dimensions must be positive")
+    p = np.asarray(pattern, dtype=float) * np.array([length_m, width_m, height_m])
+    return ArrayGeometry(array_id, p, description)
 
 
 def from_coordinates(positions_m, array_id: str = "ARB", description: str = "", element_ids=()):
