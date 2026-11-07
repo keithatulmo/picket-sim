@@ -1,6 +1,6 @@
 SIM-02A claims check (Rev A)
 Command: python tools/check_sim02a_claims.py results/sim02a/20261107T214846Z_c56c0048_31da01b
-Repository commit: b847508 (clean tree: yes)
+Repository commit: edb83d3 (clean tree: no); python 3.13.18, numpy 2.5.4
 Checks every quantitative claim in the report findings, the transmittal and the reviewer message against the run-of-record tables and the criterion-margin supplement, and checks that those documents quote the verified values and repeat no Rev 0 error.
 
 PASS  largest aperture in the 'up to 1.07 m' set (m)                                                quoted 1.07  computed 1.07
