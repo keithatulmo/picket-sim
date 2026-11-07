@@ -46,6 +46,7 @@ __all__ = [
     "observable_lobe_metrics",
     "half_power_sphere_fraction",
     "aliasing_onset_hz",
+    "exact_grating_onset_hz",
     "first_crossing_frequency",
     "db",
     "HALF_POWER",
@@ -464,6 +465,50 @@ def aliasing_onset_hz(
     out["q_step_rad_per_m"] = dq
     out["n_directions"] = int(dirs.shape[0])
     return out
+
+
+def exact_grating_onset_hz(geometry: ArrayGeometry, c_mps: float, f_max_hz: float = 1e6, search: int = 8):
+    """Worst-case onset of EXACT grating lobes (``|W(q)| = 1``, q != 0), or None if none exist.
+
+    Exact grating lobes exist when the sensor baselines generate a lattice in the observable
+    space. Candidates are the reciprocal lattice of ``rank`` linearly independent baselines (the
+    shortest ones), ``q = 2 pi D^-1 m`` for integer ``m``; a candidate is a grating lobe if every
+    baseline satisfies ``q . d in 2 pi Z`` (checked as ``|W(q)|^2 > 1 - 1e-9``). For a minimal
+    array (``N - 1 == rank``, e.g. any non-coplanar 4-element array) the check always passes:
+    irregular placement cannot prevent exact grating lobes. Generic arrays with more elements than
+    ``rank + 1`` and incommensurate baselines have none. Returns ``f = c |q_min| / (4 pi)``, the
+    lowest frequency at which some (steering, look) pair sees a 0 dB grating lobe.
+    """
+    obs = geometry.observability
+    r = obs.rank
+    if r == 0:
+        return None
+    s = geometry.reduced_positions_m
+    base = s[1:] - s[0]
+    # choose r independent baselines, shortest first
+    order = np.argsort(np.linalg.norm(base, axis=1), kind="stable")
+    chosen: list[np.ndarray] = []
+    for i in order:
+        cand = chosen + [base[i]]
+        if np.linalg.matrix_rank(np.array(cand), tol=1e-9) == len(cand):
+            chosen = cand
+        if len(chosen) == r:
+            break
+    recip = 2.0 * np.pi * np.linalg.inv(np.array(chosen))  # columns g_j with d_i . g_j = 2 pi delta_ij
+    grids = np.meshgrid(*([np.arange(-search, search + 1)] * r), indexing="ij")
+    m = np.stack([g.ravel() for g in grids], axis=1).astype(float)
+    m = m[np.any(m != 0, axis=1)]
+    q = m @ recip.T
+    qn = np.linalg.norm(q, axis=1)
+    idx = np.argsort(qn, kind="stable")
+    q_max = 4.0 * np.pi * f_max_hz / c_mps
+    for j in idx:
+        if qn[j] > q_max:
+            break
+        w = np.mean(np.exp(1j * (s @ q[j])))
+        if abs(w) ** 2 > 1.0 - 1e-9:
+            return float(c_mps * qn[j] / (4.0 * np.pi))
+    return None
 
 
 # ============================================================================ thresholds

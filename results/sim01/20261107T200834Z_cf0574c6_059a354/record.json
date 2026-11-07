@@ -1,0 +1,695 @@
+{
+  "assumptions": [
+    "Single-frequency (narrowband) plane waves from far-field sources.",
+    "Homogeneous, lossless, unbounded medium; no surface, bottom, multipath or refraction.",
+    "Ideal omnidirectional point hydrophones with identical, perfectly known responses and positions.",
+    "No sensor, electronic, ambient, flow, platform or self-noise in the beampattern metrics.",
+    "Directivity index uses a spherically isotropic noise model; white-noise gain uses spatially white noise.",
+    "Conventional uniformly weighted delay-and-sum beamforming only.",
+    "Array frame is right-handed with z up; linear arrays lie along x; the square array lies in the horizontal x-y plane.",
+    "A4 coordinates are a notional placeholder layout, not derived from any host survey."
+  ],
+  "command": [
+    "picket-sim",
+    "run",
+    "configs/sim01/sim01_baseline.yaml"
+  ],
+  "completed_utc": "2026-11-07T20:24:52+00:00",
+  "config_path": "configs/sim01/sim01_baseline.yaml",
+  "config_resolved": {
+    "arrays": [
+      {
+        "description": "Single omnidirectional hydrophone (reference; one channel).",
+        "id": "A0",
+        "label": "Single hydrophone",
+        "position_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "type": "single"
+      },
+      {
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "description": "Four-element uniform line array along x, 0.15 m spacing (aperture 0.45 m).",
+        "id": "A1",
+        "label": "4-el line, 0.15 m",
+        "n_elements": 4,
+        "spacing_m": 0.15,
+        "type": "linear"
+      },
+      {
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "description": "Four-element uniform line array along x, 0.30 m spacing (aperture 0.90 m).",
+        "id": "A2",
+        "label": "4-el line, 0.30 m",
+        "n_elements": 4,
+        "spacing_m": 0.3,
+        "type": "linear"
+      },
+      {
+        "axis_u": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "axis_v": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "description": "Four-element square planar array in the horizontal x-y plane, 0.30 m side.",
+        "dx_m": 0.3,
+        "dy_m": 0.3,
+        "id": "A3",
+        "label": "4-el square, 0.30 m",
+        "nx": 2,
+        "ny": 2,
+        "type": "rectangular"
+      },
+      {
+        "description": "Four-element distributed, non-coplanar array with irregular ~0.9-1.1 m baselines. NOTIONAL PLACEHOLDER chosen to represent elements distributed around a small host; replace with surveyed host coordinates. Results for A4 are specific to these coordinates.\n",
+        "id": "A4",
+        "label": "4-el distributed (notional)",
+        "positions_m": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.35,
+            0.85,
+            0.0
+          ],
+          [
+            0.4,
+            0.3,
+            -0.75
+          ]
+        ],
+        "type": "coordinates"
+      }
+    ],
+    "bands_hz": {
+      "high": [
+        3000.0,
+        10000.0001
+      ],
+      "low": [
+        100.0,
+        1000.0
+      ],
+      "mid": [
+        1000.0,
+        3000.0
+      ]
+    },
+    "experiment": {
+      "assumptions": [
+        "Single-frequency (narrowband) plane waves from far-field sources.",
+        "Homogeneous, lossless, unbounded medium; no surface, bottom, multipath or refraction.",
+        "Ideal omnidirectional point hydrophones with identical, perfectly known responses and positions.",
+        "No sensor, electronic, ambient, flow, platform or self-noise in the beampattern metrics.",
+        "Directivity index uses a spherically isotropic noise model; white-noise gain uses spatially white noise.",
+        "Conventional uniformly weighted delay-and-sum beamforming only.",
+        "Array frame is right-handed with z up; linear arrays lie along x; the square array lies in the horizontal x-y plane.",
+        "A4 coordinates are a notional placeholder layout, not derived from any host survey."
+      ],
+      "description": "Idealized narrowband far-field comparison of candidate Picket array geometries (A0-A4) with conventional delay-and-sum beamforming in a homogeneous medium, 100 Hz to 10 kHz.\n",
+      "id": "SIM-01",
+      "title": "Array geometry and idealized acoustic performance"
+    },
+    "figure_frequencies_hz": [
+      500,
+      1000,
+      2500,
+      5000,
+      10000
+    ],
+    "frequency_grid": {
+      "f_max_hz": 10000.0,
+      "f_min_hz": 100.0,
+      "points_per_decade": 60
+    },
+    "grids": {
+      "cut_points": 3600,
+      "reduced_1d_points": 4001,
+      "sphere": {
+        "n_az": 360,
+        "n_el": 181
+      }
+    },
+    "metrics": {
+      "ambiguity_levels_db": [
+        -1.0,
+        -3.0
+      ],
+      "di_quadrature_tolerance_db": 0.01
+    },
+    "output": {
+      "root": "results/sim01"
+    },
+    "pareto": {
+      "sets": [
+        {
+          "arrays": [
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ],
+          "attributes": [
+            {
+              "key": "n_elements",
+              "label": "channels",
+              "sense": "min"
+            },
+            {
+              "key": "aperture_m",
+              "label": "max dimension (m)",
+              "sense": "min"
+            },
+            {
+              "key": "rank",
+              "label": "observable dimensions",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_low_db",
+              "label": "DI low band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_mid_db",
+              "label": "DI mid band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_high_db",
+              "label": "DI high band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "hpsf_band_low",
+              "label": "HPSF low band",
+              "sense": "min"
+            },
+            {
+              "key": "hpsf_band_mid",
+              "label": "HPSF mid band",
+              "sense": "min"
+            },
+            {
+              "key": "hpsf_band_high",
+              "label": "HPSF high band",
+              "sense": "min"
+            }
+          ],
+          "name": "all_candidates",
+          "note": "Attributes defined for every candidate, including the single hydrophone."
+        },
+        {
+          "arrays": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ],
+          "attributes": [
+            {
+              "key": "n_elements",
+              "label": "channels",
+              "sense": "min"
+            },
+            {
+              "key": "aperture_m",
+              "label": "max dimension (m)",
+              "sense": "min"
+            },
+            {
+              "key": "rank",
+              "label": "observable dimensions",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_low_db",
+              "label": "DI low band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_mid_db",
+              "label": "DI mid band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "di_band_high_db",
+              "label": "DI high band (dB)",
+              "sense": "max"
+            },
+            {
+              "key": "hpsf_band_low",
+              "label": "HPSF low band",
+              "sense": "min"
+            },
+            {
+              "key": "hpsf_band_mid",
+              "label": "HPSF mid band",
+              "sense": "min"
+            },
+            {
+              "key": "hpsf_band_high",
+              "label": "HPSF high band",
+              "sense": "min"
+            },
+            {
+              "key": "f_hp_median_hz",
+              "label": "half-power onset",
+              "median horizon steering (Hz)": null,
+              "sense": "min"
+            },
+            {
+              "key": "f_alias_m3db_hz",
+              "label": "worst-case -3 dB ambiguity onset (Hz)",
+              "sense": "max"
+            }
+          ],
+          "name": "multichannel",
+          "note": "Adds regime thresholds, which are undefined for a single hydrophone."
+        }
+      ]
+    },
+    "physics": {
+      "model": "narrowband_far_field_plane_wave_homogeneous",
+      "sound_speed_mps": 1500.0
+    },
+    "representative_frequencies_hz": [
+      250,
+      500,
+      1000,
+      2000,
+      2500,
+      3500,
+      5000,
+      7500,
+      10000
+    ],
+    "robustness": {
+      "mismatch": {
+        "assumed_mps": 1500.0,
+        "max_frequency_hz": 1000.0,
+        "sources_deg": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            30.0,
+            0.0
+          ],
+          [
+            60.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0
+          ],
+          [
+            60.0,
+            -10.0
+          ],
+          [
+            60.0,
+            -30.0
+          ]
+        ],
+        "true_mps": [
+          1450.0,
+          1550.0
+        ]
+      },
+      "sound_speeds_mps": [
+        1450.0,
+        1500.0,
+        1550.0
+      ]
+    },
+    "sensitivity": {
+      "a4_scale": [
+        0.25,
+        0.5,
+        1.0,
+        2.0,
+        4.0
+      ],
+      "orientation_frequencies_hz": [
+        1000,
+        2000,
+        5000
+      ],
+      "orientation_variants": [
+        {
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "description": "A1 rotated to vertical (along z).",
+          "id": "A1-V",
+          "label": "A1 vertical",
+          "n_elements": 4,
+          "spacing_m": 0.15,
+          "type": "linear"
+        },
+        {
+          "axis_u": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "axis_v": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "description": "A3 rotated into the vertical x-z plane.",
+          "dx_m": 0.3,
+          "dy_m": 0.3,
+          "id": "A3-V",
+          "label": "A3 vertical plane",
+          "nx": 2,
+          "ny": 2,
+          "type": "rectangular"
+        }
+      ],
+      "square_side_m": [
+        0.15,
+        0.3,
+        0.6
+      ],
+      "ula": {
+        "n_elements": [
+          2,
+          3,
+          4,
+          6,
+          8,
+          16
+        ],
+        "spacing_m": [
+          0.075,
+          0.15,
+          0.3,
+          0.6
+        ],
+        "steering": [
+          {
+            "az_deg": 90.0,
+            "el_deg": 0.0,
+            "name": "broadside"
+          },
+          {
+            "az_deg": 0.0,
+            "el_deg": 0.0,
+            "name": "endfire"
+          }
+        ]
+      }
+    },
+    "steering": {
+      "rings": [
+        {
+          "az_step_deg": 15.0,
+          "el_deg": 0.0,
+          "name": "horizon"
+        },
+        {
+          "az_step_deg": 15.0,
+          "el_deg": -30.0,
+          "name": "depressed30"
+        }
+      ],
+      "showcase": {
+        "az_deg": 60.0,
+        "el_deg": -20.0
+      }
+    }
+  },
+  "config_sha256": "cf0574c614ca53f57be78d99f3b2041e5de4edf98f777de49731d2c368a9899a",
+  "created_utc": "2026-11-07T20:08:34+00:00",
+  "experiment_id": "SIM-01",
+  "figures": [
+    "fig01_geometries.png",
+    "fig02_horizontal_beampatterns.png",
+    "fig03_vertical_beampatterns.png",
+    "fig04_frequency_azimuth_maps.png",
+    "fig05_sphere_ambiguity_maps.png",
+    "fig06_metrics_vs_frequency.png",
+    "fig07_regime_map.png",
+    "fig08_line_array_sensitivity.png",
+    "fig09_aperture_scaling.png",
+    "fig10_sound_speed_robustness.png"
+  ],
+  "frequency_grid_hz": {
+    "max": 10000.0,
+    "min": 100.0,
+    "n": 121
+  },
+  "outputs": [
+    {
+      "bytes": 153850,
+      "path": "figures/fig01_geometries.png",
+      "sha256": "590fa693e137937dd6c06f26037160f54110b73f8cd7d9c6b5a97302e29a20f6"
+    },
+    {
+      "bytes": 414443,
+      "path": "figures/fig02_horizontal_beampatterns.png",
+      "sha256": "d1df5e53d30b7c5a8dc6488a2710fe2d771438371a87da6e70a46fd82d5e9d65"
+    },
+    {
+      "bytes": 285056,
+      "path": "figures/fig03_vertical_beampatterns.png",
+      "sha256": "607f55e9b0ad25aac73cb32d89545b1355f1a45bbf76658f1a2d41b3f9d0c931"
+    },
+    {
+      "bytes": 352167,
+      "path": "figures/fig04_frequency_azimuth_maps.png",
+      "sha256": "eff76fc9bbbe0ea824d15bee50dbd9d859a547d4e408a691c473d1bfeb509b86"
+    },
+    {
+      "bytes": 818416,
+      "path": "figures/fig05_sphere_ambiguity_maps.png",
+      "sha256": "9015431be95352967f8c1f0301ee73234ad29e51100da5cbfc693118a8c0ec30"
+    },
+    {
+      "bytes": 329656,
+      "path": "figures/fig06_metrics_vs_frequency.png",
+      "sha256": "030aeb93be3f917b405b289d8e661e16f5d35ed977a1880faacac2767f6094ec"
+    },
+    {
+      "bytes": 143801,
+      "path": "figures/fig07_regime_map.png",
+      "sha256": "7ef11c69e371caffdc4ee933e47b4b3e89c065fc1aa31eddbaeefe8dc35f75b9"
+    },
+    {
+      "bytes": 255976,
+      "path": "figures/fig08_line_array_sensitivity.png",
+      "sha256": "28dab77be58cc677f2b75a7c617a0885fb58aa094b4c33b89ed53b55e2bf447e"
+    },
+    {
+      "bytes": 166615,
+      "path": "figures/fig09_aperture_scaling.png",
+      "sha256": "24dbd6cc59a2a8b06a070bbfcb6ef5c30a6df690ab7839cf6ae85787654348b1"
+    },
+    {
+      "bytes": 137241,
+      "path": "figures/fig10_sound_speed_robustness.png",
+      "sha256": "2253c1e0535166a7a735066b034fe9aed93f33c71faf447a7e09f4dba028fe58"
+    },
+    {
+      "bytes": 6863,
+      "path": "summary.md",
+      "sha256": "a207d6fc42b181e9dd82658ce485f5c5412cc56f1e74ccb5927f4fe82d0e2359"
+    },
+    {
+      "bytes": 1491,
+      "path": "tables/comparison.csv",
+      "sha256": "076d448f5aef90f549c38036a7f75202f4af2f7d905263ff76461e2293a3e91c"
+    },
+    {
+      "bytes": 1671,
+      "path": "tables/comparison.md",
+      "sha256": "fb09844134f2aaf9388ab3616d48f21109dc8aab94a9b387a2f2c8bd22ac8061"
+    },
+    {
+      "bytes": 1959,
+      "path": "tables/geometry_summary.csv",
+      "sha256": "e83a10cd56eb339ebf74c17149dd75f10bc9aa9d421de174c935208549e498be"
+    },
+    {
+      "bytes": 1034,
+      "path": "tables/geometry_summary.md",
+      "sha256": "7bea677ee96e6176b1c07eb0a8b29e5263c4b92779d0acf6c4fcfa1cd6cfabda"
+    },
+    {
+      "bytes": 290,
+      "path": "tables/pareto.csv",
+      "sha256": "376e98cc1ac1ef5d5016e02c5a3792a1b05c9fdc47da0a6c347b77bf37d32344"
+    },
+    {
+      "bytes": 736,
+      "path": "tables/pareto.md",
+      "sha256": "559601506a04dbd949b7ab8e6dbb2ec58a48ea76b9c18da402da8e6cabaf5cb4"
+    },
+    {
+      "bytes": 18270,
+      "path": "tables/representative_frequencies.csv",
+      "sha256": "8a458b68f0245db9001b283a380b3d48f7bd399ccdb59a6c2b41b2da41705a74"
+    },
+    {
+      "bytes": 3125,
+      "path": "tables/robustness_sound_speed.csv",
+      "sha256": "3b1129db6775ed1676127139c1aa95a63c9009c04519d3164d313d6bfb4155e4"
+    },
+    {
+      "bytes": 846,
+      "path": "tables/robustness_sound_speed.md",
+      "sha256": "af5774c4d43997e99d461388a48c561e305656e0b254354dc2b6ff907e870bd7"
+    },
+    {
+      "bytes": 5896,
+      "path": "tables/robustness_sound_speed_mismatch.csv",
+      "sha256": "3f8f63f3e95bb28d0d5ac0fbf0ce17ad5addd7bc48f3083ab102dc7450d7741b"
+    },
+    {
+      "bytes": 4067,
+      "path": "tables/robustness_sound_speed_mismatch.md",
+      "sha256": "3d54f987ac722810a7d07155a2761522ae4850c4c5be33b365a9cf7871baa379"
+    },
+    {
+      "bytes": 1112,
+      "path": "tables/sensitivity_a4_scale.csv",
+      "sha256": "8b2eae38abd4843ebaebac3921995e697932d91883933133643baec14340fee8"
+    },
+    {
+      "bytes": 528,
+      "path": "tables/sensitivity_a4_scale.md",
+      "sha256": "998cc0d36b544d839d4a1269d633fac8dad3d3793e9a4e5bddb1aa277629ebde"
+    },
+    {
+      "bytes": 5334,
+      "path": "tables/sensitivity_orientation.csv",
+      "sha256": "dbf6048a94902bb4fdcc5060a461170fe89fc77452d1ee482c9715f155e826ef"
+    },
+    {
+      "bytes": 1249,
+      "path": "tables/sensitivity_orientation.md",
+      "sha256": "88ed9a2c322d1276db99221ba35f22c5d921306743865e35ceddde00d99cc379"
+    },
+    {
+      "bytes": 782,
+      "path": "tables/sensitivity_square_side.csv",
+      "sha256": "6f58965d232ca87de54aa10632a8479665eee5a05e98df680eaa06981ea364ec"
+    },
+    {
+      "bytes": 443,
+      "path": "tables/sensitivity_square_side.md",
+      "sha256": "3b52e6ea5aaa51cad3a9e3d6f9136485696ee0af865da23d19025e0fa4938437"
+    },
+    {
+      "bytes": 1581,
+      "path": "tables/sensitivity_ula_geometry.csv",
+      "sha256": "425d536618dd1c7822982baf1fb22258d45a5a399bcd08b1977d31332191862c"
+    },
+    {
+      "bytes": 102290,
+      "path": "tables/sensitivity_ula_sweep.csv.gz",
+      "sha256": "28e9b739f0376e930644f2db52038d04addb944bc6cfd826be22b7f0c84cf23c"
+    },
+    {
+      "bytes": 5063,
+      "path": "tables/sensitivity_ula_thresholds.csv",
+      "sha256": "4fe3f2baed2651990ef9b4e9ed5f5e3c1dc460b882d85d92ed560064e8068b6d"
+    },
+    {
+      "bytes": 3889,
+      "path": "tables/sensitivity_ula_thresholds.md",
+      "sha256": "0459ea51bc47e0f71f51ffd1bf92e64dbcbd18a0873381dc0eb65e2d9e190db9"
+    },
+    {
+      "bytes": 232989,
+      "path": "tables/summary_by_frequency.csv",
+      "sha256": "b577d13f11ecf6487ffa3f28d7bf20c7833694dc2d70d6926ad73767591235d1"
+    },
+    {
+      "bytes": 591658,
+      "path": "tables/sweep_metrics.csv.gz",
+      "sha256": "9eae49aac8dc6741879378ad875d9f02707e79b026b7515016a207cd11161a02"
+    },
+    {
+      "bytes": 22365,
+      "path": "tables/thresholds_by_steering.csv",
+      "sha256": "6b59481d4912d4eca0779f9e5b88ae671ebf58c440f0a3e50cc16449768b00a4"
+    },
+    {
+      "bytes": 1938,
+      "path": "tables/thresholds_summary.csv",
+      "sha256": "7bf5d18da87877c7caf1913cbd5de007e618ef2c8b43b01ce5a7247d5c9b569f"
+    },
+    {
+      "bytes": 1425,
+      "path": "tables/thresholds_summary.md",
+      "sha256": "259d00a16b6d7312eabcbc524cccb7e0a56c42bdd3cfbd8542104e2d2f642097"
+    }
+  ],
+  "run_id": "20261107T200834Z_cf0574c6_059a354",
+  "self_checks": {
+    "di_closed_form_vs_quadrature_max_abs_db": 1.2967404927621828e-13,
+    "di_closed_form_vs_quadrature_tolerance_db": 0.01,
+    "hpsf_rank1_exact_vs_sphere_grid_max_abs": 0.0024153656304792825,
+    "normalization_max_abs_error": 2.220446049250313e-16,
+    "sweep_rows_resolution_limited": 0,
+    "threshold_scaling_with_c_max_abs_ratio_error": 0.0004232905633057005,
+    "worstcase_alias_minus_steering_alias_max_rel": 0.0
+  },
+  "software": {
+    "git_commit": "059a354ceaeeb132b638ea5b580f4bbb1b392066",
+    "git_dirty": false,
+    "git_status": [],
+    "machine": "x86_64",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "picket_sim": "0.1.0",
+    "platform": "Linux-6.18.44-fc-v310-x86_64-with-glibc2.39",
+    "python": "3.13.18",
+    "pyyaml": "6.0.3"
+  },
+  "status": "complete",
+  "timings_s": {
+    "figures_s": 5.681642770767212,
+    "geometry_s": 1.0639698505401611,
+    "main_sweep_s": 680.7677156925201,
+    "representative_s": 119.93540859222412,
+    "robustness_s": 60.593095541000366,
+    "sensitivity_s": 87.69747233390808,
+    "thresholds_s": 21.50927186012268,
+    "total_s": 977.6299188137054
+  },
+  "title": "Array geometry and idealized acoustic performance",
+  "warnings": []
+}

@@ -220,3 +220,53 @@ def test_metrics_depend_only_on_f_over_c(candidates, sphere):
         for k in ("di_db", "hpsf", "hpbw_h_deg", "psl_obs_db"):
             if np.isfinite(r1[k]):
                 assert r2[k] == pytest.approx(r1[k], abs=1e-6), (key, k)
+
+
+# ---------------------------------------------------------------- exact grating lobes (reciprocal lattice)
+def test_exact_grating_onset_lattices(candidates):
+    from picket_sim.metrics import exact_grating_onset_hz
+
+    assert exact_grating_onset_hz(candidates["A1"], C) == pytest.approx(C / (2 * 0.15), rel=1e-12)
+    assert exact_grating_onset_hz(candidates["A2"], C) == pytest.approx(C / (2 * 0.30), rel=1e-12)
+    assert exact_grating_onset_hz(candidates["A3"], C) == pytest.approx(C / (2 * 0.30), rel=1e-12)
+    assert exact_grating_onset_hz(candidates["A0"], C) is None
+
+
+def test_any_four_noncoplanar_sensors_have_exact_grating_lobes(candidates):
+    """With N - 1 = rank, the baselines always form a lattice: irregular placement cannot prevent
+    0 dB grating lobes. Independent check: |W| = 1 at q = 2 pi D^-1 e_j for the baseline matrix D."""
+    from picket_sim.geometry import from_coordinates
+    from picket_sim.metrics import aliasing_onset_hz, exact_grating_onset_hz
+
+    rng = np.random.default_rng(11)
+    for g in [candidates["A4"]] + [from_coordinates(rng.uniform(-0.6, 0.6, (4, 3))) for _ in range(5)]:
+        s = g.reduced_positions_m
+        d = s[1:] - s[0]
+        q = 2 * np.pi * np.linalg.inv(d)[:, 0]
+        assert abs(np.mean(np.exp(1j * (s @ q)))) == pytest.approx(1.0, abs=1e-12)
+        fx = exact_grating_onset_hz(g, C)
+        assert fx is not None
+        assert aliasing_onset_hz(g, C, (-1.0,), 2 * fx)[-1.0] <= fx * (1 + 1e-3)
+
+
+def test_generic_five_element_volumetric_array_has_no_exact_grating_lobe():
+    from picket_sim.geometry import from_coordinates
+    from picket_sim.metrics import exact_grating_onset_hz
+
+    pos = [[0, 0, 0], [1.0, 0, 0], [0.31, 0.87, 0], [0.42, 0.29, -0.73], [0.7071, -0.3333, 0.2718]]
+    assert exact_grating_onset_hz(from_coordinates(pos), C, f_max_hz=20_000.0) is None
+
+
+def test_pareto_front_logic():
+    from picket_sim.experiments.sim01 import pareto_front
+
+    rows = [{"array_id": "a", "x": 1.0, "y": 1.0}, {"array_id": "b", "x": 2.0, "y": 2.0},
+            {"array_id": "c", "x": 0.5, "y": 3.0}, {"array_id": "d", "x": 1.0, "y": 1.0}]
+    attrs = [{"key": "x", "sense": "max"}, {"key": "y", "sense": "max"}]
+    res = {r["array_id"]: r for r in pareto_front(rows, attrs)}
+    assert res["a"]["pareto_dominated"] and res["d"]["pareto_dominated"]  # both dominated by b; ties do not dominate
+    assert not res["b"]["pareto_dominated"] and not res["c"]["pareto_dominated"]
+    assert set(res["a"]["dominated_by"].split(";")) == {"b"}
+    attrs_min = [{"key": "x", "sense": "min"}]
+    res = {r["array_id"]: r for r in pareto_front(rows, attrs_min)}
+    assert not res["c"]["pareto_dominated"] and res["b"]["pareto_dominated"]

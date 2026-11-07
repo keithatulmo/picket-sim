@@ -1,0 +1,2 @@
+run_id,experiment_id,created_utc,config_path,config_sha256,git_commit,git_dirty,picket_sim_version,status
+20261107T200834Z_cf0574c6_059a354,SIM-01,2026-11-07T20:08:34+00:00,configs/sim01/sim01_baseline.yaml,cf0574c614ca53f57be78d99f3b2041e5de4edf98f777de49731d2c368a9899a,059a354ceaeeb132b638ea5b580f4bbb1b392066,False,0.1.0,complete

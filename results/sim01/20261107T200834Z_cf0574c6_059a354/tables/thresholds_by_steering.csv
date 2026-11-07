@@ -1,0 +1,241 @@
+array_id,ring,az0_deg,el0_deg,c_mps,f_hp_hz,f_hp_status,f_sl_hz,f_sl_status,f_amb_m1db_hz,f_amb_m1db_status,f_amb_m3db_hz,f_amb_m3db_status
+A0,horizon,0,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,15,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,30,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,45,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,60,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,75,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,90,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,105,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,120,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,135,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,150,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,165,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-180,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-165,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-150,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-135,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-120,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-105,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-90,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-75,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-60,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-45,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-30,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,horizon,-15,0,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,0,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,15,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,30,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,45,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,60,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,75,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,90,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,105,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,120,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,135,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,150,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,165,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-180,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-165,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-150,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-135,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-120,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-105,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-90,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-75,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-60,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-45,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-30,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A0,depressed30,-15,-30,1500,,never (single sensor),,never (single sensor),,undefined (single sensor),,undefined (single sensor)
+A1,horizon,0,0,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A1,horizon,15,0,1500,579.1091364,ok,1272.587051,ok,4745.719697,ok,4509.89745,ok
+A1,horizon,30,0,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,horizon,45,0,1500,667.142718,ok,1465.161225,ok,5463.865499,ok,5192.357462,ok
+A1,horizon,60,0,1500,759.3967777,ok,1667.767155,ok,6219.421634,ok,5910.368829,ok
+A1,horizon,75,0,1500,904.7121372,ok,1986.904912,ok,7409.547162,ok,7041.355155,ok
+A1,horizon,90,0,1500,1138.9651,ok,2501.365084,ok,9328.067212,ok,8864.540938,ok
+A1,horizon,105,0,1500,904.7121372,ok,1986.904912,ok,7409.547162,ok,7041.355155,ok
+A1,horizon,120,0,1500,759.3967777,ok,1667.767155,ok,6219.421634,ok,5910.368829,ok
+A1,horizon,135,0,1500,667.142718,ok,1465.161225,ok,5463.865499,ok,5192.357462,ok
+A1,horizon,150,0,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,horizon,165,0,1500,579.1091364,ok,1272.587051,ok,4745.719697,ok,4509.89745,ok
+A1,horizon,-180,0,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A1,horizon,-165,0,1500,579.1091364,ok,1272.587051,ok,4745.719697,ok,4509.89745,ok
+A1,horizon,-150,0,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,horizon,-135,0,1500,667.142718,ok,1465.161225,ok,5463.865499,ok,5192.357462,ok
+A1,horizon,-120,0,1500,759.3967777,ok,1667.767155,ok,6219.421634,ok,5910.368829,ok
+A1,horizon,-105,0,1500,904.7121372,ok,1986.904912,ok,7409.547162,ok,7041.355155,ok
+A1,horizon,-90,0,1500,1138.9651,ok,2501.365084,ok,9328.067212,ok,8864.540938,ok
+A1,horizon,-75,0,1500,904.7121372,ok,1986.904912,ok,7409.547162,ok,7041.355155,ok
+A1,horizon,-60,0,1500,759.3967777,ok,1667.767155,ok,6219.421634,ok,5910.368829,ok
+A1,horizon,-45,0,1500,667.142718,ok,1465.161225,ok,5463.865499,ok,5192.357462,ok
+A1,horizon,-30,0,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,horizon,-15,0,1500,579.1091364,ok,1272.587051,ok,4745.719697,ok,4509.89745,ok
+A1,depressed30,0,-30,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,depressed30,15,-30,1500,620.0802753,ok,1361.803931,ok,5078.426446,ok,4828.966212,ok
+A1,depressed30,30,-30,1500,650.9410598,ok,1429.579571,ok,5331.174728,ok,5066.260304,ok
+A1,depressed30,45,-30,1500,706.2497927,ok,1551.04715,ok,5784.150484,ok,5500.023984,ok
+A1,depressed30,60,-30,1500,794.8046818,ok,1745.52906,ok,6509.410598,ok,6185.947787,ok
+A1,depressed30,75,-30,1500,930.5720409,ok,2043.697749,ok,7621.33848,ok,7242.622231,ok
+A1,depressed30,90,-30,1500,1138.9651,ok,2501.365084,ok,9328.067212,ok,8864.540938,ok
+A1,depressed30,105,-30,1500,930.5720409,ok,2043.697749,ok,7621.33848,ok,7242.622231,ok
+A1,depressed30,120,-30,1500,794.8046818,ok,1745.52906,ok,6509.410598,ok,6185.947787,ok
+A1,depressed30,135,-30,1500,706.2497927,ok,1551.04715,ok,5784.150484,ok,5500.023984,ok
+A1,depressed30,150,-30,1500,650.9410598,ok,1429.579571,ok,5331.174728,ok,5066.260304,ok
+A1,depressed30,165,-30,1500,620.0802753,ok,1361.803931,ok,5078.426446,ok,4828.966212,ok
+A1,depressed30,-180,-30,1500,610.1219739,ok,1339.933772,ok,4999.865634,ok,4751.414478,ok
+A1,depressed30,-165,-30,1500,620.0802753,ok,1361.803931,ok,5078.426446,ok,4828.966212,ok
+A1,depressed30,-150,-30,1500,650.9410598,ok,1429.579571,ok,5331.174728,ok,5066.260304,ok
+A1,depressed30,-135,-30,1500,706.2497927,ok,1551.04715,ok,5784.150484,ok,5500.023984,ok
+A1,depressed30,-120,-30,1500,794.8046818,ok,1745.52906,ok,6509.410598,ok,6185.947787,ok
+A1,depressed30,-105,-30,1500,930.5720409,ok,2043.697749,ok,7621.33848,ok,7242.622231,ok
+A1,depressed30,-90,-30,1500,1138.9651,ok,2501.365084,ok,9328.067212,ok,8864.540938,ok
+A1,depressed30,-75,-30,1500,930.5720409,ok,2043.697749,ok,7621.33848,ok,7242.622231,ok
+A1,depressed30,-60,-30,1500,794.8046818,ok,1745.52906,ok,6509.410598,ok,6185.947787,ok
+A1,depressed30,-45,-30,1500,706.2497927,ok,1551.04715,ok,5784.150484,ok,5500.023984,ok
+A1,depressed30,-30,-30,1500,650.9410598,ok,1429.579571,ok,5331.174728,ok,5066.260304,ok
+A1,depressed30,-15,-30,1500,620.0802753,ok,1361.803931,ok,5078.426446,ok,4828.966212,ok
+A2,horizon,0,0,1500,284.7259714,ok,625.3076617,ok,2331.891468,ok,2216.016127,ok
+A2,horizon,15,0,1500,289.7204604,ok,636.2764266,ok,2372.796083,ok,2254.888128,ok
+A2,horizon,30,0,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,horizon,45,0,1500,333.5623949,ok,732.5609257,ok,2731.859334,ok,2596.108964,ok
+A2,horizon,60,0,1500,379.6881852,ok,833.8611686,ok,3109.627249,ok,2955.105,ok
+A2,horizon,75,0,1500,452.3439124,ok,993.4257586,ok,3704.674022,ok,3520.582966,ok
+A2,horizon,90,0,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A2,horizon,105,0,1500,452.3439124,ok,993.4257586,ok,3704.674022,ok,3520.582966,ok
+A2,horizon,120,0,1500,379.6881852,ok,833.8611686,ok,3109.627249,ok,2955.105,ok
+A2,horizon,135,0,1500,333.5623949,ok,732.5609257,ok,2731.859334,ok,2596.108964,ok
+A2,horizon,150,0,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,horizon,165,0,1500,289.7204604,ok,636.2764266,ok,2372.796083,ok,2254.888128,ok
+A2,horizon,-180,0,1500,284.7259714,ok,625.3076617,ok,2331.891468,ok,2216.016127,ok
+A2,horizon,-165,0,1500,289.7204604,ok,636.2764266,ok,2372.796083,ok,2254.888128,ok
+A2,horizon,-150,0,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,horizon,-135,0,1500,333.5623949,ok,732.5609257,ok,2731.859334,ok,2596.108964,ok
+A2,horizon,-120,0,1500,379.6881852,ok,833.8611686,ok,3109.627249,ok,2955.105,ok
+A2,horizon,-105,0,1500,452.3439124,ok,993.4257586,ok,3704.674022,ok,3520.582966,ok
+A2,horizon,-90,0,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A2,horizon,-75,0,1500,452.3439124,ok,993.4257586,ok,3704.674022,ok,3520.582966,ok
+A2,horizon,-60,0,1500,379.6881852,ok,833.8611686,ok,3109.627249,ok,2955.105,ok
+A2,horizon,-45,0,1500,333.5623949,ok,732.5609257,ok,2731.859334,ok,2596.108964,ok
+A2,horizon,-30,0,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,horizon,-15,0,1500,289.7204604,ok,636.2764266,ok,2372.796083,ok,2254.888128,ok
+A2,depressed30,0,-30,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,depressed30,15,-30,1500,310.0318059,ok,680.8836673,ok,2539.144986,ok,2414.418221,ok
+A2,depressed30,30,-30,1500,325.4617835,ok,714.7705768,ok,2665.515731,ok,2533.062079,ok
+A2,depressed30,45,-30,1500,353.1154068,ok,775.5027342,ok,2891.997523,ok,2749.938091,ok
+A2,depressed30,60,-30,1500,397.3916615,ok,872.7410759,ok,3254.617835,ok,3092.890776,ok
+A2,depressed30,75,-30,1500,465.2735168,ok,1021.821414,ok,3810.566835,ok,3621.213799,ok
+A2,depressed30,90,-30,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A2,depressed30,105,-30,1500,465.2735168,ok,1021.821414,ok,3810.566835,ok,3621.213799,ok
+A2,depressed30,120,-30,1500,397.3916615,ok,872.7410759,ok,3254.617835,ok,3092.890776,ok
+A2,depressed30,135,-30,1500,353.1154068,ok,775.5027342,ok,2891.997523,ok,2749.938091,ok
+A2,depressed30,150,-30,1500,325.4617835,ok,714.7705768,ok,2665.515731,ok,2533.062079,ok
+A2,depressed30,165,-30,1500,310.0318059,ok,680.8836673,ok,2539.144986,ok,2414.418221,ok
+A2,depressed30,-180,-30,1500,305.2357632,ok,670.3507249,ok,2499.865636,ok,2375.643396,ok
+A2,depressed30,-165,-30,1500,310.0318059,ok,680.8836673,ok,2539.144986,ok,2414.418221,ok
+A2,depressed30,-150,-30,1500,325.4617835,ok,714.7705768,ok,2665.515731,ok,2533.062079,ok
+A2,depressed30,-135,-30,1500,353.1154068,ok,775.5027342,ok,2891.997523,ok,2749.938091,ok
+A2,depressed30,-120,-30,1500,397.3916615,ok,872.7410759,ok,3254.617835,ok,3092.890776,ok
+A2,depressed30,-105,-30,1500,465.2735168,ok,1021.821414,ok,3810.566835,ok,3621.213799,ok
+A2,depressed30,-90,-30,1500,569.4672462,ok,1250.648932,ok,4663.908269,ok,4432.15136,ok
+A2,depressed30,-75,-30,1500,465.2735168,ok,1021.821414,ok,3810.566835,ok,3621.213799,ok
+A2,depressed30,-60,-30,1500,397.3916615,ok,872.7410759,ok,3254.617835,ok,3092.890776,ok
+A2,depressed30,-45,-30,1500,353.1154068,ok,775.5027342,ok,2891.997523,ok,2749.938091,ok
+A2,depressed30,-30,-30,1500,325.4617835,ok,714.7705768,ok,2665.515731,ok,2533.062079,ok
+A2,depressed30,-15,-30,1500,310.0318059,ok,680.8836673,ok,2539.144986,ok,2414.418221,ok
+A3,horizon,0,0,1500,625.3076617,ok,1250.648932,ok,2126.200259,ok,1876.884294,ok
+A3,horizon,15,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,30,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,45,0,1500,643.9529939,ok,1465.161225,ok,2847.259714,ok,2431.854012,ok
+A3,horizon,60,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,75,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,90,0,1500,625.3076617,ok,1250.648932,ok,2126.200259,ok,1876.884294,ok
+A3,horizon,105,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,120,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,135,0,1500,643.9529939,ok,1465.161225,ok,2847.259714,ok,2431.854012,ok
+A3,horizon,150,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,165,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,-180,0,1500,625.3076617,ok,1250.648932,ok,2126.200259,ok,1876.884294,ok
+A3,horizon,-165,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,-150,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,-135,0,1500,643.9529939,ok,1465.161225,ok,2847.259714,ok,2431.854012,ok
+A3,horizon,-120,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,-105,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,-90,0,1500,625.3076617,ok,1250.648932,ok,2126.200259,ok,1876.884294,ok
+A3,horizon,-75,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,horizon,-60,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,-45,0,1500,643.9529939,ok,1465.161225,ok,2847.259714,ok,2431.854012,ok
+A3,horizon,-30,0,1500,637.8043839,ok,1339.933772,ok,2404.305131,ok,2093.308965,ok
+A3,horizon,-15,0,1500,628.6913716,ok,1271.824197,ok,2190.912333,ok,1927.062647,ok
+A3,depressed30,0,-30,1500,669.9488819,ok,1339.933772,ok,2279.357782,ok,2010.876583,ok
+A3,depressed30,15,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,30,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,45,-30,1500,689.9253194,ok,1551.04715,ok,2921.628551,ok,2517.918488,ok
+A3,depressed30,60,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,75,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,90,-30,1500,669.9488819,ok,1339.933772,ok,2279.357782,ok,2010.876583,ok
+A3,depressed30,105,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,120,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,135,-30,1500,689.9253194,ok,1551.04715,ok,2921.628551,ok,2517.918488,ok
+A3,depressed30,150,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,165,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,-180,-30,1500,669.9488819,ok,1339.933772,ok,2279.357782,ok,2010.876583,ok
+A3,depressed30,-165,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,-150,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,-135,-30,1500,689.9253194,ok,1551.04715,ok,2921.628551,ok,2517.918488,ok
+A3,depressed30,-120,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,-105,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,-90,-30,1500,669.9488819,ok,1339.933772,ok,2279.357782,ok,2010.876583,ok
+A3,depressed30,-75,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A3,depressed30,-60,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,-45,-30,1500,689.9253194,ok,1551.04715,ok,2921.628551,ok,2517.918488,ok
+A3,depressed30,-30,-30,1500,683.3377552,ok,1428.722607,ok,2536.101709,ok,2216.016127,ok
+A3,depressed30,-15,-30,1500,673.9781751,ok,1361.803931,ok,2338.893337,ok,2059.691057,ok
+A4,horizon,0,0,1500,267.1916714,ok,489.0158285,ok,789.579444,ok,661.9624175,ok
+A4,horizon,15,0,1500,276.9796848,ok,563.6917344,ok,893.9270587,ok,742.2888152,ok
+A4,horizon,30,0,1500,288.3339844,ok,537.2894751,ok,893.9270587,ok,751.244404,ok
+A4,horizon,45,0,1500,298.1804506,ok,536.967396,ok,895.5365865,ok,752.5970298,ok
+A4,horizon,60,0,1500,298.3593026,ok,585.7446537,ok,946.3279487,ok,790.5269255,ok
+A4,horizon,75,0,1500,286.7821282,ok,525.5002375,ok,859.2401917,ok,721.228561,ok
+A4,horizon,90,0,1500,273.3497934,ok,505.1093604,ok,830.8665022,ok,697.4122691,ok
+A4,horizon,105,0,1500,262.5855561,ok,528.0271456,ok,852.5682723,ok,712.6307912,ok
+A4,horizon,120,0,1500,255.9015501,ok,556.971962,ok,881.1545403,ok,726.4369338,ok
+A4,horizon,135,0,1500,253.4581438,ok,490.1901536,ok,782.9787942,ok,653.6790756,ok
+A4,horizon,150,0,1500,254.9825245,ok,452.8867172,ok,741.3991492,ok,622.6884831,ok
+A4,horizon,165,0,1500,259.9224249,ok,450.4492139,ok,743.6253163,ok,625.3076617,ok
+A4,horizon,-180,0,1500,267.1916714,ok,489.0158285,ok,789.579444,ok,661.9624175,ok
+A4,horizon,-165,0,1500,276.9796848,ok,563.6917344,ok,893.9270587,ok,742.2888152,ok
+A4,horizon,-150,0,1500,288.3339844,ok,537.2894751,ok,893.9270587,ok,751.244404,ok
+A4,horizon,-135,0,1500,298.1804506,ok,536.967396,ok,895.5365865,ok,752.5970298,ok
+A4,horizon,-120,0,1500,298.3593026,ok,585.7446537,ok,946.3279487,ok,790.5269255,ok
+A4,horizon,-105,0,1500,286.7821282,ok,525.5002375,ok,859.2401917,ok,721.228561,ok
+A4,horizon,-90,0,1500,273.3497934,ok,505.1093604,ok,830.8665022,ok,697.4122691,ok
+A4,horizon,-75,0,1500,262.5855561,ok,528.0271456,ok,852.5682723,ok,712.6307912,ok
+A4,horizon,-60,0,1500,255.9015501,ok,556.971962,ok,881.1545403,ok,726.4369338,ok
+A4,horizon,-45,0,1500,253.4581438,ok,490.1901536,ok,782.9787942,ok,653.6790756,ok
+A4,horizon,-30,0,1500,254.9825245,ok,452.8867172,ok,741.3991492,ok,622.6884831,ok
+A4,horizon,-15,0,1500,259.9224249,ok,450.4492139,ok,743.6253163,ok,625.3076617,ok
+A4,depressed30,0,-30,1500,272.0416603,ok,611.5871238,ok,980.4066537,ok,822.4398906,ok
+A4,depressed30,15,-30,1500,283.8735965,ok,529.6126299,ok,891.2509381,ok,748.9954279,ok
+A4,depressed30,30,-30,1500,299.0757841,ok,468.9145946,ok,848.9971845,ok,716.4870304,ok
+A4,depressed30,45,-30,1500,306.335915,ok,450.7193984,ok,851.0359705,ok,718.6383949,ok
+A4,depressed30,60,-30,1500,292.6888983,ok,510.8969775,ok,897.1490123,ok,755.7626352,ok
+A4,depressed30,75,-30,1500,279.3146725,ok,571.5197593,ok,957.171113,ok,836.3649674,ok
+A4,depressed30,90,-30,1500,268.6375182,ok,555.637651,ok,932.2475485,ok,820.4696109,ok
+A4,depressed30,105,-30,1500,261.1722818,ok,609.7562352,ok,947.4635257,ok,791.0010925,ok
+A4,depressed30,120,-30,1500,257.2863031,ok,524.8704022,ok,830.8665022,ok,689.9253194,ok
+A4,depressed30,135,-30,1500,256.9779341,ok,465.2735168,ok,754.8568203,ok,633.2314845,ok
+A4,depressed30,150,-30,1500,259.7666139,ok,423.978418,ok,721.6611621,ok,608.2954715,ok
+A4,depressed30,165,-30,1500,264.006478,ok,411.702338,ok,723.8280628,ok,610.8541096,ok
+A4,depressed30,-180,-30,1500,268.476483,ok,456.4308599,ok,761.6769855,ok,641.255717,ok
+A4,depressed30,-165,-30,1500,273.1859334,ok,527.0781343,ok,843.9215624,ok,705.403321,ok
+A4,depressed30,-150,-30,1500,279.1472369,ok,606.474437,ok,969.8816665,ok,818.0133975,ok
+A4,depressed30,-135,-30,1500,285.9235978,ok,573.2358369,ok,972.7938881,ok,843.9215624,ok
+A4,depressed30,-120,-30,1500,292.1628551,ok,519.85882,ok,881.1545403,ok,741.8438489,ok
+A4,depressed30,-105,-30,1500,295.1563176,ok,436.3588113,ok,813.6107285,ok,687.0354818,ok
+A4,depressed30,-90,-30,1500,286.6102162,ok,437.9315658,ok,790.0530427,ok,666.7427981,ok
+A4,depressed30,-75,-30,1500,274.170569,ok,480.0096849,ok,805.8421878,ok,677.6252544,ok
+A4,depressed30,-60,-30,1500,265.4350889,ok,538.2568721,ok,863.3719139,ok,720.7962193,ok
+A4,depressed30,-45,-30,1500,260.8592552,ok,603.5721143,ok,975.1299601,ok,805.8421878,ok
+A4,depressed30,-30,-30,1500,260.5466039,ok,603.2103019,ok,938.979801,ok,800.0644989,ok
+A4,depressed30,-15,-30,1500,264.3232811,ok,610.487932,ok,940.6704469,ok,802.4668179,ok

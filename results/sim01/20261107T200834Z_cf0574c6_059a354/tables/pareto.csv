@@ -1,0 +1,10 @@
+set,array_id,pareto_dominated,dominated_by,undefined_attributes
+all_candidates,A0,false,,
+all_candidates,A1,false,,
+all_candidates,A2,false,,
+all_candidates,A3,false,,
+all_candidates,A4,false,,
+multichannel,A1,false,,
+multichannel,A2,false,,
+multichannel,A3,false,,
+multichannel,A4,false,,

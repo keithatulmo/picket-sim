@@ -20,7 +20,7 @@ from ..config import build_array, config_sha256, lattice_spacing_m, load_config
 from ..conventions import horizontal_cut, unit_vector, vertical_cut
 from ..geometry import uniform_linear, uniform_rectangular
 from ..grids import SphereGrid, cut_offsets_deg, log_frequency_grid
-from ..metrics import HALF_POWER, aliasing_onset_hz
+from ..metrics import HALF_POWER, aliasing_onset_hz, exact_grating_onset_hz
 from ..mismatch import mismatch_peak
 from ..records import (
     DirtyTreeError,
@@ -140,7 +140,8 @@ class Sim01Study:
                 "label": spec.get("label", ""),
                 "type": spec["type"],
                 "lattice_spacing_m": d,
-                "f_grating_exact_worst_hz": (self.c0 / (2 * d)) if d else None,
+                "f_grating_lattice_analytic_hz": (self.c0 / (2 * d)) if d else None,
+                "f_grating_exact_worst_hz": exact_grating_onset_hz(g, self.c0),
                 "f_aperture_eq_lambda_hz": (self.c0 / g.aperture_m) if g.aperture_m > 0 else None,
                 "wng_db": 10 * math.log10(g.n_elements),
                 "max_di_spatially_uncorrelated_db": 10 * math.log10(g.n_elements),
@@ -149,6 +150,12 @@ class Sim01Study:
                 s[f"f_alias_{_lvl(L)}_hz"] = a[L]
             s["positions_m"] = ";".join(f"({p[0]:.4f},{p[1]:.4f},{p[2]:.4f})" for p in g.positions_m)
             rows.append(s)
+        # self-check: general reciprocal-lattice result must equal c/(2d) for declared lattices
+        dev = [abs(r["f_grating_exact_worst_hz"] / r["f_grating_lattice_analytic_hz"] - 1)
+               for r in rows if r["f_grating_lattice_analytic_hz"]]
+        self.self_checks["exact_grating_vs_lattice_analytic_max_rel"] = max(dev) if dev else None
+        if dev and max(dev) > 1e-9:
+            raise RuntimeError("self-check failed: reciprocal-lattice grating onset disagrees with c/(2d)")
         return rows, alias
 
     # ------------------------------------------------------------------ main sweep
@@ -343,6 +350,8 @@ class Sim01Study:
                 row[key.replace("_hz", "_below_grid")] = int(sum(t[key.replace("_hz", "_status")] == "below_grid" for t in ts))
             for L in self.levels:
                 row[f"f_alias_worstcase_{_lvl(L)}_hz"] = np.inf if a[L] is None else a[L]
+            fx = exact_grating_onset_hz(g, self.c0)
+            row["f_grating_exact_worst_hz"] = np.inf if fx is None else fx
             out.append(row)
             self.log(f"  sensitivity {g.array_id}: done")
         return out
@@ -552,6 +561,8 @@ def run(config_path, output_root=None, allow_dirty: bool = False, make_figures: 
                                       "wng_db")}
             row.update(bands[aid])
             h = hz.get(aid, {})
+            fx = gr["f_grating_exact_worst_hz"]
+            row["f_grating_exact_worst_hz"] = (np.inf if fx is None else fx) if gr["n_elements"] > 1 else np.nan
             row["f_hp_median_hz"] = h.get("f_hp_median_hz", np.nan)
             row["f_sl_median_hz"] = h.get("f_sl_median_hz", np.nan)
             for L in study.levels:
@@ -573,6 +584,16 @@ def run(config_path, output_root=None, allow_dirty: bool = False, make_figures: 
                 pareto_rows.append(pr)
         write_csv(tab("pareto.csv"), pareto_rows, ["set", "array_id", "pareto_dominated", "dominated_by",
                                                    "undefined_attributes"])
+        pareto_loo = []
+        for ps in cfg["pareto"]["sets"]:
+            rows_in = [r for r in comp if r["array_id"] in ps["arrays"]]
+            for drop in ps["attributes"]:
+                attrs = [a for a in ps["attributes"] if a is not drop]
+                dom = [pr for pr in pareto_front(rows_in, attrs) if pr["pareto_dominated"]]
+                pareto_loo.append({"set": ps["name"], "attribute_removed": drop["key"],
+                                   "dominated": ";".join(f"{d['array_id']} (by {d['dominated_by']})" for d in dom)
+                                   or "none"})
+        write_csv(tab("pareto_leave_one_out.csv"), pareto_loo)
 
         t = time.time()
         log("sensitivity: line arrays")
@@ -600,7 +621,7 @@ def run(config_path, output_root=None, allow_dirty: bool = False, make_figures: 
         T["robustness_s"] = time.time() - t
 
         _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_sum, ss_rows, mm_rows,
-                               a4_rows, sq_rows, ori_rows, ula_geo, ula_thr)
+                               a4_rows, sq_rows, ori_rows, ula_geo, ula_thr, pareto_loo)
 
         if make_figures:
             t = time.time()
@@ -653,20 +674,54 @@ def _fmt_hz(v):
 
 
 def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_sum, ss_rows, mm_rows,
-                           a4_rows, sq_rows, ori_rows, ula_geo, ula_thr):
+                           a4_rows, sq_rows, ori_rows, ula_geo, ula_thr, pareto_loo=()):
     L1, L3 = _lvl(study.levels[0]), _lvl(study.levels[-1])
     p = lambda n: rd.path("tables", n)  # noqa: E731
+    write_markdown(p("pareto_leave_one_out.md"), list(pareto_loo), [
+        ("set", "Attribute set", ""), ("attribute_removed", "Attribute removed", ""),
+        ("dominated", "Dominated candidates without it", ""),
+    ], "Pareto sensitivity: dominance when one attribute is dropped", [
+        "Shows which single attribute keeps each candidate on the Pareto front.",
+    ])
+    rep = []
+    hz_ring = study.horizon_ring
+    dep = {(r["array_id"], r["f_hz"]): r for r in rep_sum if r["ring"] != hz_ring}
+    for r in rep_sum:
+        if r["ring"] != hz_ring:
+            continue
+        rr = dict(r)
+        d = dep.get((r["array_id"], r["f_hz"]), {})
+        rr["dep_max_outside_v_max_db"] = d.get("max_outside_v_max_db", np.nan)
+        rep.append(rr)
+    write_markdown(p("representative_frequencies.md"), rep, [
+        ("array_id", "ID", ""), ("f_hz", "f (Hz)", ".0f"), ("di_median_db", "DI median (dB)", ".2f"),
+        ("di_min_db", "DI min", ".2f"), ("di_max_db", "DI max", ".2f"),
+        ("hpbw_h_median_deg", "HPBW_h median (deg)", ".1f"), ("hpbw_h_worst_deg", "HPBW_h worst (deg)", ".1f"),
+        ("hpbw_v_median_deg", "HPBW_v median (deg)", ".1f"),
+        ("max_outside_h_max_db", "Largest h-cut lobe outside mainlobe (dB)", ".2f"),
+        ("psl_obs_max_db", "PSL_obs worst (dB)", ".2f"), ("psl_obs_defined_frac", "PSL defined frac", ".2f"),
+        (f"n_amb_lobes_ge_{L3}_max", "Lobes >= -3 dB (max)", ""), ("hpsf_median", "HPSF median", ".3f"),
+        ("dep_max_outside_v_max_db", "Depressed 30: largest v-cut lobe (dB)", ".2f"),
+    ], "Representative frequencies (horizon steering ring; last column from the el = -30 deg ring)", [
+        "inf: the half-power region wraps the cut for at least half of the steering directions.",
+        "n/a: undefined (no sidelobe region, no outside-mainlobe region, or single sensor).",
+        "Largest h-cut lobe includes geometric ambiguity (left/right mirror of a horizontal line array); "
+        "PSL_obs excludes it.",
+        "Depressed 30 column: 0 dB for the horizontal square is its up/down mirror image.",
+    ])
     write_markdown(p("geometry_summary.md"), geo_rows, [
         ("array_id", "ID", ""), ("label", "Configuration", ""), ("n_elements", "N", ""),
         ("aperture_m", "Max dimension (m)", ".3f"), ("min_spacing_m", "Min spacing (m)", ".3f"),
         ("rank", "Observable dims", ""), ("ambiguity_class", "Geometric ambiguity", ""),
-        ("f_grating_exact_worst_hz", "Exact grating onset c/2d (Hz)", ",.0f"),
+        ("f_grating_exact_worst_hz", "Exact (0 dB) grating onset (Hz)", ",.0f"),
         (f"f_alias_{L1}_hz", f"Worst-case {study.levels[0]:g} dB lobe onset (Hz)", ",.0f"),
         (f"f_alias_{L3}_hz", f"Worst-case {study.levels[-1]:g} dB lobe onset (Hz)", ",.0f"),
         ("wng_db", "WNG (dB)", ".2f"),
     ], "Geometry summary", [
         "Worst-case onset: lowest frequency at which some steering/look pair produces a non-mainlobe "
         "lobe at or above the level in the observable space (array factor in wavevector space, |q| <= 2k).",
+        "Exact grating onset: smallest reciprocal-lattice vector of the baselines (equals c/2d for the "
+        "line and square lattices; exists for A4 because any 4 non-coplanar sensors form a lattice).",
         "n/a: undefined (single sensor) or no such lobe below the band edge.",
         f"Sound speed {study.c0:g} m/s.",
     ])
@@ -695,7 +750,8 @@ def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_
     rows = []
     for r in comp:
         rr = dict(r)
-        for k in ("f_hp_median_hz", "f_sl_median_hz", f"f_amb_{L3}_min_hz", f"f_alias_{L3}_hz"):
+        for k in ("f_hp_median_hz", "f_sl_median_hz", f"f_amb_{L3}_min_hz", f"f_alias_{L3}_hz",
+                  "f_grating_exact_worst_hz"):
             rr[k] = _fmt_hz(r.get(k))
         rows.append(rr)
     write_markdown(p("comparison.md"), rows, [
@@ -711,6 +767,7 @@ def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_
         ("f_hp_median_hz", "f_HP (Hz)", ""), ("f_sl_median_hz", "f_SL (Hz)", ""),
         (f"f_amb_{L3}_min_hz", "f_amb -3 dB horizon (Hz)", ""),
         (f"f_alias_{L3}_hz", "f_amb -3 dB any steering (Hz)", ""),
+        ("f_grating_exact_worst_hz", "Exact grating onset (Hz)", ""),
     ], "Comparative results (horizon steering ring unless stated)", [
         "DI: directivity index vs spherically isotropic noise (ideal DAS), median over horizon steering, "
         "then median over frequencies in the band. Not detection performance.",
@@ -759,12 +816,16 @@ def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_
             for k, v in r.items():
                 if k.endswith("_hz"):
                     rr[k] = _fmt_hz(v)
+                    base = k.replace("_median_hz", "").replace("_min_hz", "")
+                    if r.get(f"{base}_below_grid"):
+                        rr[k] = "<= " + rr[k] + " (below band)"
             rows.append(rr)
         write_markdown(p(name), rows, [
             ("array_id", "ID", ""), ("parameter", "Scale / side", ".3g"), ("aperture_m", "Max dim (m)", ".2f"),
             ("min_spacing_m", "Min spacing (m)", ".2f"), ("f_hp_median_hz", "f_HP median (Hz)", ""),
             ("f_sl_median_hz", "f_SL median (Hz)", ""), (f"f_amb_{L3}_min_hz", "f_amb -3 dB earliest (Hz)", ""),
             (f"f_alias_worstcase_{L3}_hz", "Worst-case -3 dB onset (Hz)", ""),
+            ("f_grating_exact_worst_hz", "Exact grating onset (Hz)", ""),
         ], title + " (horizon ring, 30 degree steering step)")
     write_markdown(p("sensitivity_orientation.md"), ori_rows, [
         ("array_id", "ID", ""), ("label", "Configuration", ""), ("ambiguity_class", "Ambiguity", ""),

@@ -459,7 +459,8 @@ def fig_ula_sensitivity(data, outdir, written):
     axes[1].minorticks_off()
     axes[1].set_xlabel("Element spacing / wavelength")
     axes[1].set_ylabel("DI at broadside, isotropic noise (dB)")
-    axes[1].set_title("(b) DI depends on spacing/λ; reaches 10 log10 N\nonly at half-wavelength multiples")
+    axes[1].set_title("(b) Broadside DI vs spacing/λ: equals 10 log10 N (dotted) at d = λ/2;\n"
+                      "exceeds it for λ/2 < d < λ (classical limit ~2Nd/λ); grating lobes beyond")
     for n in ns:
         axes[1].axhline(10 * np.log10(n), color=ncol[n], linewidth=0.5, linestyle=":")
     # (c) thresholds vs spacing
@@ -503,7 +504,15 @@ def fig_scale_sensitivity(data, outdir, written):
         for key, lab, col, ls in spec:
             y = np.array([r[key] for r in rows], dtype=float)
             y = np.where(np.isfinite(y), y, np.nan)
-            ax.plot(x, y, color=col, linestyle=ls, marker="o", markersize=4, label=lab)
+            base = key.replace("_median_hz", "").replace("_min_hz", "")
+            below = np.array([bool(r.get(f"{base}_below_grid", 0)) for r in rows])
+            ax.plot(x, np.where(below, np.nan, y), color=col, linestyle=ls, marker="o", markersize=4, label=lab)
+            if below.any():  # value is only an upper bound (threshold lies below the analysed band)
+                ax.plot(np.array(x)[below], y[below], linestyle="none", marker="v", markersize=7,
+                        markerfacecolor="white", markeredgecolor=col)
+        gx = np.array([r.get("f_grating_exact_worst_hz", np.nan) for r in rows], dtype=float)
+        ax.plot(x, np.where(np.isfinite(gx), gx, np.nan), color=INK2, linestyle=":", marker="x", markersize=5,
+                label="exact (0 dB) grating onset")
         ax.set_xscale("log")
         ax.set_xticks(x, [f"{v:.2f}" for v in x])
         ax.minorticks_off()
@@ -512,8 +521,10 @@ def fig_scale_sensitivity(data, outdir, written):
         ax.set_xlabel("Maximum dimension (m)")
         ax.set_title(title)
     axes[0].legend(loc="lower left", frameon=False)
-    fig.suptitle("Aperture scaling: every threshold scales as 1/size; the band where a 4-element array is both "
-                 "directional and unambiguous moves, it does not widen", fontsize=9.5)
+    axes[0].text(0.98, 0.98, "open triangle: threshold below 100 Hz\n(plotted at band edge, upper bound)",
+                 transform=axes[0].transAxes, ha="right", va="top", fontsize=7, color=INK2)
+    fig.suptitle("Aperture scaling: every threshold scales as 1/size, so the band in which a 4-element array is both "
+                 "directional and unambiguous moves but does not widen", fontsize=9.5)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     _save(fig, outdir, "fig09_aperture_scaling.png", written)
 
