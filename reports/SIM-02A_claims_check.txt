@@ -1,0 +1,66 @@
+SIM-02A claims check (Rev A)
+Command: python tools/check_sim02a_claims.py results/sim02a/20261107T214846Z_c56c0048_31da01b
+Repository commit: b847508 (clean tree: yes)
+Checks every quantitative claim in the report findings, the transmittal and the reviewer message against the run-of-record tables and the criterion-margin supplement, and checks that those documents quote the verified values and repeat no Rev 0 error.
+
+PASS  largest aperture in the 'up to 1.07 m' set (m)                                                quoted 1.07  computed 1.07
+PASS  parameters assumed / published / measured                                                     quoted (72, 1, 0)  computed (72, 1, 0)
+PASS  ISO B1 band median, max over arrays <= 1.07 m (dB)                                            quoted 0.07  computed 0.07
+PASS  ISO B1 band median, V-D (dB)                                                                  quoted 1.08  computed 1.08
+PASS  ISO B2 band median range, arrays <= 1.07 m (dB)                                               quoted (0.6, 5.2)  computed (0.6, 5.2)
+PASS  ISO gain at 200 Hz, max steering median, arrays <= 1.07 m (dB, array)                         quoted (0.73, 'A4')  computed (0.73, 'A4')
+PASS  eta=+20 dB: max gap to 10log10N, any band, arrays <= 1.07 m (dB)                              quoted 0.29  computed 0.29
+PASS  FLOW: arrays > 0.5 dB short of 10log10N below 2 kHz                                           quoted ['A1', 'P6-C', 'P8-C']  computed ['A1', 'P6-C', 'P8-C']
+PASS  FLOW: their shortfall below 2 kHz (dB)                                                        quoted (0.9, 1.7)  computed (0.9, 1.7)
+PASS  FLOW: B1 shortfall of those arrays (dB) [Section 4.2]                                         quoted (1.0, 1.7)  computed (1.0, 1.7)
+PASS  FLOW: max shortfall above 2 kHz (dB)                                                          quoted 0.16  computed 0.16
+PASS  FLOW: A1 B1 median (dB)                                                                       quoted 4.59  computed 4.59
+PASS  nearest-element spacing of A1, P6-C, P8-C (m)                                                 quoted (0.15, 0.23)  computed (0.15, 0.23)
+PASS  neighbor correlation exp(-d/0.1 m) of those arrays                                            quoted (0.11, 0.22)  computed (0.11, 0.22)
+PASS  S1 self-noise/ambient band medians (dB)                                                       quoted (-20.0, -74.4)  computed (-20.0, -74.4)
+PASS  S2 quiet B4 eta (dB)                                                                          quoted 4.0  computed 4.0
+PASS  S3 quiet B2, B3 eta (dB)                                                                      quoted (1.8, 12.1)  computed (1.8, 12.1)
+PASS  S3 cannot acquire B4                                                                          quoted True  computed True
+PASS  S2 analog minus ADC noise, B3 and B4 (dB)                                                     quoted (-2.7, -3.2)  computed (-2.7, -3.2)
+PASS  SQ4-C guaranteed ratio -3/-6/-10 dB                                                           quoted (1.28, 1.14, 1.03)  computed (1.28, 1.14, 1.03)
+PASS  P6-C guaranteed ratio -3/-6/-10 dB                                                            quoted (2.53, 2.37, 1.28)  computed (2.53, 2.37, 1.28)
+PASS  P8-C guaranteed ratio -3/-6/-10 dB                                                            quoted (3.78, 2.8, 1.32)  computed (3.78, 2.8, 1.32)
+PASS  ISO B3 band median P8-C, SQ4-C (dB)                                                           quoted (8.58, 5.88)  computed (8.58, 5.88)
+PASS  P6-C, P8-C worst-steering sidelobe plateau (dB)                                               quoted (-6.02, -7.77)  computed (-6.02, -7.77)
+PASS  P6-C plateau margin below the -6 dB criterion (dB)                                            quoted 0.02  computed 0.02
+PASS  P6-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB                                                quoted (2.38, 2.37, 1.65)  computed (2.38, 2.37, 1.65)
+PASS  P8-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB                                                quoted (2.81, 2.8, 2.79)  computed (2.81, 2.8, 2.79)
+PASS  knife-edge candidates (ratio change > 10 % across +/- 0.1 dB)                                 quoted ['P6-C', 'P6-E']  computed ['P6-C', 'P6-E']
+PASS  largest ratio change across +/- 0.1 dB for all other candidates                               quoted 0.03  computed 0.03
+PASS  P6-C plateau equals 20 log10(0.5) within 1e-7 dB                                              quoted True  computed True
+PASS  P6-E guaranteed ratio at -6.0 / -6.1 dB                                                       quoted (2.37, 1.65)  computed (2.37, 1.65)
+PASS  plateaus: A1, A2 (lines), P8-E (dB)                                                           quoted [-11.3, -11.3, -7.77]  computed [-11.3, -11.3, -7.77]
+PASS  volumetric guaranteed -3 dB ratio range                                                       quoted (1.06, 1.14)  computed (1.06, 1.14)
+PASS  volumetric guaranteed -6 and -10 dB bands empty                                               quoted True  computed True
+PASS  V-D, V-DS guaranteed -3 dB band (Hz)                                                          quoted (146, 182)  computed (146, 182)
+PASS  E2 max mean signal loss up to 15 kHz (dB)                                                     quoted 0.17  computed 0.17
+PASS  E3 signal loss at 15 kHz, range (dB)                                                          quoted (3.2, 4.5)  computed (3.2, 4.5)
+PASS  P8-C E3 15 kHz signal loss over target azimuths (dB)                                          quoted (4.3, 4.4)  computed (4.3, 4.4)
+PASS  P8-C E3 15 kHz gross-error rate over target azimuths (%)                                      quoted (65, 81)  computed (65, 81)
+PASS  P8-C E3 15 kHz az 30: rate and 95 % interval (%)                                              quoted (65, 62, 68)  computed (65, 62, 68)
+PASS  E3 15 kHz: timing / total phase sigma (deg)                                                   quoted (54, 66)  computed (54, 66)
+PASS  E3 15 kHz: timing share of phase variance                                                     quoted about two thirds  computed about two thirds
+PASS  A1/A2: cases without structural ambiguity occur only at endfire (target az)                   quoted [0.0]  computed [0.0]
+PASS  A1/A2: structurally ambiguous cases exist at every non-endfire target with a closed mainlobe  quoted True  computed True
+PASS  host +10 dB, 100 Hz, median gain, arrays <= 1.07 m (dB)                                       quoted (0.0, 0.2)  computed (0.0, 0.2)
+PASS  host +10 dB, 100 Hz, median gain, V-D and V-DS (dB)                                           quoted (2.1, 3.2)  computed (2.1, 3.2)
+PASS  host +10 dB, 2 kHz, median gain range, arrays <= 1.07 m (dB)                                  quoted (5.6, 12.0)  computed (5.6, 12.0)
+PASS  host +10 dB, 2 kHz, median gain range, all candidates (dB)                                    quoted (4.7, 12.0)  computed (4.7, 12.0)
+PASS  host +10 dB, 2 kHz, worst steering range, both scopes (dB)                                    quoted ((0.3, 1.7), (0.3, 1.7))  computed ((0.3, 1.7), (0.3, 1.7))
+PASS  SIM-01 set: A2 dominated only from 2x tolerance                                               quoted True  computed True
+PASS  SIM-02A set: V-D dominated by V-DS at scales                                                  quoted [1.0, 2.0]  computed [1.0, 2.0]
+PASS  SIM-01 horizon guaranteed ratios A1, A3, A4                                                   quoted (1.77, 1.28, 1.06)  computed (1.77, 1.28, 1.06)
+PASS  SIM-01 horizon median ratios A1, A3, A4                                                       quoted (3.54, 1.54, 1.36)  computed (3.54, 1.54, 1.36)
+PASS  report: quotes every checked value                                                            quoted []  computed []
+PASS  report: contains no Rev 0 error phrase or em dash                                             quoted []  computed []
+PASS  transmittal: quotes every checked value                                                       quoted []  computed []
+PASS  transmittal: contains no Rev 0 error phrase or em dash                                        quoted []  computed []
+PASS  message: quotes every checked value                                                           quoted []  computed []
+PASS  message: contains no Rev 0 error phrase or em dash                                            quoted []  computed []
+
+59 of 59 claims pass
