@@ -10,3 +10,5 @@ dist/
 results/_scratch/
 # in-progress run directories (renamed into place only on successful completion)
 results/**/.*.*/
+# unpacked copies of review packages (the committed .zip is the deliverable)
+deliverables/*/
