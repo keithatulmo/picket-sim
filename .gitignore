@@ -8,3 +8,5 @@ dist/
 .ipynb_checkpoints/
 # scratch output from tests / ad hoc runs (canonical runs live in results/sim01/<run_id>)
 results/_scratch/
+# in-progress run directories (renamed into place only on successful completion)
+results/**/.*.*/
