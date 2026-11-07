@@ -15,3 +15,7 @@ supersede rather than edit.
 | [0007](0007-extension-points.md) | Extension points for noise, propagation and platform effects | Accepted |
 | [0008](0008-sim01-review-disposition.md) | SIM-01 review disposition and documentation corrections | Accepted |
 | [0009](0009-sim02-authorization-and-reviewer-decisions.md) | SIM-02 authorization and reviewer decisions D01 to D06 | Accepted |
+| [0010](0010-parameter-provenance.md) | Parameter provenance (published, measured, assumed) | Accepted |
+| [0011](0011-noise-and-acquisition-model.md) | Noise covariance and acquisition-chain model | Accepted |
+| [0012](0012-channel-errors-and-monte-carlo.md) | Channel-error model and Monte Carlo statistics | Accepted |
+| [0013](0013-sim02a-candidate-set.md) | SIM-02A candidate set and footprint classes | Accepted |
