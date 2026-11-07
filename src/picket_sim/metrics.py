@@ -152,8 +152,14 @@ def circular_profile_metrics(gamma_deg: np.ndarray, p: np.ndarray) -> CutMetrics
 
 # ============================================================================ sphere metrics
 def half_power_sphere_fraction(p_sphere: np.ndarray, weights_sr: np.ndarray) -> float:
-    """Fraction of all directions (solid-angle weighted) with ``P >= 0.5``."""
-    return float(np.sum(weights_sr * (p_sphere >= HALF_POWER)) / (4.0 * np.pi))
+    """Fraction of all directions (solid-angle weighted) with ``P >= 0.5``.
+
+    Normalized by the sum of the quadrature weights (not by 4 pi, which they match only to
+    rounding) and clipped to [0, 1], so that "every direction" gives exactly 1.0 for any grid.
+    """
+    w = np.asarray(weights_sr)
+    frac = float(np.sum(w * (np.asarray(p_sphere) >= HALF_POWER)) / np.sum(w))
+    return min(max(frac, 0.0), 1.0)
 
 
 def _sphere_neighbour_extrema(p: np.ndarray):

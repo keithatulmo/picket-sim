@@ -204,30 +204,39 @@ pareto:
     - key: n_elements
       sense: min
       label: channels
+      tol: 0
     - key: aperture_m
       sense: min
       label: max dimension (m)
+      tol: 0.05
     - key: rank
       sense: max
       label: observable dimensions
+      tol: 0
     - key: di_band_low_db
       sense: max
       label: DI low band (dB)
+      tol: 0.25
     - key: di_band_mid_db
       sense: max
       label: DI mid band (dB)
+      tol: 0.25
     - key: di_band_high_db
       sense: max
       label: DI high band (dB)
+      tol: 0.25
     - key: hpsf_band_low
       sense: min
       label: HPSF low band
+      tol: 0.02
     - key: hpsf_band_mid
       sense: min
       label: HPSF mid band
+      tol: 0.02
     - key: hpsf_band_high
       sense: min
       label: HPSF high band
+      tol: 0.02
   - name: multichannel
     note: Adds regime thresholds, which are undefined for a single hydrophone.
     arrays:
@@ -239,36 +248,47 @@ pareto:
     - key: n_elements
       sense: min
       label: channels
+      tol: 0
     - key: aperture_m
       sense: min
       label: max dimension (m)
+      tol: 0.05
     - key: rank
       sense: max
       label: observable dimensions
+      tol: 0
     - key: di_band_low_db
       sense: max
       label: DI low band (dB)
+      tol: 0.25
     - key: di_band_mid_db
       sense: max
       label: DI mid band (dB)
+      tol: 0.25
     - key: di_band_high_db
       sense: max
       label: DI high band (dB)
+      tol: 0.25
     - key: hpsf_band_low
       sense: min
       label: HPSF low band
+      tol: 0.02
     - key: hpsf_band_mid
       sense: min
       label: HPSF mid band
+      tol: 0.02
     - key: hpsf_band_high
       sense: min
       label: HPSF high band
+      tol: 0.02
     - key: f_hp_median_hz
       sense: min
       label: half-power onset
       median horizon steering (Hz): null
+      rel_tol: 0.05
     - key: f_alias_m3db_hz
       sense: max
       label: worst-case -3 dB ambiguity onset (Hz)
+      rel_tol: 0.05
 output:
   root: results/_scratch/sim01_smoke

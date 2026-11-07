@@ -149,35 +149,40 @@ robustness:
     max_frequency_hz: 1000.0      # evaluated at min(this, 0.5 x worst-case -3 dB ambiguity onset)
 
 pareto:
+  # Two analyses are reported: strict (numerical ties only) and with the engineering tolerances below
+  # (tol = absolute, rel_tol = relative). Rationale for the tolerances (assumptions, not requirements):
+  # 0.05 m of footprint and 0.25 dB of ideal DI are below decision relevance at this fidelity;
+  # 0.02 HPSF is ~2x the sphere-grid quadrature resolution; 5 % on frequencies exceeds the
+  # +-3.3 % effect of a 1450-1550 m/s sound-speed range.
   sets:
     - name: all_candidates
       note: Attributes defined for every candidate, including the single hydrophone.
       arrays: [A0, A1, A2, A3, A4]
       attributes:
-        - {key: n_elements, sense: min, label: channels}
-        - {key: aperture_m, sense: min, label: max dimension (m)}
-        - {key: rank, sense: max, label: observable dimensions}
-        - {key: di_band_low_db, sense: max, label: DI low band (dB)}
-        - {key: di_band_mid_db, sense: max, label: DI mid band (dB)}
-        - {key: di_band_high_db, sense: max, label: DI high band (dB)}
-        - {key: hpsf_band_low, sense: min, label: HPSF low band}
-        - {key: hpsf_band_mid, sense: min, label: HPSF mid band}
-        - {key: hpsf_band_high, sense: min, label: HPSF high band}
+        - {key: n_elements, sense: min, label: channels, tol: 0}
+        - {key: aperture_m, sense: min, label: max dimension (m), tol: 0.05}
+        - {key: rank, sense: max, label: observable dimensions, tol: 0}
+        - {key: di_band_low_db, sense: max, label: DI low band (dB), tol: 0.25}
+        - {key: di_band_mid_db, sense: max, label: DI mid band (dB), tol: 0.25}
+        - {key: di_band_high_db, sense: max, label: DI high band (dB), tol: 0.25}
+        - {key: hpsf_band_low, sense: min, label: HPSF low band, tol: 0.02}
+        - {key: hpsf_band_mid, sense: min, label: HPSF mid band, tol: 0.02}
+        - {key: hpsf_band_high, sense: min, label: HPSF high band, tol: 0.02}
     - name: multichannel
       note: Adds regime thresholds, which are undefined for a single hydrophone.
       arrays: [A1, A2, A3, A4]
       attributes:
-        - {key: n_elements, sense: min, label: channels}
-        - {key: aperture_m, sense: min, label: max dimension (m)}
-        - {key: rank, sense: max, label: observable dimensions}
-        - {key: di_band_low_db, sense: max, label: DI low band (dB)}
-        - {key: di_band_mid_db, sense: max, label: DI mid band (dB)}
-        - {key: di_band_high_db, sense: max, label: DI high band (dB)}
-        - {key: hpsf_band_low, sense: min, label: HPSF low band}
-        - {key: hpsf_band_mid, sense: min, label: HPSF mid band}
-        - {key: hpsf_band_high, sense: min, label: HPSF high band}
-        - {key: f_hp_median_hz, sense: min, label: half-power onset, median horizon steering (Hz)}
-        - {key: f_alias_m3db_hz, sense: max, label: worst-case -3 dB ambiguity onset (Hz)}
+        - {key: n_elements, sense: min, label: channels, tol: 0}
+        - {key: aperture_m, sense: min, label: max dimension (m), tol: 0.05}
+        - {key: rank, sense: max, label: observable dimensions, tol: 0}
+        - {key: di_band_low_db, sense: max, label: DI low band (dB), tol: 0.25}
+        - {key: di_band_mid_db, sense: max, label: DI mid band (dB), tol: 0.25}
+        - {key: di_band_high_db, sense: max, label: DI high band (dB), tol: 0.25}
+        - {key: hpsf_band_low, sense: min, label: HPSF low band, tol: 0.02}
+        - {key: hpsf_band_mid, sense: min, label: HPSF mid band, tol: 0.02}
+        - {key: hpsf_band_high, sense: min, label: HPSF high band, tol: 0.02}
+        - {key: f_hp_median_hz, sense: min, label: half-power onset, median horizon steering (Hz), rel_tol: 0.05}
+        - {key: f_alias_m3db_hz, sense: max, label: worst-case -3 dB ambiguity onset (Hz), rel_tol: 0.05}
 
 output:
   root: results/sim01

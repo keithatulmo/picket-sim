@@ -18,6 +18,7 @@ from .metrics import (
     circular_profile_metrics,
     db,
     first_crossing_frequency,
+    half_power_sphere_fraction,
     observable_lobe_metrics,
 )
 from .noise import directivity_index_db, directivity_index_from_pattern_db
@@ -99,9 +100,7 @@ def analyze_frequency(
                 psl_az, psl_el = float(a), float(e)
         hpsf_sphere = float("nan")
         if p_sph is not None:
-            hpsf_sphere = float(
-                np.sum(settings.sphere.flat_weights_sr * (p_sph[i] >= HALF_POWER)) / (4 * np.pi)
-            )
+            hpsf_sphere = half_power_sphere_fraction(p_sph[i], settings.sphere.flat_weights_sr)
         row = {
             "array_id": geom.array_id,
             "rank": rank,

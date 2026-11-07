@@ -270,3 +270,24 @@ def test_pareto_front_logic():
     attrs_min = [{"key": "x", "sense": "min"}]
     res = {r["array_id"]: r for r in pareto_front(rows, attrs_min)}
     assert not res["c"]["pareto_dominated"] and res["b"]["pareto_dominated"]
+
+
+def test_pareto_tie_tolerances():
+    from picket_sim.experiments.sim01 import pareto_front
+
+    a = {"array_id": "a", "x": 1.0, "y": 1.0 + 2e-16}  # rounding-level advantage on y must NOT protect a
+    b = {"array_id": "b", "x": 2.0, "y": 1.0}
+    attrs = [{"key": "x", "sense": "max"}, {"key": "y", "sense": "max", "tol": 0.1}]
+    res = {r["array_id"]: r for r in pareto_front([a, b], attrs)}
+    assert res["a"]["pareto_dominated"] and res["a"]["dominated_by"] == "b"
+    c = {"array_id": "c", "x": 1.0, "y": 1.05}  # real but sub-tolerance advantage
+    strict = {r["array_id"]: r for r in pareto_front([b, c], attrs, practical=False)}
+    practical = {r["array_id"]: r for r in pareto_front([b, c], attrs, practical=True)}
+    assert not strict["c"]["pareto_dominated"] and practical["c"]["pareto_dominated"]
+
+
+def test_hpsf_exactly_one_for_flat_pattern(sphere):
+    from picket_sim.metrics import half_power_sphere_fraction
+
+    assert half_power_sphere_fraction(np.ones(sphere.flat_weights_sr.size), sphere.flat_weights_sr) == 1.0
+    assert half_power_sphere_fraction(np.zeros(sphere.flat_weights_sr.size), sphere.flat_weights_sr) == 0.0

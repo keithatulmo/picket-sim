@@ -64,17 +64,44 @@ def _band_mask(f, band):
     return (f >= band[0]) & (f < band[1])
 
 
-def pareto_front(rows: list[dict], attributes: list[dict]) -> list[dict]:
+NUMERICAL_TIE_REL = 1e-9  # values closer than this (relative) are numerically equal
+
+
+def _attr_tol(a: dict, v: float, practical: bool) -> float:
+    """Tie tolerance for one attribute value: numerical by default; declared engineering tolerance
+    (``tol`` absolute and/or ``rel_tol`` relative, from the configuration) when ``practical``."""
+    tol = NUMERICAL_TIE_REL * max(abs(v), 1.0)
+    if practical:
+        tol = max(tol, float(a.get("tol", 0.0)), float(a.get("rel_tol", 0.0)) * abs(v))
+    return tol
+
+
+def pareto_front(rows: list[dict], attributes: list[dict], practical: bool = False) -> list[dict]:
     """Mark Pareto-dominated rows. ``attributes``: dicts with ``key`` and ``sense`` (min|max).
 
-    NaN attributes are treated as worst (and listed in ``undefined_attributes``).
+    ``o`` dominates ``r`` if, on every attribute, ``o`` is not worse than ``r`` by more than the tie
+    tolerance and, on at least one, ``o`` is better by more than it. Infinite values compare
+    normally (``inf`` = beyond the analysed band). NaN attributes are treated as worst and listed.
     """
-    def score(r, a):
+    def val(r, a):
         v = r.get(a["key"])
         v = np.nan if v is None else float(v)
         if np.isnan(v):
             return -np.inf
         return -v if a["sense"] == "min" else v
+
+    def better(o, r, a):  # +1 o better, -1 o worse, 0 tie
+        vo, vr = val(o, a), val(r, a)
+        if vo == vr:
+            return 0
+        if not (np.isfinite(vo) and np.isfinite(vr)):
+            return 1 if vo > vr else -1
+        tol = max(_attr_tol(a, abs(vo), practical), _attr_tol(a, abs(vr), practical))
+        if vo - vr > tol:
+            return 1
+        if vr - vo > tol:
+            return -1
+        return 0
 
     out = []
     for r in rows:
@@ -82,11 +109,10 @@ def pareto_front(rows: list[dict], attributes: list[dict]) -> list[dict]:
         for o in rows:
             if o is r:
                 continue
-            ge = all(score(o, a) >= score(r, a) for a in attributes)
-            gt = any(score(o, a) > score(r, a) for a in attributes)
-            if ge and gt:
+            cmp = [better(o, r, a) for a in attributes]
+            if all(c >= 0 for c in cmp) and any(c > 0 for c in cmp):
                 dominated_by.append(o["array_id"])
-        undefined = [a["key"] for a in attributes if r.get(a["key"]) is None or not np.isfinite(float(r.get(a["key"])))]
+        undefined = [a["key"] for a in attributes if r.get(a["key"]) is None or np.isnan(float(r.get(a["key"])))]
         out.append({"array_id": r["array_id"], "pareto_dominated": bool(dominated_by),
                     "dominated_by": ";".join(dominated_by), "undefined_attributes": ";".join(undefined)})
     return out
@@ -576,23 +602,21 @@ def run(config_path, output_root=None, allow_dirty: bool = False, make_figures: 
                 row[f"max_outside_v_depressed_{int(f)}hz_db"] = rdp["max_outside_v_max_db"] if rdp else np.nan
             comp.append(row)
         write_csv(tab("comparison.csv"), comp)
-        pareto_rows = []
+        pareto_rows, pareto_loo = [], []
         for ps in cfg["pareto"]["sets"]:
             rows_in = [r for r in comp if r["array_id"] in ps["arrays"]]
-            for pr in pareto_front(rows_in, ps["attributes"]):
-                pr["set"] = ps["name"]
-                pareto_rows.append(pr)
-        write_csv(tab("pareto.csv"), pareto_rows, ["set", "array_id", "pareto_dominated", "dominated_by",
+            for mode, practical in (("numerical ties", False), ("engineering tolerances", True)):
+                for pr in pareto_front(rows_in, ps["attributes"], practical):
+                    pr.update({"set": ps["name"], "tolerance": mode})
+                    pareto_rows.append(pr)
+                for drop in ps["attributes"]:
+                    attrs = [a for a in ps["attributes"] if a is not drop]
+                    dom = [pr for pr in pareto_front(rows_in, attrs, practical) if pr["pareto_dominated"]]
+                    pareto_loo.append({"set": ps["name"], "tolerance": mode, "attribute_removed": drop["key"],
+                                       "dominated": ";".join(f"{d['array_id']} (by {d['dominated_by']})"
+                                                             for d in dom) or "none"})
+        write_csv(tab("pareto.csv"), pareto_rows, ["set", "tolerance", "array_id", "pareto_dominated", "dominated_by",
                                                    "undefined_attributes"])
-        pareto_loo = []
-        for ps in cfg["pareto"]["sets"]:
-            rows_in = [r for r in comp if r["array_id"] in ps["arrays"]]
-            for drop in ps["attributes"]:
-                attrs = [a for a in ps["attributes"] if a is not drop]
-                dom = [pr for pr in pareto_front(rows_in, attrs) if pr["pareto_dominated"]]
-                pareto_loo.append({"set": ps["name"], "attribute_removed": drop["key"],
-                                   "dominated": ";".join(f"{d['array_id']} (by {d['dominated_by']})" for d in dom)
-                                   or "none"})
         write_csv(tab("pareto_leave_one_out.csv"), pareto_loo)
 
         t = time.time()
@@ -678,7 +702,7 @@ def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_
     L1, L3 = _lvl(study.levels[0]), _lvl(study.levels[-1])
     p = lambda n: rd.path("tables", n)  # noqa: E731
     write_markdown(p("pareto_leave_one_out.md"), list(pareto_loo), [
-        ("set", "Attribute set", ""), ("attribute_removed", "Attribute removed", ""),
+        ("set", "Attribute set", ""), ("tolerance", "Tie tolerance", ""), ("attribute_removed", "Attribute removed", ""),
         ("dominated", "Dominated candidates without it", ""),
     ], "Pareto sensitivity: dominance when one attribute is dropped", [
         "Shows which single attribute keeps each candidate on the Pareto front.",
@@ -779,11 +803,15 @@ def _write_markdown_tables(rd, study, geo_rows, comp, pareto_rows, thr_sum, rep_
         "WNG: white-noise gain of uniform DAS = 10 log10 N, independent of geometry and frequency.",
     ])
     write_markdown(p("pareto.md"), pareto_rows, [
-        ("set", "Attribute set", ""), ("array_id", "ID", ""), ("pareto_dominated", "Dominated", ""),
+        ("set", "Attribute set", ""), ("tolerance", "Tie tolerance", ""), ("array_id", "ID", ""),
+        ("pareto_dominated", "Dominated", ""),
         ("dominated_by", "Dominated by", ""), ("undefined_attributes", "Undefined attributes", ""),
     ], "Pareto dominance (only attributes evaluated in SIM-01)", [
         "A candidate is dominated if another is at least as good on every listed attribute and strictly "
         "better on one. Attribute lists are in the configuration (pareto.sets).",
+        "Numerical ties: differences below 1e-9 (relative) are ties. Engineering tolerances: differences "
+        "below the per-attribute tol / rel_tol declared in the configuration are ties (smaller differences "
+        "are not meaningful given model fidelity, sound-speed uncertainty and grid resolution).",
         "Cost is NOT evaluated; channel count and maximum dimension are proxies only.",
     ])
     rows = []
