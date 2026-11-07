@@ -103,6 +103,10 @@ def main(argv=None) -> int:
     ap.add_argument("--out", default="deliverables")
     ap.add_argument("--allow-dirty", action="store_true")
     ap.add_argument("--skip-tests", action="store_true", help="do not re-run the verification suite")
+    ap.add_argument("--report", default="reports/SIM-01_engineering_report.md")
+    ap.add_argument("--transmittal", default="reports/SIM-01_transmittal.md")
+    ap.add_argument("--label", default="SIM-01", help="increment label used in names and footers")
+    ap.add_argument("--extra", nargs="*", default=[], help="additional repository files for 01_extra/")
     args = ap.parse_args(argv)
 
     run = (REPO / args.run).resolve()
@@ -118,7 +122,7 @@ def main(argv=None) -> int:
         raise SystemExit("working tree has uncommitted changes; commit before packaging")
     head = sh(["git", "rev-parse", "HEAD"]).strip()
 
-    name = f"PCK-SIM-001_SIM-01_Review_Package_{run_id}"
+    name = f"PCK-SIM-001_{args.label}_Review_Package_{run_id}"
     out_root = (REPO / args.out).resolve()
     out_root.mkdir(parents=True, exist_ok=True)
     final = out_root / name
@@ -184,18 +188,28 @@ def main(argv=None) -> int:
     (ver / "self_checks.json").write_text(json.dumps(record["self_checks"], indent=2) + "\n", encoding="utf-8")
 
     # ---------------------------------------------------------------- report and transmittal PDFs
-    footer = f"Ulmo Picket PCK-SIM-001 / SIM-01  |  run {run_id}"
-    rel_fig = f"../results/sim01/{run_id}/figures/"
-    report_md = (REPO / "reports" / "SIM-01_engineering_report.md").read_text(encoding="utf-8")
-    shutil.copy2(REPO / "reports" / "SIM-01_engineering_report.md", stage / "01_SIM-01_Engineering_Report.md")
+    footer = f"Ulmo Picket PCK-SIM-001 / {args.label}  |  run {run_id}"
+    rel_fig = "../" + run.relative_to(REPO).as_posix() + "/figures/"
+    report_md = (REPO / args.report).read_text(encoding="utf-8")
+    rep_name = f"01_{args.label}_Engineering_Report"
+    shutil.copy2(REPO / args.report, stage / f"{rep_name}.md")
     figs = sorted((stage / "02_figures").glob("*.png"))
     image_map = {rel_fig + f.name: f"02_figures/{f.name}" for f in figs}
-    n_rep = md_to_pdf(report_md, stage / ".report.html", stage / "01_SIM-01_Engineering_Report.pdf",
-                      "SIM-01 Engineering Report", footer, image_map)
-    tr_md = (REPO / "reports" / "SIM-01_transmittal.md").read_text(encoding="utf-8")
-    shutil.copy2(REPO / "reports" / "SIM-01_transmittal.md", stage / "00_TRANSMITTAL.md")
+    n_rep = md_to_pdf(report_md, stage / ".report.html", stage / f"{rep_name}.pdf",
+                      f"{args.label} Engineering Report", footer, image_map)
+    tr_md = (REPO / args.transmittal).read_text(encoding="utf-8")
+    shutil.copy2(REPO / args.transmittal, stage / "00_TRANSMITTAL.md")
     n_tr = md_to_pdf(tr_md, stage / ".transmittal.html", stage / "00_TRANSMITTAL.pdf",
-                     "SIM-01 Review Transmittal", footer)
+                     f"{args.label} Review Transmittal", footer)
+    if args.extra:
+        ex = stage / "01_extra"
+        ex.mkdir()
+        for e in args.extra:
+            src_path = REPO / e
+            shutil.copy2(src_path, ex / src_path.name)  # .pdf files are included as already rendered
+            if src_path.suffix == ".md":
+                md_to_pdf(src_path.read_text(encoding="utf-8"), stage / ".extra.html", ex / (src_path.stem + ".pdf"),
+                          src_path.stem, footer)
     for h in stage.glob(".*.html"):
         h.unlink()
 
