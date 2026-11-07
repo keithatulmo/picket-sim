@@ -10,7 +10,14 @@
 | Code | `picket_sim` 0.1.0, git `8043684` (clean tree) |
 | Configuration | `configs/sim01/sim01_baseline.yaml` (sha256 `d64d297cb705eeae...`) |
 | Reproduce | `make sim01` (equivalently `python -m picket_sim run configs/sim01/sim01_baseline.yaml`) |
-| Status | Complete for SIM-01 scope. Not a design selection. |
+| Status | Revision A. Accepted with documentation corrections (SIM-01 technical review, ADR-0008). Not a design selection. |
+
+**Revision history**
+
+| Rev | Date | Change |
+|---|---|---|
+| 0 | 2026-11-07 | Initial delivery (review package `deliverables/PCK-SIM-001_SIM-01_Review_Package_20261107T203522Z_d64d297c_8043684.zip`, retained unchanged). |
+| A | 2026-11-07 | Documentation corrections from the SIM-01 technical review (ADR-0008): (1) 6.02 dB qualified as the white-noise gain of four equally weighted elements, not a bound on array gain; (2) f_HP described as a -3 dB discrimination criterion, not a limit on direction information; (3) median-steering bands separated from bands guaranteed across the steering set (`reports/SIM-01_band_definitions.md`); (4) narrowband grating lobes separated from broadband direction-finding performance; (5) Pareto conclusions stated as conditional and not a basis for eliminating hardware candidates. No experimental result was changed. |
 
 All numbers in this report are read from the tables of the run of record
 (`results/sim01/20261107T203522Z_d64d297c_8043684/tables/`). Figures are in `results/sim01/20261107T203522Z_d64d297c_8043684/figures/`. Confidence levels
@@ -21,39 +28,56 @@ separately in Section 8.
 
 ## 0. Bottom line
 
-1. **Four elements buy at most 6.0 dB of ideal array gain, and much less where it matters at low
-   frequency.** Uniform DAS white-noise gain is exactly 10 log10 4 = 6.02 dB for every 4-element
-   candidate. Against spherically isotropic noise the band-median directivity index (DI) from
-   100 Hz to 1 kHz is 0.17 dB (A1), 0.65 dB (A2), 0.27 dB (A3) and 1.73 dB (A4). The compact
-   candidates (A1 and A3, at most 0.45 m) are, for gain purposes, single hydrophones below roughly
-   1 kHz.
-   (Confidence: high for the model; real gain will be lower, see Section 8.)
-2. **The useful multichannel product is bearing information, and it exists only in a band set by
-   aperture.** No direction is suppressed by even 3 dB below the half-power onset f_HP (median over
-   horizon steering): A1 667 Hz, A2 334 Hz, A3 633 Hz, A4 270 Hz. Below these frequencies a
-   4-channel DAS array has no directional discrimination at all. (High.)
-3. **Four elements leave almost no unambiguous band once they are spread over two or three
-   dimensions.** The ratio between the frequency where an ambiguity lobe of -3 dB first appears and
-   the frequency where the mainlobe first closes is 3.03 for both lines, 1.44 for the 2x2 square
-   and 1.18 for A4. Usable conventional bands (horizon steering): A1 1.47 to 4.43 kHz, A2 0.73 to
-   2.22 kHz, A3 1.31 to 1.88 kHz, A4 0.53 to 0.62 kHz. (High.)
+1. **Uniform weighting of four elements gives 6.02 dB against spatially white noise, and much less
+   against diffuse noise at low frequency.** The 6.02 dB figure is the white-noise gain (WNG) of four
+   equally weighted elements, 10 log10 4. It is not a bound on array gain in general: other weights
+   and other noise fields give different gains. Even uniform DAS exceeds it in diffuse noise for
+   spacings between lambda/2 and lambda (7.71 dB for A2 at 2 kHz, best horizon steering), and
+   adaptive or superdirective weights can exceed it further in correlated noise, at a cost in
+   robustness that SIM-01 did not evaluate. Against spherically isotropic noise the band-median
+   directivity index (DI) of uniform DAS from 100 Hz to 1 kHz is 0.17 dB (A1), 0.65 dB (A2),
+   0.27 dB (A3) and 1.73 dB (A4). (Confidence: high for the model; realized gain depends on the
+   noise field and sensor noise, see Section 8 and SIM-02A.)
+2. **Half-power (-3 dB) discrimination by DAS exists only above a frequency set by aperture.** Below
+   the half-power onset f_HP (median over horizon steering: A1 667 Hz, A2 334 Hz, A3 633 Hz,
+   A4 270 Hz) no direction is attenuated by 3 dB relative to the look direction. f_HP is a -3 dB
+   discrimination criterion for conventional beamforming. It is not a boundary below which direction
+   information ceases to exist: the pattern still varies by less than 3 dB, the inter-channel phase
+   differences still encode direction, and estimators operating at sufficient SNR, or broadband and
+   TDOA methods, can extract it. (High, for the criterion as defined.)
+3. **Four elements leave a narrow conventional band, narrowest once they are spread over two or
+   three dimensions.** Bands depend on how steering directions are aggregated
+   (`reports/SIM-01_band_definitions.md`). Over the horizon steering set, the band in which *every*
+   steering direction has a closed mainlobe and no -3 dB ambiguity lobe (guaranteed band) is
+   A1 2,501 to 4,432 Hz (ratio 1.77), A2 1,251 to 2,216 Hz (1.77), A3 1,465 to 1,877 Hz (1.28) and
+   A4 586 to 623 Hz (1.06). For a typical (median) steering direction the band is wider: A1 1,465 to
+   5,192 Hz (3.54), A2 733 to 2,596 Hz (3.54), A3 1,306 to 2,010 Hz (1.54), A4 527 to 717 Hz (1.36).
+   Rev 0 of this report quoted a mixed convention (median f_SL to earliest f_amb: ratios 3.03, 3.03,
+   1.44, 1.18), which is neither typical nor guaranteed. (High, for the -3 dB criterion.)
 4. **Geometric ambiguity is exact and frequency independent.** Lines (A1, A2) see a cone: every
    horizontal target off the array axis has a 0 dB left/right mirror at every frequency. The horizontal square (A3) has a 0 dB
    up/down mirror. Only the volumetric A4 is free of geometric ambiguity, and A0 has no directional
    information at all. (High; mathematical.)
-5. **Irregular placement does not save a 4-element volumetric array from aliasing.** Any four
-   non-coplanar sensors have exactly three independent baselines, which always generate a lattice;
-   A4 therefore has exact 0 dB grating lobes from 857 Hz (worst-case steering), -3 dB ambiguity
-   lobes from 596 Hz, and up to 276 lobes within 3 dB of the mainlobe at 10 kHz. (High;
-   mathematical, verified numerically.)
+5. **Irregular placement does not prevent narrowband grating lobes in a 4-element volumetric array.**
+   Any four non-coplanar sensors have exactly three independent baselines, which always generate a
+   lattice; A4 therefore has exact 0 dB narrowband grating lobes from 857 Hz (worst-case steering),
+   -3 dB ambiguity lobes from 596 Hz, and up to 276 lobes within 3 dB of the mainlobe at 10 kHz.
+   This is a single-frequency result. It does not establish that broadband direction finding fails:
+   grating-lobe directions move with frequency while the true direction does not, so broadband
+   beamforming or TDOA processing can reject them, subject to bandwidth, SNR, coherence and timing
+   synchronization (SIM-02B). (High for the narrowband statement; the broadband consequence is not
+   evaluated.)
 6. **A1 and A2 are one design at two scales.** Every A2 metric at frequency f equals the A1 metric at
    2f. Choosing between them is choosing a band, not a geometry. (High.)
-7. **No candidate selection is supported by SIM-01.** No candidate is Pareto-dominated on the full
-   multichannel attribute set; A1 is dominated by A3 only when aliasing onset is excluded from the
-   attributes. The evidence is sufficient to reject *4-element narrowband DAS* as a way to obtain
-   wideband, unambiguous, full-azimuth bearing, and insufficient to choose among the candidates
-   until the mission band, the processing (narrowband vs broadband/TDOA) and the noise environment
-   are specified. (Moderate; depends on requirements not yet defined.)
+7. **No candidate selection is supported by SIM-01, and no hardware candidate is eliminated.** The
+   Pareto results are conditional on an attribute set that omits cost, installation, calibration
+   burden and power. Within that set, no candidate is dominated on the full multichannel attributes,
+   and A1 is dominated by A3 only on the reduced all-candidate set, which excludes aliasing onset.
+   These results must not be used to eliminate candidates. The evidence indicates that 4-element
+   *narrowband* DAS does not provide wideband, unambiguous, full-azimuth bearing under the -3 dB
+   criterion; it is insufficient to choose among candidates until the sensing tasks, the processing
+   (narrowband vs broadband/TDOA) and the noise environment are specified. (Moderate; depends on
+   requirements not yet defined.)
 
 ---
 
@@ -189,22 +213,37 @@ record (Section 9).
 ![Figure 2. Directional regimes versus frequency (horizon steering).](../results/sim01/20261107T203522Z_d64d297c_8043684/figures/fig07_regime_map.png)
 *Figure 2. Directional regimes versus frequency (horizon steering).*
 
-| ID | f_HP best / median / worst (Hz) | f_SL median (Hz) | f_amb -3 dB earliest horizon steering (Hz) | f_amb -3 dB any steering (Hz) | Exact grating, any steering (Hz) | f_amb / f_SL |
-|---|---|---|---|---|---|---|
-| A1 | 569 / 667 / 1,139 | 1,465 | 4,432 | 4,432 | 5,000 | 3.03 |
-| A2 | 285 / 334 / 569 | 733 | 2,216 | 2,216 | 2,500 | 3.03 |
-| A3 | 625 / 633 / 644 | 1,306 | 1,877 | 1,876 | 2,500 | 1.44 |
-| A4 | 253 / 270 / 298 | 527 | 623 | 596 | 857 | 1.18 |
+| ID | f_HP best / median / worst (Hz) | f_SL earliest / median / latest (Hz) | f_amb -3 dB earliest / median (Hz) | f_amb -3 dB any steering (Hz) | Exact grating, any steering (Hz) |
+|---|---|---|---|---|---|
+| A1 | 569 / 667 / 1,139 | 1,251 / 1,465 / 2,501 | 4,432 / 5,192 | 4,432 | 5,000 |
+| A2 | 285 / 334 / 569 | 625 / 733 / 1,251 | 2,216 / 2,596 | 2,216 | 2,500 |
+| A3 | 625 / 633 / 644 | 1,251 / 1,306 / 1,465 | 1,877 / 2,010 | 1,876 | 2,500 |
+| A4 | 253 / 270 / 298 | 450 / 527 / 586 | 623 / 717 | 596 | 857 |
 
-Reading the regimes:
+Conventional bands, horizon steering set (`reports/SIM-01_band_definitions.md`; frequencies in Hz):
 
-* **f < f_HP:** no direction is 3 dB below the look direction. DAS provides no directional
-  discrimination.
+| ID | Guaranteed: latest f_SL to earliest f_amb (ratio) | Median: median f_SL to median f_amb (ratio) | Rev 0 convention: median f_SL to earliest f_amb (ratio) |
+|---|---|---|---|
+| A1 | 2,501 to 4,432 (1.77) | 1,465 to 5,192 (3.54) | 1,465 to 4,432 (3.03) |
+| A2 | 1,251 to 2,216 (1.77) | 733 to 2,596 (3.54) | 733 to 2,216 (3.03) |
+| A3 | 1,465 to 1,877 (1.28) | 1,306 to 2,010 (1.54) | 1,306 to 1,877 (1.44) |
+| A4 | 586 to 623 (1.06) | 527 to 717 (1.36) | 527 to 623 (1.18) |
+
+The guaranteed band holds for every sampled horizon steering direction; the median band holds for a
+typical one. For the depressed (el = -30 deg) ring the A4 guaranteed band is empty. Bands are for
+the -3 dB criterion; stricter ambiguity criteria narrow them further (evaluated in SIM-02A).
+
+Reading the regimes (all statements refer to conventional DAS and the stated -3 dB criteria):
+
+* **f < f_HP:** no direction is attenuated by 3 dB relative to the look direction, so DAS gives no
+  -3 dB discrimination. Direction information is still present in the inter-channel phases and can
+  be extracted by other estimators at sufficient SNR.
 * **f_HP to f_SL:** a broad beam with no nulls in the visible region.
 * **f_SL to f_amb:** conventional beamforming, a closed mainlobe and no ambiguity lobe at -3 dB
   (within the geometric ambiguity class).
-* **Above f_amb:** ambiguity lobes within 3 dB of the mainlobe for at least one horizon steering
-  direction. Above the exact grating onset they are 0 dB copies of the mainlobe for some steering.
+* **Above f_amb:** narrowband ambiguity lobes within 3 dB of the mainlobe for at least one horizon
+  steering direction. Above the exact grating onset they are 0 dB narrowband copies of the mainlobe
+  for some steering. Broadband processing can separate them (Section 4.4).
 
 For a line steered broadside the thresholds have closed forms that the run reproduces. f_SL = c/(Nd)
 (measured f_SL x N d / c = 1.0005 for every N and d in the sensitivity study). Half-power
@@ -226,8 +265,11 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
 | A3 | 6.02 | 0.27 | 5.48 | 5.90 |
 | A4 | 6.02 | 1.73 | 5.95 | 6.00 |
 
-* The 6.02 dB WNG is the ceiling for incoherent sensor noise and is independent of geometry. Doubling
-  N adds 3 dB; going from 4 to 16 elements adds 6 dB.
+* The 6.02 dB WNG is the gain of four equally weighted elements against spatially white
+  (uncorrelated, equal-power) sensor noise, independent of geometry. Equal weights maximize gain
+  against white noise, so no weighting does better in that noise field; in correlated noise fields
+  other weights can do better or worse. Doubling N adds 3 dB of WNG; going from 4 to 16 elements
+  adds 6 dB.
 * Against diffuse noise, gain collapses when sensors are closer than about lambda/2, because the
   noise at the sensors is then correlated. DAS DI can exceed 10 log10 N for spacings between lambda/2
   and lambda (negatively correlated noise). The line-array study reaches about 7.7 dB for N = 4 and
@@ -295,9 +337,13 @@ Median horizontal half-power width over horizon steering (deg):
   a generic 5-element volumetric layout has none (test).
 * **A0.** Omnidirectional at every frequency (HPSF = 1.0, all pattern metrics undefined).
 
-Narrowband caveat: for broadband signals, grating lobes move with frequency while the mainlobe does
-not, so broadband or TDOA processing can suppress ambiguity that narrowband analysis declares fatal.
-This matters most for A4-like distributed layouts and is not evaluated in SIM-01.
+Narrowband scope: every ambiguity and grating-lobe statement in this section is a single-frequency
+property of the conventional beampattern. Exact narrowband grating lobes do not establish broadband
+direction-finding failure. For broadband signals the grating-lobe directions move with frequency
+while the true direction does not, so broadband beamforming or TDOA processing can reject ambiguity
+that a narrowband pattern shows at 0 dB, provided bandwidth, SNR, signal coherence across the array
+and inter-channel timing are adequate. This matters most for A4-like distributed layouts. It is not
+evaluated in SIM-01 and is assigned to SIM-02B.
 
 ### 4.5 Sensitivity to element count, spacing and aperture
 
@@ -353,14 +399,17 @@ real requirement.
 
 ### 5.1 How much useful spatial performance is gained by adding array elements?
 
-* **SNR gain is small and logarithmic.** Ideal gain against uncorrelated noise is 10 log10 N
-  (6.02 dB at N = 4). Against diffuse noise, compact 4-element arrays deliver 0.2 to 1.7 dB below
-  1 kHz (band medians) and approach 6 dB only above roughly 2 to 3 kHz. Confidence: high (model);
-  realized gain lower.
-* **Going from 1 to 4 elements buys direction information in a band, not everywhere.** A0 provides
-  none at any frequency. The 4-element candidates provide half-power discrimination only above
-  270 to 667 Hz (median steering) and unambiguous conventional beamforming only in 1.2:1 to 3:1
-  frequency bands (Section 4.1). High.
+* **Conventional SNR gain is small and grows logarithmically.** The white-noise gain of N equally
+  weighted elements is 10 log10 N (6.02 dB at N = 4). Against diffuse noise, uniform DAS on the
+  4-element candidates gives 0.2 to 1.7 dB below 1 kHz (band medians) and approaches 6 dB only above
+  roughly 2 to 3 kHz. Other weightings and noise fields give different gains (Section 0, item 1).
+  Confidence: high (model); realized gain depends on sensor and ambient noise (SIM-02A).
+* **Going from 1 to 4 elements buys -3 dB conventional discrimination in a band.** A0 has no
+  directional response at any frequency. The 4-element candidates provide half-power discrimination
+  only above 270 to 667 Hz (median steering). Conventional beamforming free of -3 dB ambiguity lobes
+  holds over guaranteed bands of 1.06:1 to 1.77:1 and median bands of 1.36:1 to 3.54:1
+  (Section 4.1). Direction information below f_HP and broadband rejection of narrowband ambiguity
+  are not captured by these criteria. High, for the criteria as defined.
 * **More elements at fixed spacing** extend the aperture and lower f_HP and f_SL in proportion,
   without moving the aliasing onset. **More elements at fixed aperture** raise the aliasing onset
   without improving resolution. **Every doubling of N doubles the unambiguous band ratio** (N/2 for
@@ -370,34 +419,42 @@ real requirement.
 
 | Band | Observations (horizon targets) |
 |---|---|
-| 100 to ~250 Hz | None of the candidates discriminates direction (every f_HP is above the band; A4's best is 253 Hz). Only A0-level detection capability exists. |
-| ~250 to ~700 Hz | A4 and A2 are directional. A4 is unambiguous in 3-D only up to ~600 Hz (623 Hz earliest horizon onset); A2's beam is broad (HPBW_h 231 deg at 500 Hz) and conical. |
-| ~0.7 to ~2.2 kHz | A2 is the only candidate in its conventional regime throughout (conical ambiguity remains). A3 is conventional only from 1.31 to 1.88 kHz but is the only candidate with unambiguous full-circle azimuth there. |
-| ~1.5 to ~4.4 kHz | A1 is conventional (conical). A2, A3 and A4 are aliased for some steering. |
-| > 4.4 kHz | Every multichannel candidate has -3 dB ambiguity lobes for some horizon steering. A1 stays clean only for steering away from endfire (until 8.9 kHz at broadside). |
+| 100 to ~250 Hz | No candidate reaches -3 dB DAS discrimination (every f_HP is above the band; A4's best is 253 Hz). Direction information below this criterion is not assessed. |
+| ~250 to ~700 Hz | A4 and A2 reach -3 dB discrimination. A4 is free of -3 dB ambiguity lobes in 3-D only up to ~600 Hz (623 Hz earliest horizon onset); A2's beam is broad (HPBW_h 231 deg at 500 Hz) and conical. |
+| ~0.7 to ~2.2 kHz | A2 is in its conventional regime for median steering (733 to 2,596 Hz) and for every horizon steering direction from 1,251 to 2,216 Hz (conical ambiguity remains). A3 is conventional for every horizon steering direction from 1,465 to 1,877 Hz (1,306 to 2,010 Hz for median steering) and is the only candidate with full-circle azimuth observability there. |
+| ~1.5 to ~4.4 kHz | A1 is conventional for median steering (1,465 to 5,192 Hz) and for every horizon steering direction from 2,501 to 4,432 Hz (conical). A2, A3 and A4 have narrowband -3 dB ambiguity lobes for some steering. |
+| > 4.4 kHz | Every multichannel candidate has narrowband -3 dB ambiguity lobes for some horizon steering. A1 stays clean only for steering away from endfire (until 8.9 kHz at broadside). |
 
-No candidate covers more than a factor of about 3 in frequency in the conventional regime, and the
-candidates that remove left/right ambiguity (A3, A4) cover factors of 1.44 and 1.18. Confidence:
-high for the stated model and criteria (-3 dB).
+Under the -3 dB narrowband criterion no candidate's conventional band exceeds a factor of 1.77 for
+every steering direction, or 3.54 for a median direction. The candidates that remove left/right
+ambiguity (A3, A4) have guaranteed bands of 1.28 and 1.06. Confidence: high for the stated model and
+criteria; broadband processing is not assessed.
 
-### 5.3 Where do compact arrays fundamentally lose directional discrimination?
+### 5.3 Where do compact arrays fundamentally lose directional discrimination? (question as posed)
 
-Below f_HP, where the aperture is less than about 0.25 to 0.42 wavelengths for a broadside line
-(half that at endfire). For the candidates (best to worst horizon steering): A1 below 569 to
-1,139 Hz, A3 below 625 to 644 Hz, A2 below 285 to 569 Hz, A4 below 253 to 298 Hz. Between f_HP
-and f_SL (aperture below about one wavelength) the beam is wider than the visible region and has no
-nulls, so it can neither reject a strong interferer nor resolve two sources. These limits are
-fundamental to conventional processing of pressure sensors; they do not depend on electronics. The
-only ways around them change the physics or the processing: larger aperture, superdirective or
-adaptive weighting (which trades away white-noise gain and robustness to calibration error), or
-sensors with intrinsic directivity such as acoustic vector sensors. None was evaluated here.
-Confidence: high.
+Conventional DAS loses -3 dB discrimination below f_HP, where the aperture is less than about 0.25 to
+0.42 wavelengths for a broadside line (half that at endfire). For the candidates (best to worst
+horizon steering): A1 below 569 to 1,139 Hz, A3 below 625 to 644 Hz, A2 below 285 to 569 Hz, A4
+below 253 to 298 Hz. Between f_HP and f_SL (aperture below about one wavelength) the beam is wider
+than the visible region and has no nulls, so DAS can neither reject a strong interferer nor resolve
+two sources.
+
+These are limits of conventional beamforming under a -3 dB criterion, not limits on direction
+information. Below f_HP the beampattern still varies with direction by less than 3 dB and the
+inter-channel phase differences still encode the arrival direction; their usefulness depends on SNR,
+calibration and timing accuracy, which SIM-02A models. Ways to use that information, or to exceed the
+conventional limits, include larger aperture, phase-difference or TDOA estimators, superdirective or
+adaptive weighting (which trade white-noise gain and robustness to calibration error), and sensors
+with intrinsic directivity such as acoustic vector sensors. None was evaluated here. Confidence: high
+for the -3 dB criterion; the achievable performance of other estimators is not assessed.
 
 ### 5.4 Which configurations have serious ambiguity or aliasing problems?
 
-* **A4: severe.** Exact 0 dB grating lobes from 857 Hz (worst case) and -3 dB lobes from 596 Hz;
-  hundreds of near-0 dB lobes at 10 kHz. Narrowband DAS on A4 is unusable for bearing above about
-  0.6 kHz. This is generic to 4-element volumetric arrays, not a consequence of these coordinates.
+* **A4: severe narrowband aliasing.** Exact 0 dB narrowband grating lobes from 857 Hz (worst case)
+  and -3 dB lobes from 596 Hz; hundreds of near-0 dB lobes at 10 kHz. Single-frequency DAS on A4 does
+  not give unambiguous bearing above about 0.6 kHz. The lattice structure is generic to 4-element
+  volumetric arrays. Whether broadband or TDOA processing resolves these ambiguities is not
+  established by SIM-01 (SIM-02B).
 * **A1, A2: severe geometric ambiguity** (cone: total left/right ambiguity for horizontal targets) at
   all frequencies, plus aliasing above 4.4 kHz (A1) and 2.2 kHz (A2) for near-endfire steering
   (A1 at broadside: -3 dB ambiguity onset 8,865 Hz).
@@ -412,8 +469,8 @@ Confidence: high.
 | Conclusion | Robust to c (1450 to 1550 m/s) | Robust to scale | Robust to orientation / A4 coordinates |
 |---|---|---|---|
 | Geometric ambiguity class of each candidate | Yes (independent of c) | Yes | Class yes; *which* angle is lost depends on orientation |
-| Existence of exact grating lobes for 4-element arrays | Yes | Yes | Yes for any 4-element layout (mathematical) |
-| Conventional band ratio (f_amb / f_SL) | Yes (exactly invariant) | Yes (invariant) | Depends on shape, not on size |
+| Existence of exact narrowband grating lobes for 4-element arrays | Yes | Yes | Yes for any 4-element layout (mathematical); broadband consequence not assessed |
+| Conventional band ratios (median and guaranteed definitions) | Yes (exactly invariant) | Yes (invariant) | Depends on shape, not on size |
 | Absolute threshold frequencies | Shift by +-3.3 % | No: scale as 1/size | A4 values specific to placeholder coordinates |
 | Ordering of candidates on each threshold | Yes (verified) | Only for these sizes | Not established for other layouts |
 | DI fine structure (dips and peaks) | Shifts with f/c | Shifts with size | Not robust; do not use for selection |
@@ -429,8 +486,8 @@ In priority order:
 2. **Processing model:** broadband and TDOA (cross-correlation) direction finding, bandwidth and
    integration time. These determine whether narrowband aliasing (A4, and A1 to A3 above their
    onsets) is fatal or manageable.
-3. **Noise field:** sensor and preamplifier self-noise against ambient levels (low-frequency
-   ambient often dominates, so 6 dB of WNG may be unusable); ambient directionality (surface and
+3. **Noise field:** sensor and preamplifier self-noise against ambient levels (where diffuse ambient
+   dominates, the realized gain approaches DI rather than the WNG); ambient directionality (surface and
    shipping noise); flow noise at host speeds; host machinery and propeller noise and its spatial
    coherence across the array. Real array gain is AG with these coherence matrices, not DI.
 4. **Host installation:** available mounting area and orientation per host class, baffling and
@@ -468,8 +525,10 @@ In priority order:
 * HPBW_h: half-power width on the horizontal great circle, median over horizon steering; inf = half-power region wraps the circle for most steering directions (includes merged left/right mirror lobes for line arrays).
 * WNG: white-noise gain of uniform DAS = 10 log10 N, independent of geometry and frequency.
 
-**Pareto dominance** (attributes evaluated in SIM-01 only; cost not evaluated; attribute lists in
-the configuration):
+**Pareto dominance** (conditional on the attributes evaluated in SIM-01 only; cost, installation,
+calibration burden and power are not evaluated; attribute lists in the configuration). These results
+describe trade-offs within the idealized model. They are not a basis for eliminating any hardware
+candidate.
 
 | Attribute set | Attributes | Dominated (numerical ties) | Dominated (engineering tolerances) |
 |---|---|---|---|
@@ -486,7 +545,9 @@ observable dimensions, DI and HPSF band medians) A3 is at least as good as A1 ev
 only when the worst-case aliasing onset is included (4.43 kHz versus 1.88 kHz for A3). A0 is never
 dominated because it has the fewest channels and no size, which says nothing about its usefulness for
 bearing. The absence of further dominance reflects real trade-offs: aperture versus aliasing, and
-geometric observability versus usable band.
+geometric observability versus usable band. Every dominance statement here would change if cost,
+installation constraints, calibration burden, power or broadband performance were added, and the
+engineering tolerances are provisional (ADR-0008). A1 is therefore retained as a candidate.
 
 ---
 
@@ -499,12 +560,14 @@ These recommendations cover what to simulate next. They are not a design selecti
 2. **The line family (A1/A2) as one candidate parameterized by spacing**: keep only if the
    requirement tolerates left/right ambiguity, or if host motion or a second orthogonal line can
    resolve it. Treat spacing as the band-selection parameter.
-3. **The planar family (A3 class)**: keep for full-azimuth bearing, but the 2x2 configuration is too
-   sparse (1.44:1 conventional band). Add planar candidates with more elements (for example uniform
-   circular arrays of 6 to 8 elements, or a 3x3 grid) at the same footprint.
-4. **The distributed/volumetric family (A4 class)**: keep only together with broadband/TDOA processing
-   and a synchronization model. With narrowband DAS it fails above about 0.6 kHz at this size. Replace
-   the placeholder coordinates with surveyed host positions.
+3. **The planar family (A3 class)**: keep for full-azimuth bearing. The 2x2 configuration has a narrow
+   conventional band (1.28:1 guaranteed, 1.54:1 median, horizon steering). Add planar candidates with
+   more elements (for example uniform circular arrays of 6 to 8 elements, or a 3x3 grid) at the same
+   footprint.
+4. **The distributed/volumetric family (A4 class)**: evaluate together with broadband/TDOA processing
+   and a synchronization model. Single-frequency DAS at this size has narrowband ambiguity lobes above
+   about 0.6 kHz; broadband performance is open. Replace the placeholder coordinates with surveyed
+   host positions when available.
 5. **Add acoustic vector sensors** as a candidate class before architecture selection, because they
    attack the low-frequency aperture limit that dominates every pressure-array result here.
 
@@ -518,7 +581,12 @@ approach and the noise environment (Section 5.6).
 * **Idealization:** no noise model beyond the isotropic and white references, perfect calibration,
   point omnidirectional elements, free field. Real sidelobe floors, null depths and gains will be
   worse; the size of that loss is unknown until SIM-02 adds error and noise models.
-* **Narrowband only.** The aliasing conclusions are conservative for broadband processing.
+* **Narrowband only.** The aliasing conclusions describe single-frequency patterns and are
+  conservative for broadband processing; they do not establish broadband direction-finding failure.
+* **Criteria, not limits.** f_HP, f_SL and f_amb are thresholds of conventional DAS under stated dB
+  criteria. They do not bound the direction information available to other estimators.
+* **Pareto results are conditional** on the evaluated attributes and provisional tolerances; no
+  candidate is eliminated on their basis.
 * **Metric thresholds** (-3 dB half power, -1/-3 dB ambiguity) are conventions. A detection-oriented
   requirement may need stricter ambiguity levels (-6 or -10 dB), which would narrow every conventional
   band reported here.

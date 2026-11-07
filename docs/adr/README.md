@@ -13,3 +13,5 @@ supersede rather than edit.
 | [0005](0005-metric-definitions-and-undefined-metrics.md) | Metric definitions, observable space, undefined metrics | Accepted |
 | [0006](0006-immutable-run-records.md) | Immutable run records and provenance | Accepted |
 | [0007](0007-extension-points.md) | Extension points for noise, propagation and platform effects | Accepted |
+| [0008](0008-sim01-review-disposition.md) | SIM-01 review disposition and documentation corrections | Accepted |
+| [0009](0009-sim02-authorization-and-reviewer-decisions.md) | SIM-02 authorization and reviewer decisions D01 to D06 | Accepted |

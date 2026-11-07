@@ -51,9 +51,15 @@ bisection in log-frequency (relative tolerance 1e-3).
 
 | Threshold | Predicate | Meaning |
 |---|---|---|
-| `f_hp_hz` | `min P <= 0.5` | Below it no direction is suppressed by 3 dB: no half-power discrimination. |
+| `f_hp_hz` | `min P <= 0.5` | Below it no direction is suppressed by 3 dB: no half-power discrimination by conventional DAS. This is a -3 dB criterion; it does not bound the direction information available to other estimators (ADR-0008). |
 | `f_sl_hz` | a sidelobe exists in the observable visible region | Below it the mainlobe fills the whole visible region (no nulls, broad beam). For a broadside line, `f_SL = c / (N d)`. |
 | `f_amb_<L>_hz` | `psl_obs >= L` | An ambiguity lobe at or above `L` dB has entered the visible region. |
+
+## Aggregating thresholds over steering directions
+
+Statistics over a steering set must state their rule (ADR-0008). Median band: median f_SL to median
+f_amb (a typical direction). Guaranteed band: latest f_SL to earliest f_amb (every direction in the
+set). `tools/sim01_band_definitions.py` derives both from a run's `thresholds_summary.csv`.
 
 ## Worst case over all steering directions
 
@@ -68,5 +74,6 @@ square lattice of spacing `d`, the exact grating lobe (`L = 0 dB`) appears at `c
 * Detection range or probability: requires source level, propagation loss, ambient and platform
   noise, sensor self-noise, processing gain, bandwidth and integration time. Not modeled.
 * Broadband or time-difference-of-arrival performance: narrowband aliasing overstates broadband
-  ambiguity.
+  ambiguity, and exact narrowband grating lobes do not establish broadband direction-finding failure.
+* Bounds on array gain: WNG = 10 log10 N is the gain of equal weights in spatially white noise only.
 * Robustness to calibration, position, gain/phase errors, element directivity or host shading.

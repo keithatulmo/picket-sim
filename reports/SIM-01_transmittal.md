@@ -11,6 +11,7 @@
 | Run of record | `20261107T203522Z_d64d297c_8043684` (code commit `8043684`, clean tree) |
 | Prepared by | Claude Code (AI-generated engineering work product). It requires review by a qualified acoustic engineer before any of it is used to set requirements. |
 | Requested action | Technical review of method, verification and conclusions; decisions on the open items in Section 6 |
+| Revision | A: Section 2 corrected per the SIM-01 technical review (ADR-0008). Rev 0 is retained in the delivered package. |
 
 ## 1. What was asked and what is delivered
 
@@ -35,20 +36,23 @@ Delivered in this package:
 
 ## 2. Bottom line for the reviewer
 
-1. Four elements yield at most 6.02 dB of ideal array gain against uncorrelated noise. Against
-   diffuse noise the compact candidates give under 0.3 dB below 1 kHz (band median). The value of a
-   4-element array is bearing information, not gain.
-2. Directional discrimination exists only above the half-power onset (median horizon steering):
-   A1 667 Hz, A2 334 Hz, A3 633 Hz, A4 270 Hz. A0 has none at any frequency.
-3. The conventional, unambiguous band is narrow: a ratio of 3.03 for the lines, 1.44 for the 2x2
-   square and 1.18 for A4. Spreading four elements across two or three dimensions buys geometric
-   observability at the cost of usable bandwidth.
+1. The white-noise gain of four equally weighted elements is 6.02 dB. It is not a bound on array gain
+   in general; other weights and noise fields give different gains. Against diffuse noise, uniform DAS
+   on the compact candidates gives under 0.3 dB from 100 Hz to 1 kHz (band median).
+2. Conventional DAS reaches -3 dB discrimination only above the half-power onset (median horizon
+   steering): A1 667 Hz, A2 334 Hz, A3 633 Hz, A4 270 Hz. This is a -3 dB criterion; direction
+   information below it is not excluded. A0 has no directional response.
+3. The conventional band free of -3 dB ambiguity lobes is narrow. For every horizon steering direction
+   (guaranteed) the ratio is 1.77 for the lines, 1.28 for the 2x2 square and 1.06 for A4; for a median
+   steering direction it is 3.54, 1.54 and 1.36. Rev 0 quoted a mixed convention (3.03, 1.44, 1.18).
 4. Geometric ambiguity is exact. The lines see a cone (total left/right ambiguity for horizontal
    targets), the horizontal square an up/down mirror, and A4 none.
-5. Any non-coplanar 4-element array has exact (0 dB) grating lobes, whatever its placement. For A4 the
-   worst case starts at 857 Hz. Irregular placement does not help at N = 4.
-6. SIM-01 does not support selecting an architecture. It does support rejecting 4-element
-   narrowband delay-and-sum as a route to wideband, unambiguous, full-azimuth bearing.
+5. Any non-coplanar 4-element array has exact (0 dB) narrowband grating lobes, whatever its placement;
+   for A4 the worst case starts at 857 Hz. This does not establish that broadband or TDOA direction
+   finding fails; that question is assigned to SIM-02B.
+6. SIM-01 does not support selecting an architecture, and its Pareto results, which omit cost and
+   installation, are not a basis for eliminating candidates. Under the -3 dB criterion, 4-element
+   narrowband delay-and-sum does not provide wideband, unambiguous, full-azimuth bearing.
 
 ## 3. Compliance matrix
 
