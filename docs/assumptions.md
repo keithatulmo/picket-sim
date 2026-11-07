@@ -29,3 +29,17 @@ Numerical approximations (all checked):
 | NA-02 | Half-power sphere fraction of an indicator function on a grid | Rank-1 exact 1-D value vs sphere grid recorded every run. |
 | NA-03 | Local maxima on sampled grids, refined by local zoom | Brute-force comparisons in tests; `resolution_ok` flag per row. |
 | NA-04 | Thresholds by grid scan + bisection | Analytic thresholds (`c/(N d)`, `c/(8 d)`, `c/(2 d)`) reproduced in tests. |
+
+## SIM-02A additions
+
+| ID | Item | Status | Effect on conclusions |
+|---|---|---|---|
+| AS-11 | Sensor scenarios S1 to S3 (element sensitivity, capacitance, loss tangent, preamplifier noise and gain, ADC bits, full scale, sample rate, declared bandwidth) | Assumed (illustrative) | Absolute self-noise, dynamic range and acquirability of B4 are scenario results, not product properties. Gain results are parameterized by eta to stay independent of them. |
+| AS-12 | Ambient scenarios: power laws 45/60/75 dB re 1 uPa^2/Hz at 1 kHz, -17 dB/decade | Assumed (illustrative, not fitted to data) | Only the acquisition analysis and the eta bridge use absolute ambient levels. Published ambient models are to be introduced with provenance when sensing applications are defined. |
+| AS-13 | Ambient spatial structure: white, spherical, horizontal, upward-weighted, horizontal-band, exponential (L = 0.1 m) | WHITE/ISO/HOR modeled as limiting cases; other shapes assumed | Realized gain depends strongly on the field; no field is claimed representative of a Picket environment. |
+| AS-14 | Host noise: generic point sources at 3 m and 15 m (near field) and a far-field source aft, host-to-ambient ratios 0/10/20 dB | Assumed (generic; no vessel geometry) | Shows how geometry and frequency govern host rejection with DAS; not a prediction for any host. |
+| AS-15 | Channel errors independent, zero-mean Gaussian; scenarios E1 to E4 and one-at-a-time sweeps | Assumed | Correlated errors (common-mode drift, systematic position bias) are not modeled. |
+| AS-16 | Sensor-noise split between thermal (scaled by channel errors) and electronic (not scaled): 50/50 | Assumed | Second-order effect on gain-with-errors results. |
+| AS-17 | Signal-class crest factors: tonal and harmonic analytic; broadband 12.04 dB (4-sigma criterion); transient 25 dB | Tonal and harmonic analytic; others assumed | Sets clipping headroom only. |
+| AS-18 | Noise-free calibration-induced bearing statistics | Modeled (noise-free) | Bearing errors caused by additive noise are SIM-02B. |
+| AS-19 | Volumetric envelopes V-C, V-D, V-DS | Assumed (parametric; not host surveys; V-DS represents a draft-limited mounting) | Results are reported against envelope dimensions; A4 (envelope 1.00 x 0.85 x 0.75 m) remains the regression case. |

@@ -4,9 +4,16 @@ Acoustic array modeling and simulation framework for Ulmo's Picket program (PCK-
 Experimental research software: isolated from production code and from Fathom
 ([ADR-0001](docs/adr/0001-isolated-simulation-repository.md)).
 
-Current increment: **SIM-01, array geometry and idealized acoustic performance** (narrowband,
-far-field plane waves, homogeneous medium, conventional delay-and-sum). Engineering report:
-[`reports/SIM-01_engineering_report.md`](reports/SIM-01_engineering_report.md).
+Increments:
+
+* **SIM-01**, array geometry and idealized acoustic performance (narrowband, far-field plane waves,
+  homogeneous medium, conventional delay-and-sum). Closed on report Revision A after technical review
+  (ADR-0008): [`reports/SIM-01_engineering_report.md`](reports/SIM-01_engineering_report.md).
+* **SIM-02A**, sensor, noise and error modeling (authorized by the SIM-01 review, ADR-0009):
+  plan [`docs/SIM-02A_plan.md`](docs/SIM-02A_plan.md), models
+  [`docs/sensor_noise_error_models.md`](docs/sensor_noise_error_models.md), report
+  [`reports/SIM-02A_engineering_report.md`](reports/SIM-02A_engineering_report.md). SIM-02B (broadband,
+  task-level) is gated on review of SIM-02A results.
 
 ## Quick start
 
@@ -15,6 +22,7 @@ python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.lock && pip install -e . --no-deps
 make test        # verification suite (must pass before results are used)
 make sim01       # regenerate all SIM-01 results into a new results/sim01/<run_id>/
+make sim02a      # regenerate all SIM-02A results into a new results/sim02a/<run_id>/
 ```
 
 `make sim01` runs `python -m picket_sim run configs/sim01/sim01_baseline.yaml`. It refuses to run
@@ -26,9 +34,9 @@ so). Each run creates a new immutable directory; nothing is overwritten
 
 | Path | Content |
 |---|---|
-| `src/picket_sim/` | Library: `conventions`, `geometry`, `acoustics`, `beamforming`, `noise`, `grids`, `metrics`, `analysis`, `mismatch`, `plotting`, `records`, `config`, `cli` |
-| `src/picket_sim/experiments/sim01.py` | SIM-01 study orchestration |
-| `configs/sim01/` | Machine-readable experiment configurations (`sim01_baseline.yaml` is the study of record; `sim01_smoke.yaml` is a coarse test fixture) |
+| `src/picket_sim/` | Library: `conventions`, `geometry`, `acoustics`, `beamforming`, `noise`, `grids`, `metrics`, `analysis`, `mismatch`, `plotting`, `records`, `config`, `cli`; SIM-02A: `params` (provenance), `sensor`, `noisefields`, `errors`, `stats`, `rag`, `avs`, `plotting_sim02a` |
+| `src/picket_sim/experiments/` | Study orchestration (`sim01.py`, `sim02a.py`) |
+| `configs/` | Machine-readable experiment configurations (`*_baseline.yaml` are studies of record; `*_smoke.yaml` are coarse test fixtures) |
 | `tests/` | Verification suite |
 | `results/sim01/<run_id>/` | Run outputs: `record.json` (provenance and output hashes), `tables/`, `figures/`, `summary.md`; `RUN_INDEX.csv` lists all runs |
 | `docs/` | Plan, conventions, metric definitions, assumption register, ADRs |
