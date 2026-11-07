@@ -1,0 +1,274 @@
+# SMOKE configuration for automated tests only (coarse grids). Derived from sim01_baseline.yaml.
+# Not for engineering conclusions.
+experiment:
+  id: SIM-01
+  title: Array geometry and idealized acoustic performance
+  description: Fast smoke configuration (coarse grids) for automated end-to-end tests. Not for engineering use.
+  assumptions:
+  - Single-frequency (narrowband) plane waves from far-field sources.
+  - Homogeneous, lossless, unbounded medium; no surface, bottom, multipath or refraction.
+  - Ideal omnidirectional point hydrophones with identical, perfectly known responses and positions.
+  - No sensor, electronic, ambient, flow, platform or self-noise in the beampattern metrics.
+  - Directivity index uses a spherically isotropic noise model; white-noise gain uses spatially white noise.
+  - Conventional uniformly weighted delay-and-sum beamforming only.
+  - Array frame is right-handed with z up; linear arrays lie along x; the square array lies in the horizontal x-y
+    plane.
+  - A4 coordinates are a notional placeholder layout, not derived from any host survey.
+physics:
+  model: narrowband_far_field_plane_wave_homogeneous
+  sound_speed_mps: 1500.0
+frequency_grid:
+  f_min_hz: 200.0
+  f_max_hz: 8000.0
+  points_per_decade: 6
+representative_frequencies_hz:
+- 1000
+- 2500
+- 5000
+figure_frequencies_hz:
+- 1000
+- 2500
+- 5000
+bands_hz:
+  low:
+  - 100.0
+  - 1000.0
+  mid:
+  - 1000.0
+  - 3000.0
+  high:
+  - 3000.0
+  - 10000.0001
+steering:
+  rings:
+  - name: horizon
+    el_deg: 0.0
+    az_step_deg: 90.0
+  - name: depressed30
+    el_deg: -30.0
+    az_step_deg: 180.0
+  showcase:
+    az_deg: 60.0
+    el_deg: -20.0
+grids:
+  sphere:
+    n_el: 61
+    n_az: 120
+  cut_points: 720
+  reduced_1d_points: 801
+metrics:
+  ambiguity_levels_db:
+  - -1.0
+  - -3.0
+  di_quadrature_tolerance_db: 0.05
+arrays:
+- id: A0
+  label: Single hydrophone
+  type: single
+  position_m:
+  - 0.0
+  - 0.0
+  - 0.0
+  description: Single omnidirectional hydrophone (reference; one channel).
+- id: A1
+  label: 4-el line, 0.15 m
+  type: linear
+  n_elements: 4
+  spacing_m: 0.15
+  axis:
+  - 1.0
+  - 0.0
+  - 0.0
+  description: Four-element uniform line array along x, 0.15 m spacing (aperture 0.45 m).
+- id: A2
+  label: 4-el line, 0.30 m
+  type: linear
+  n_elements: 4
+  spacing_m: 0.3
+  axis:
+  - 1.0
+  - 0.0
+  - 0.0
+  description: Four-element uniform line array along x, 0.30 m spacing (aperture 0.90 m).
+- id: A3
+  label: 4-el square, 0.30 m
+  type: rectangular
+  nx: 2
+  ny: 2
+  dx_m: 0.3
+  dy_m: 0.3
+  axis_u:
+  - 1.0
+  - 0.0
+  - 0.0
+  axis_v:
+  - 0.0
+  - 1.0
+  - 0.0
+  description: Four-element square planar array in the horizontal x-y plane, 0.30 m side.
+- id: A4
+  label: 4-el distributed (notional)
+  type: coordinates
+  positions_m:
+  - - 0.0
+    - 0.0
+    - 0.0
+  - - 1.0
+    - 0.0
+    - 0.0
+  - - 0.35
+    - 0.85
+    - 0.0
+  - - 0.4
+    - 0.3
+    - -0.75
+  description: 'Four-element distributed, non-coplanar array with irregular ~0.9-1.1 m baselines. NOTIONAL PLACEHOLDER
+    chosen to represent elements distributed around a small host; replace with surveyed host coordinates. Results
+    for A4 are specific to these coordinates.
+
+    '
+sensitivity:
+  ula:
+    n_elements:
+    - 2
+    - 4
+    spacing_m:
+    - 0.15
+    - 0.3
+    steering:
+    - name: broadside
+      az_deg: 90.0
+      el_deg: 0.0
+    - name: endfire
+      az_deg: 0.0
+      el_deg: 0.0
+  square_side_m:
+  - 0.3
+  a4_scale:
+  - 0.5
+  - 1.0
+  orientation_variants:
+  - id: A1-V
+    label: A1 vertical
+    type: linear
+    n_elements: 4
+    spacing_m: 0.15
+    axis:
+    - 0.0
+    - 0.0
+    - 1.0
+    description: A1 rotated to vertical (along z).
+  - id: A3-V
+    label: A3 vertical plane
+    type: rectangular
+    nx: 2
+    ny: 2
+    dx_m: 0.3
+    dy_m: 0.3
+    axis_u:
+    - 1.0
+    - 0.0
+    - 0.0
+    axis_v:
+    - 0.0
+    - 0.0
+    - 1.0
+    description: A3 rotated into the vertical x-z plane.
+  orientation_frequencies_hz:
+  - 2000
+robustness:
+  sound_speeds_mps:
+  - 1450.0
+  - 1500.0
+  mismatch:
+    assumed_mps: 1500.0
+    true_mps:
+    - 1450.0
+    sources_deg:
+    - - 30.0
+      - 0.0
+    - - 60.0
+      - -10.0
+    max_frequency_hz: 1000.0
+pareto:
+  sets:
+  - name: all_candidates
+    note: Attributes defined for every candidate, including the single hydrophone.
+    arrays:
+    - A0
+    - A1
+    - A2
+    - A3
+    - A4
+    attributes:
+    - key: n_elements
+      sense: min
+      label: channels
+    - key: aperture_m
+      sense: min
+      label: max dimension (m)
+    - key: rank
+      sense: max
+      label: observable dimensions
+    - key: di_band_low_db
+      sense: max
+      label: DI low band (dB)
+    - key: di_band_mid_db
+      sense: max
+      label: DI mid band (dB)
+    - key: di_band_high_db
+      sense: max
+      label: DI high band (dB)
+    - key: hpsf_band_low
+      sense: min
+      label: HPSF low band
+    - key: hpsf_band_mid
+      sense: min
+      label: HPSF mid band
+    - key: hpsf_band_high
+      sense: min
+      label: HPSF high band
+  - name: multichannel
+    note: Adds regime thresholds, which are undefined for a single hydrophone.
+    arrays:
+    - A1
+    - A2
+    - A3
+    - A4
+    attributes:
+    - key: n_elements
+      sense: min
+      label: channels
+    - key: aperture_m
+      sense: min
+      label: max dimension (m)
+    - key: rank
+      sense: max
+      label: observable dimensions
+    - key: di_band_low_db
+      sense: max
+      label: DI low band (dB)
+    - key: di_band_mid_db
+      sense: max
+      label: DI mid band (dB)
+    - key: di_band_high_db
+      sense: max
+      label: DI high band (dB)
+    - key: hpsf_band_low
+      sense: min
+      label: HPSF low band
+    - key: hpsf_band_mid
+      sense: min
+      label: HPSF mid band
+    - key: hpsf_band_high
+      sense: min
+      label: HPSF high band
+    - key: f_hp_median_hz
+      sense: min
+      label: half-power onset
+      median horizon steering (Hz): null
+    - key: f_alias_m3db_hz
+      sense: max
+      label: worst-case -3 dB ambiguity onset (Hz)
+output:
+  root: results/_scratch/sim01_smoke

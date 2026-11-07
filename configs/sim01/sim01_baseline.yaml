@@ -1,0 +1,183 @@
+# PCK-SIM-001 / SIM-01 baseline experiment configuration.
+# Units are SI and are carried in key names (_m, _hz, _mps, _deg).
+# Changing any value changes the config hash and therefore the run id; results are never overwritten.
+
+experiment:
+  id: SIM-01
+  title: Array geometry and idealized acoustic performance
+  description: >
+    Idealized narrowband far-field comparison of candidate Picket array geometries (A0-A4) with
+    conventional delay-and-sum beamforming in a homogeneous medium, 100 Hz to 10 kHz.
+  assumptions:
+    - Single-frequency (narrowband) plane waves from far-field sources.
+    - Homogeneous, lossless, unbounded medium; no surface, bottom, multipath or refraction.
+    - Ideal omnidirectional point hydrophones with identical, perfectly known responses and positions.
+    - No sensor, electronic, ambient, flow, platform or self-noise in the beampattern metrics.
+    - Directivity index uses a spherically isotropic noise model; white-noise gain uses spatially white noise.
+    - Conventional uniformly weighted delay-and-sum beamforming only.
+    - Array frame is right-handed with z up; linear arrays lie along x; the square array lies in the horizontal x-y plane.
+    - A4 coordinates are a notional placeholder layout, not derived from any host survey.
+
+physics:
+  model: narrowband_far_field_plane_wave_homogeneous
+  sound_speed_mps: 1500.0
+
+frequency_grid:
+  f_min_hz: 100.0
+  f_max_hz: 10000.0
+  points_per_decade: 60          # 121 log-spaced frequencies
+
+representative_frequencies_hz: [250, 500, 1000, 2000, 2500, 3500, 5000, 7500, 10000]
+figure_frequencies_hz: [500, 1000, 2500, 5000, 10000]
+
+bands_hz:                        # used for band-median comparison metrics (inclusive lower, exclusive upper)
+  low: [100.0, 1000.0]
+  mid: [1000.0, 3000.0]
+  high: [3000.0, 10000.0001]
+
+steering:
+  rings:
+    - name: horizon               # sources in the horizontal plane of the array frame
+      el_deg: 0.0
+      az_step_deg: 15.0
+    - name: depressed30           # sources 30 degrees below the horizontal (tests up/down mirror ambiguity)
+      el_deg: -30.0
+      az_step_deg: 15.0
+  showcase:                       # generic oblique direction used for full-sphere ambiguity maps and cuts
+    az_deg: 60.0
+    el_deg: -20.0
+
+grids:
+  sphere:                         # Gauss-Legendre (mu = sin el) x uniform azimuth
+    n_el: 181                     # odd: includes the horizon exactly
+    n_az: 360
+  cut_points: 3600                # 0.1 degree great-circle sampling
+  reduced_1d_points: 4001         # rank-1 observable coordinate p in [-1, 1]
+
+metrics:
+  ambiguity_levels_db: [-1.0, -3.0]
+  di_quadrature_tolerance_db: 0.01     # self-check: closed-form DI vs sphere quadrature
+
+arrays:
+  - id: A0
+    label: Single hydrophone
+    type: single
+    position_m: [0.0, 0.0, 0.0]
+    description: Single omnidirectional hydrophone (reference; one channel).
+
+  - id: A1
+    label: 4-el line, 0.15 m
+    type: linear
+    n_elements: 4
+    spacing_m: 0.15
+    axis: [1.0, 0.0, 0.0]
+    description: Four-element uniform line array along x, 0.15 m spacing (aperture 0.45 m).
+
+  - id: A2
+    label: 4-el line, 0.30 m
+    type: linear
+    n_elements: 4
+    spacing_m: 0.30
+    axis: [1.0, 0.0, 0.0]
+    description: Four-element uniform line array along x, 0.30 m spacing (aperture 0.90 m).
+
+  - id: A3
+    label: 4-el square, 0.30 m
+    type: rectangular
+    nx: 2
+    ny: 2
+    dx_m: 0.30
+    dy_m: 0.30
+    axis_u: [1.0, 0.0, 0.0]
+    axis_v: [0.0, 1.0, 0.0]
+    description: Four-element square planar array in the horizontal x-y plane, 0.30 m side.
+
+  - id: A4
+    label: 4-el distributed (notional)
+    type: coordinates
+    positions_m:
+      - [0.00, 0.00, 0.00]
+      - [1.00, 0.00, 0.00]
+      - [0.35, 0.85, 0.00]
+      - [0.40, 0.30, -0.75]
+    description: >
+      Four-element distributed, non-coplanar array with irregular ~0.9-1.1 m baselines.
+      NOTIONAL PLACEHOLDER chosen to represent elements distributed around a small host; replace
+      with surveyed host coordinates. Results for A4 are specific to these coordinates.
+
+sensitivity:
+  ula:
+    n_elements: [2, 3, 4, 6, 8, 16]
+    spacing_m: [0.075, 0.15, 0.30, 0.60]
+    steering:                     # broadside and endfire of a line along x, in the horizontal plane
+      - {name: broadside, az_deg: 90.0, el_deg: 0.0}
+      - {name: endfire, az_deg: 0.0, el_deg: 0.0}
+  square_side_m: [0.15, 0.30, 0.60]
+  a4_scale: [0.25, 0.5, 1.0, 2.0, 4.0]
+  orientation_variants:
+    - id: A1-V
+      label: A1 vertical
+      type: linear
+      n_elements: 4
+      spacing_m: 0.15
+      axis: [0.0, 0.0, 1.0]
+      description: A1 rotated to vertical (along z).
+    - id: A3-V
+      label: A3 vertical plane
+      type: rectangular
+      nx: 2
+      ny: 2
+      dx_m: 0.30
+      dy_m: 0.30
+      axis_u: [1.0, 0.0, 0.0]
+      axis_v: [0.0, 0.0, 1.0]
+      description: A3 rotated into the vertical x-z plane.
+  orientation_frequencies_hz: [1000, 2000, 5000]
+
+robustness:
+  sound_speeds_mps: [1450.0, 1500.0, 1550.0]
+  mismatch:
+    assumed_mps: 1500.0
+    true_mps: [1450.0, 1550.0]
+    sources_deg:                  # [az, el] of true source directions
+      - [0.0, 0.0]
+      - [30.0, 0.0]
+      - [60.0, 0.0]
+      - [90.0, 0.0]
+      - [60.0, -10.0]
+      - [60.0, -30.0]
+    max_frequency_hz: 1000.0      # evaluated at min(this, 0.5 x worst-case -3 dB ambiguity onset)
+
+pareto:
+  sets:
+    - name: all_candidates
+      note: Attributes defined for every candidate, including the single hydrophone.
+      arrays: [A0, A1, A2, A3, A4]
+      attributes:
+        - {key: n_elements, sense: min, label: channels}
+        - {key: aperture_m, sense: min, label: max dimension (m)}
+        - {key: rank, sense: max, label: observable dimensions}
+        - {key: di_band_low_db, sense: max, label: DI low band (dB)}
+        - {key: di_band_mid_db, sense: max, label: DI mid band (dB)}
+        - {key: di_band_high_db, sense: max, label: DI high band (dB)}
+        - {key: hpsf_band_low, sense: min, label: HPSF low band}
+        - {key: hpsf_band_mid, sense: min, label: HPSF mid band}
+        - {key: hpsf_band_high, sense: min, label: HPSF high band}
+    - name: multichannel
+      note: Adds regime thresholds, which are undefined for a single hydrophone.
+      arrays: [A1, A2, A3, A4]
+      attributes:
+        - {key: n_elements, sense: min, label: channels}
+        - {key: aperture_m, sense: min, label: max dimension (m)}
+        - {key: rank, sense: max, label: observable dimensions}
+        - {key: di_band_low_db, sense: max, label: DI low band (dB)}
+        - {key: di_band_mid_db, sense: max, label: DI mid band (dB)}
+        - {key: di_band_high_db, sense: max, label: DI high band (dB)}
+        - {key: hpsf_band_low, sense: min, label: HPSF low band}
+        - {key: hpsf_band_mid, sense: min, label: HPSF mid band}
+        - {key: hpsf_band_high, sense: min, label: HPSF high band}
+        - {key: f_hp_median_hz, sense: min, label: half-power onset, median horizon steering (Hz)}
+        - {key: f_alias_m3db_hz, sense: max, label: worst-case -3 dB ambiguity onset (Hz)}
+
+output:
+  root: results/sim01
