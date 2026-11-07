@@ -153,7 +153,10 @@ def main(argv=None) -> int:
     src.mkdir()
     archive = src / f"picket-sim_{code_commit[:7]}.tar.gz"
     with open(archive, "wb") as fh:
-        subprocess.run(["git", "archive", "--format=tar.gz", f"--prefix=picket-sim-{code_commit[:7]}/", code_commit],
+        # code, configuration, documentation and tests only: run outputs are in 04_run_record and the
+        # historical results and deliverables are not part of the source snapshot
+        subprocess.run(["git", "archive", "--format=tar.gz", f"--prefix=picket-sim-{code_commit[:7]}/", code_commit,
+                        "--", ".", ":(exclude)results", ":(exclude)deliverables"],
                        cwd=REPO, check=True, stdout=fh)
     shutil.copy2(REPO / "requirements.lock", src / "requirements.lock")
     (src / "SOURCE.md").write_text(
