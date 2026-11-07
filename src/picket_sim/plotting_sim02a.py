@@ -295,7 +295,7 @@ def fig_mc_ambiguity(study, mc_rows, outdir, written):
     fig, axes = plt.subplots(2, len(freqs), figsize=(3.4 * len(freqs), 8.0), sharey=True)
     for j, f in enumerate(freqs):
         for row, (key, lab) in enumerate((("p_amb_ge_m6db", "P(lobe >= -6 dB outside mainlobe)"),
-                                          ("gross_error_rate", "Gross bearing-error rate"))):
+                                          ("gross_error_rate", "Gross error (dots) / unresolved tie (squares) rate"))):
             ax = axes[row, j]
             for k, sid in enumerate(scen):
                 for i, aid in enumerate(ids):
@@ -308,6 +308,9 @@ def fig_mc_ambiguity(study, mc_rows, outdir, written):
                     y = i + (k - 1.5) * 0.18
                     ax.errorbar(r[key], y, xerr=[[r[key] - lo], [hi - r[key]]], fmt="o", markersize=3, color=PAL[k],
                                 elinewidth=0.7)
+                    if row == 1 and r.get("unresolved_tie_rate", 0) > 0:
+                        ax.plot(r["unresolved_tie_rate"], y, marker="s", markersize=4, markerfacecolor="none",
+                                markeredgecolor=PAL[k], linestyle="none")
             ax.set_yticks(range(len(ids)), ids, fontsize=7)
             ax.set_xlim(-0.03, 1.03)
             ax.invert_yaxis()
@@ -316,8 +319,8 @@ def fig_mc_ambiguity(study, mc_rows, outdir, written):
             ax.set_xlabel(lab, fontsize=7.5)
     handles = [Line2D([0], [0], color=PAL[k], marker="o", linestyle="none", label=s) for k, s in enumerate(scen)]
     fig.legend(handles=handles, loc="lower center", ncol=len(scen), frameon=False, fontsize=7)
-    fig.suptitle("Channel-error Monte Carlo, horizon target at az = 30 deg (95 % Wilson intervals). Missing points: no "
-                 "closed mainlobe on the horizontal cut at that frequency", fontsize=9)
+    fig.suptitle("Channel-error Monte Carlo, horizon target at az = 30 deg (95 % Wilson intervals). Missing points: "
+                 "undefined (no half-power discrimination on the error-free horizontal cut)", fontsize=9)
     fig.tight_layout(rect=(0, 0.04, 1, 0.96))
     _save(fig, outdir, "s2a_fig08_mc_ambiguity_bearing.png", written)
 
@@ -344,7 +347,7 @@ def fig_bands(study, thr_sum, outdir, written):
     handles = [Line2D([0], [0], color=cols[L], linewidth=5, label=f"guaranteed band, {L:g} dB") for L in study.levels]
     handles += [Line2D([0], [0], color=GREY, linewidth=2, alpha=0.5, label="median band (light)"),
                 Line2D([0], [0], color=P.INK, marker="|", linestyle="none", markersize=12, label="median f_HP")]
-    ax.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.32), ncol=3, frameon=False, fontsize=7)
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.09), ncol=3, frameon=False, fontsize=7)
     ax.set_title("Conventional DAS bands (closed mainlobe, no ambiguity lobe at the level) under -3/-6/-10 dB criteria, "
                  "horizon steering.\nNarrowband criteria only; not limits on broadband or other estimators", fontsize=8.5)
     fig.tight_layout()

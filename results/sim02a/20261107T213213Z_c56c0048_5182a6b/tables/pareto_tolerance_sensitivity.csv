@@ -1,0 +1,16 @@
+set,tolerance_scale,dominated
+SIM-01 all_candidates,0,A1 (by A3)
+SIM-01 all_candidates,0.5,A1 (by A3)
+SIM-01 all_candidates,1,A1 (by A3)
+SIM-01 all_candidates,2,A1 (by A3);A2 (by A3)
+SIM-01 all_candidates,4,A1 (by A3);A2 (by A3;A4)
+SIM-01 multichannel,0,none
+SIM-01 multichannel,0.5,none
+SIM-01 multichannel,1,none
+SIM-01 multichannel,2,none
+SIM-01 multichannel,4,none
+SIM-02A multichannel,0,none
+SIM-02A multichannel,0.5,none
+SIM-02A multichannel,1,V-D (by V-DS)
+SIM-02A multichannel,2,V-D (by V-DS)
+SIM-02A multichannel,4,none

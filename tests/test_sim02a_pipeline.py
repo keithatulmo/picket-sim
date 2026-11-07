@@ -64,3 +64,25 @@ def test_sim02a_smoke_is_bitwise_reproducible(tmp_path):
     assert sc["rag_iso_no_sensor_noise_vs_sim01_DI_max_abs_db"] < 1e-9
     assert sc["mc_mainlobe_vs_closed_form_max_abs_z"] < 5
     assert sc["parameters_by_provenance"]["measured"] == 0
+
+
+def test_line_array_mirror_is_an_unresolved_tie_not_a_gross_error():
+    """A line's scanned response is symmetric in azimuth for any channel errors (nominal steering vectors
+    depend only on cos az), so target and mirror tie exactly; this must be reported as a tie."""
+    st = Sim02AStudy(_cfg(), log=lambda *a, **k: None)
+    em = next(e for e in st.errors if e.scenario_id.startswith("E1"))
+    line = next(g for s, g in st.cands if s["id"] == "A1")
+    r = st._mc_case(line, 5000.0, 30.0, em, 300, ("test", "A1"))
+    assert r["closed_mainlobe"] and r["unresolved_tie_rate"] == 1.0 and r["gross_error_rate"] == 0.0
+    assert r["fine_rms_error_deg"] < 2.0
+    planar = next(g for s, g in st.cands if s["id"] == "P8-C")
+    r = st._mc_case(planar, 2000.0, 30.0, em, 300, ("test", "P8-C"))
+    assert r["unresolved_tie_rate"] == 0.0
+
+
+def test_cut_statistics_undefined_without_half_power_discrimination():
+    st = Sim02AStudy(_cfg(), log=lambda *a, **k: None)
+    em = next(e for e in st.errors if e.scenario_id.startswith("E2"))
+    a4 = next(g for s, g in st.cands if s["id"] == "A4")
+    r = st._mc_case(a4, 100.0, 30.0, em, 300, ("test", "A4"))  # A4 f_HP is about 270 Hz
+    assert not r["closed_mainlobe"] and "p_amb_ge_m6db" not in r and "undefined" in r["status"]

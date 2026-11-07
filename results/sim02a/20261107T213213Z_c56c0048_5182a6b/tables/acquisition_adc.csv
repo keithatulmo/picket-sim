@@ -1,0 +1,13 @@
+sensor,band,acquirable,analog_minus_adc_noise_db_median,clip_level_db_re_1upa_peak,clipping_stage
+S1-ASSUMED-lownoise,B1,true,44.42907641,172.9588002,adc
+S1-ASSUMED-lownoise,B2,true,35.25400124,172.9588002,adc
+S1-ASSUMED-lownoise,B3,true,30.13002402,172.9588002,adc
+S1-ASSUMED-lownoise,B4,true,28.86081861,172.9588002,adc
+S2-ASSUMED-mid,B1,true,8.797054931,172.9588002,adc
+S2-ASSUMED-mid,B2,true,0.5251651742,172.9588002,adc
+S2-ASSUMED-mid,B3,true,-2.665034151,172.9588002,adc
+S2-ASSUMED-mid,B4,true,-3.226961875,172.9588002,adc
+S3-ASSUMED-lowcost,B1,true,38.25286978,165,adc
+S3-ASSUMED-lowcost,B2,true,28.61851713,165,adc
+S3-ASSUMED-lowcost,B3,true,24.44165735,165,adc
+S3-ASSUMED-lowcost,B4,false,23.59532738,165,adc

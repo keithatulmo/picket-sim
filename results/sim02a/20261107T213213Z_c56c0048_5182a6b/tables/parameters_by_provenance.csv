@@ -1,0 +1,74 @@
+context,parameter,value,unit,provenance,source
+constants,boltzmann_constant,1.380649e-23,J/K,published,"SI Brochure, 9th edition (BIPM, 2019): exact defining constant k = 1.380649e-23 J/K"
+S1-ASSUMED-lownoise.hydrophone,sensitivity_db_re_1v_per_upa,-185,dB re 1 V/uPa,assumed,"illustrative bare-element (open-circuit) sensitivity, larger element; used to refer element thermal noise"
+S1-ASSUMED-lownoise.hydrophone,capacitance_f,1e-08,F,assumed,illustrative piezoceramic capacitance
+S1-ASSUMED-lownoise.hydrophone,loss_tangent,0.01,1,assumed,illustrative dielectric loss tangent
+S1-ASSUMED-lownoise.hydrophone,temperature_k,283,K,assumed,10 degC water temperature assumed
+S1-ASSUMED-lownoise.preamp,gain_db,20,dB,assumed,illustrative preamplifier gain
+S1-ASSUMED-lownoise.preamp,voltage_noise_v_per_rthz,1e-09,V/sqrt(Hz),assumed,illustrative low-noise input stage
+S1-ASSUMED-lownoise.preamp,current_noise_a_per_rthz,1e-15,A/sqrt(Hz),assumed,illustrative input current noise
+S1-ASSUMED-lownoise.preamp,flicker_corner_hz,50,Hz,assumed,illustrative 1/f corner
+S1-ASSUMED-lownoise.preamp,max_output_v_peak,5,V,assumed,illustrative preamplifier swing
+S1-ASSUMED-lownoise.adc,bits,24,bit,assumed,illustrative 24-bit converter (ideal quantization; no ENOB loss modeled)
+S1-ASSUMED-lownoise.adc,full_scale_v_peak,2.5,V,assumed,illustrative converter full scale
+S1-ASSUMED-lownoise.adc,sample_rate_hz,96000,Hz,assumed,illustrative sample rate covering B4
+S1-ASSUMED-lownoise.bandwidth,bandwidth_low_hz,10,Hz,assumed,declared usable band of the scenario
+S1-ASSUMED-lownoise.bandwidth,bandwidth_high_hz,40000,Hz,assumed,declared usable band of the scenario
+S2-ASSUMED-mid.hydrophone,sensitivity_db_re_1v_per_upa,-195,dB re 1 V/uPa,assumed,"illustrative bare-element (open-circuit) sensitivity, mid-size element"
+S2-ASSUMED-mid.hydrophone,capacitance_f,5e-09,F,assumed,illustrative piezoceramic capacitance
+S2-ASSUMED-mid.hydrophone,loss_tangent,0.015,1,assumed,illustrative dielectric loss tangent
+S2-ASSUMED-mid.hydrophone,temperature_k,283,K,assumed,10 degC water temperature assumed
+S2-ASSUMED-mid.preamp,gain_db,30,dB,assumed,illustrative preamplifier gain
+S2-ASSUMED-mid.preamp,voltage_noise_v_per_rthz,3e-09,V/sqrt(Hz),assumed,illustrative input stage
+S2-ASSUMED-mid.preamp,current_noise_a_per_rthz,5e-15,A/sqrt(Hz),assumed,illustrative input current noise
+S2-ASSUMED-mid.preamp,flicker_corner_hz,100,Hz,assumed,illustrative 1/f corner
+S2-ASSUMED-mid.preamp,max_output_v_peak,5,V,assumed,illustrative preamplifier swing
+S2-ASSUMED-mid.adc,bits,16,bit,assumed,illustrative 16-bit converter (ideal quantization)
+S2-ASSUMED-mid.adc,full_scale_v_peak,2.5,V,assumed,illustrative converter full scale
+S2-ASSUMED-mid.adc,sample_rate_hz,48000,Hz,assumed,illustrative sample rate
+S2-ASSUMED-mid.bandwidth,bandwidth_low_hz,10,Hz,assumed,declared usable band of the scenario
+S2-ASSUMED-mid.bandwidth,bandwidth_high_hz,20000,Hz,assumed,declared usable band of the scenario
+S3-ASSUMED-lowcost.hydrophone,sensitivity_db_re_1v_per_upa,-205,dB re 1 V/uPa,assumed,"illustrative bare-element (open-circuit) sensitivity, small element"
+S3-ASSUMED-lowcost.hydrophone,capacitance_f,1e-09,F,assumed,illustrative small-element capacitance
+S3-ASSUMED-lowcost.hydrophone,loss_tangent,0.02,1,assumed,illustrative dielectric loss tangent
+S3-ASSUMED-lowcost.hydrophone,temperature_k,283,K,assumed,10 degC water temperature assumed
+S3-ASSUMED-lowcost.preamp,gain_db,40,dB,assumed,illustrative preamplifier gain
+S3-ASSUMED-lowcost.preamp,voltage_noise_v_per_rthz,1e-08,V/sqrt(Hz),assumed,illustrative general-purpose input stage
+S3-ASSUMED-lowcost.preamp,current_noise_a_per_rthz,1e-14,A/sqrt(Hz),assumed,illustrative input current noise
+S3-ASSUMED-lowcost.preamp,flicker_corner_hz,1000,Hz,assumed,illustrative 1/f corner
+S3-ASSUMED-lowcost.preamp,max_output_v_peak,5,V,assumed,illustrative preamplifier swing
+S3-ASSUMED-lowcost.adc,bits,16,bit,assumed,illustrative 16-bit converter (ideal quantization)
+S3-ASSUMED-lowcost.adc,full_scale_v_peak,1,V,assumed,illustrative converter full scale
+S3-ASSUMED-lowcost.adc,sample_rate_hz,32000,Hz,assumed,illustrative sample rate (does not cover B4)
+S3-ASSUMED-lowcost.bandwidth,bandwidth_low_hz,20,Hz,assumed,declared usable band of the scenario
+S3-ASSUMED-lowcost.bandwidth,bandwidth_high_hz,12000,Hz,assumed,declared usable band of the scenario
+AMB-ASSUMED-quiet,level_db_re_1upa2_per_hz,45,dB re 1 uPa^2/Hz,assumed,illustrative low ambient level at 1 kHz
+AMB-ASSUMED-quiet,reference_frequency_hz,1000,Hz,assumed,reference frequency of the power law
+AMB-ASSUMED-quiet,slope_db_per_decade,-17,dB/decade,assumed,"illustrative spectral slope, not fitted to data"
+AMB-ASSUMED-moderate,level_db_re_1upa2_per_hz,60,dB re 1 uPa^2/Hz,assumed,illustrative moderate ambient level at 1 kHz
+AMB-ASSUMED-moderate,reference_frequency_hz,1000,Hz,assumed,reference frequency of the power law
+AMB-ASSUMED-moderate,slope_db_per_decade,-17,dB/decade,assumed,"illustrative spectral slope, not fitted to data"
+AMB-ASSUMED-loud,level_db_re_1upa2_per_hz,75,dB re 1 uPa^2/Hz,assumed,illustrative high ambient level at 1 kHz
+AMB-ASSUMED-loud,reference_frequency_hz,1000,Hz,assumed,reference frequency of the power law
+AMB-ASSUMED-loud,slope_db_per_decade,-17,dB/decade,assumed,"illustrative spectral slope, not fitted to data"
+broadband,crest_factor_db,12.04,dB,assumed,4-sigma peak criterion for Gaussian noise (P(|x|>4 sigma) = 6.3e-5)
+transient,crest_factor_db,25,dB,assumed,illustrative impulsive crest factor for headroom sizing
+noise_field_parameters,noise_field_parameters,,-,assumed,Field shapes and the 0.1 m correlation length are assumed for sensitivity analysis; not fitted to data.
+host_scenarios,host_scenarios,,-,assumed,Generic host-noise source placements and levels for sensitivity analysis; no vessel geometry implied.
+E1-ASSUMED-tight,sigma_gain_db,0.25,dB,assumed,illustrative tight calibration
+E1-ASSUMED-tight,sigma_phase_deg,1,deg,assumed,illustrative tight calibration
+E1-ASSUMED-tight,sigma_position_m,0.001,m,assumed,illustrative tight position knowledge
+E1-ASSUMED-tight,sigma_timing_s,1e-07,s,assumed,illustrative tight synchronization
+E2-ASSUMED-moderate,sigma_gain_db,0.5,dB,assumed,illustrative moderate calibration
+E2-ASSUMED-moderate,sigma_phase_deg,3,deg,assumed,illustrative moderate calibration
+E2-ASSUMED-moderate,sigma_position_m,0.003,m,assumed,illustrative moderate position knowledge
+E2-ASSUMED-moderate,sigma_timing_s,1e-06,s,assumed,illustrative moderate synchronization
+E3-ASSUMED-loose,sigma_gain_db,1,dB,assumed,illustrative loose calibration
+E3-ASSUMED-loose,sigma_phase_deg,10,deg,assumed,illustrative loose calibration
+E3-ASSUMED-loose,sigma_position_m,0.01,m,assumed,illustrative loose position knowledge
+E3-ASSUMED-loose,sigma_timing_s,1e-05,s,assumed,illustrative loose synchronization
+E4-ASSUMED-unsynchronized,sigma_gain_db,1,dB,assumed,illustrative distributed modules without tight calibration
+E4-ASSUMED-unsynchronized,sigma_phase_deg,10,deg,assumed,illustrative distributed modules
+E4-ASSUMED-unsynchronized,sigma_position_m,0.03,m,assumed,illustrative distributed-installation position knowledge
+E4-ASSUMED-unsynchronized,sigma_timing_s,0.0001,s,assumed,illustrative unsynchronized module clocks
+error_sweeps,error_sweeps,,-,assumed,Sweep levels chosen to span tight to loose; not requirements.

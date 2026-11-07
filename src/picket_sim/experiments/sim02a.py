@@ -330,11 +330,14 @@ class Sim02AStudy:
                "signal_loss_db": -10 * math.log10(main["mean"])}
         closed = bool(np.isfinite(cm.mainlobe_left_deg) and np.isfinite(cm.mainlobe_right_deg))
         inside = (gam >= -cm.mainlobe_left_deg) & (gam <= cm.mainlobe_right_deg) if closed else np.ones_like(gam, bool)
-        out["closed_mainlobe"] = bool(closed and np.any(~inside))
+        # Cut statistics are defined only where the error-free cut discriminates at half power and has a
+        # region outside its mainlobe; otherwise "outside lobes" are just the broad pattern (ADR-0005).
+        out["closed_mainlobe"] = bool(closed and np.any(~inside) and np.isfinite(cm.hpbw_deg))
         if not need_scan:
             return out
         if not out["closed_mainlobe"]:
-            out["status"] = "no closed mainlobe on the horizontal cut: ambiguity and bearing metrics undefined"
+            out["status"] = ("no half-power discrimination or no closed mainlobe on the horizontal cut: "
+                             "ambiguity and bearing statistics undefined")
             return out
         pin, pout = p[:, inside].max(axis=1), p[:, ~inside].max(axis=1)
         amb_db = 10 * np.log10(pout / pin)
@@ -347,12 +350,20 @@ class Sim02AStudy:
             w = wilson_ci(int(np.sum(amb_db >= L)), trials)
             out[f"p_amb_ge_{_lvl(L)}"] = w["p"]
             out[f"p_amb_ge_{_lvl(L)}_lo"], out[f"p_amb_ge_{_lvl(L)}_hi"] = w["lo"], w["hi"]
-        idx = np.argmax(p, axis=1)
+        # Exact ties (e.g. the left/right mirror of a line array, for which the scanned response is
+        # symmetric in azimuth whatever the channel errors) cannot be resolved by the peak: count them
+        # separately instead of letting argmax pick the first index.
+        tie = pout >= pin * (1.0 - 1e-9)
+        idx_all = np.argmax(p, axis=1)
+        gross_mask = (~tie) & (~inside[idx_all])
+        p_in = np.where(inside[None, :], p, -np.inf)
+        idx_in = np.argmax(p_in, axis=1)  # correct-side (in-mainlobe) peak
         pdb = 10 * np.log10(p)
-        err = np.array([gam[i] + step * _parabolic_peak(pdb[t], i) for t, i in enumerate(idx)])
-        fine = inside[idx]
-        gross = wilson_ci(int(np.sum(~fine)), trials)
-        out.update({"gross_error_rate": gross["p"], "gross_error_lo": gross["lo"], "gross_error_hi": gross["hi"],
+        err = np.array([gam[i] + step * _parabolic_peak(pdb[t], i) for t, i in enumerate(idx_in)])
+        fine = ~gross_mask
+        tw, gw = wilson_ci(int(np.sum(tie)), trials), wilson_ci(int(np.sum(gross_mask)), trials)
+        out.update({"unresolved_tie_rate": tw["p"], "unresolved_tie_lo": tw["lo"], "unresolved_tie_hi": tw["hi"],
+                    "gross_error_rate": gw["p"], "gross_error_lo": gw["lo"], "gross_error_hi": gw["hi"],
                     "fine_trials": int(np.sum(fine))})
         if np.sum(fine) >= 200:
             m2 = mean_ci(err[fine] ** 2)
@@ -360,7 +371,7 @@ class Sim02AStudy:
                         "fine_rms_hi": math.sqrt(m2["hi"])})
         else:
             out["fine_rms_error_deg"] = float(np.sqrt(np.mean(err[fine] ** 2))) if np.any(fine) else float("nan")
-            out["status"] = "fewer than 200 fine-error trials: no interval on the fine RMS error"
+            out["status"] = "fewer than 200 non-gross trials: no interval on the fine RMS error"
         return out
 
     def mc_scenarios(self):
@@ -605,11 +616,14 @@ class Sim02AStudy:
             ("sigma_total_phase_deg", "Total phase sigma (deg)", ".1f"), ("signal_loss_db", "Signal loss (dB)", ".2f"),
             ("rag_degradation_db", "RAG loss, ISO eta 0 dB (dB)", ".2f"), ("ideal_outside_lobe_db", "Ideal outside lobe (dB)", ".1f"),
             ("amb_level_p90_db", "Outside lobe, 90th pct (dB)", ".1f"), ("p_amb_ge_m6db", "P(>= -6 dB)", ".2f"),
-            ("p_amb_ge_m10db", "P(>= -10 dB)", ".2f"), ("gross_error_rate", "Gross bearing error rate", ".2f"),
+            ("p_amb_ge_m10db", "P(>= -10 dB)", ".2f"), ("unresolved_tie_rate", "Unresolved tie rate", ".2f"),
+            ("gross_error_rate", "Gross bearing error rate", ".2f"),
             ("fine_rms_error_deg", "Fine RMS error (deg)", ".2f"), ("status", "Note", "")],
             "Channel-error Monte Carlo, target azimuth 30 deg (all target azimuths in mc_scenarios.csv)",
             ["Noise-free calibration effects only; additive-noise estimation errors are SIM-02B.",
-             "Intervals for every statistic are in the CSV. Lines: the left/right mirror is 0 dB in the ideal pattern."])
+             "Unresolved tie: the largest lobe outside the mainlobe equals the mainlobe peak exactly (line arrays: "
+             "the left/right mirror, for every error draw). Fine error is measured at the correct-side peak.",
+             "Undefined (n/a) where the error-free cut has no half-power discrimination. Intervals in the CSV."])
         rows = []
         for r in thr_sum:
             rr = {"array_id": r["array_id"]}
