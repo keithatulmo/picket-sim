@@ -52,6 +52,11 @@ def load_sim02a_config(path) -> dict:
     return cfg
 
 
+#: Error-free outside-lobe level (dB re mainlobe) at or above which a cut is structurally ambiguous
+#: for peak picking (the SIM-01 -1 dB ambiguity level).
+STRUCTURAL_DB = -1.0
+
+
 def _eta_label(e):
     return "none" if e is None else f"{e:g}"
 
@@ -350,28 +355,38 @@ class Sim02AStudy:
             w = wilson_ci(int(np.sum(amb_db >= L)), trials)
             out[f"p_amb_ge_{_lvl(L)}"] = w["p"]
             out[f"p_amb_ge_{_lvl(L)}_lo"], out[f"p_amb_ge_{_lvl(L)}_hi"] = w["lo"], w["hi"]
-        # Exact ties (e.g. the left/right mirror of a line array, for which the scanned response is
-        # symmetric in azimuth whatever the channel errors) cannot be resolved by the peak: count them
-        # separately instead of letting argmax pick the first index.
-        tie = pout >= pin * (1.0 - 1e-9)
-        idx_all = np.argmax(p, axis=1)
-        gross_mask = (~tie) & (~inside[idx_all])
+        # Structural ambiguity is decided on the error-free cut: if a lobe outside the mainlobe is within
+        # STRUCTURAL_DB of the mainlobe (line-array left/right mirror; exact or near grating lobes), the
+        # beamformer weights there equal or nearly equal those at the target and peak picking cannot
+        # resolve the direction whatever the channel errors. Gross errors are then undefined. Otherwise a
+        # gross error is a trial in which calibration errors push an outside lobe strictly above the
+        # mainlobe. Fine error is always measured at the correct-side (in-mainlobe) peak.
+        structural = out["ideal_outside_lobe_db"] >= STRUCTURAL_DB
         p_in = np.where(inside[None, :], p, -np.inf)
-        idx_in = np.argmax(p_in, axis=1)  # correct-side (in-mainlobe) peak
+        idx_in = np.argmax(p_in, axis=1)
         pdb = 10 * np.log10(p)
         err = np.array([gam[i] + step * _parabolic_peak(pdb[t], i) for t, i in enumerate(idx_in)])
+        out["structural_ambiguity"] = bool(structural)
+        if structural:
+            gross_mask = np.zeros(trials, dtype=bool)
+            out.update({"gross_error_rate": float("nan"), "gross_error_lo": float("nan"),
+                        "gross_error_hi": float("nan")})
+            out["status"] = (f"structural ambiguity: error-free outside lobe within {abs(STRUCTURAL_DB):g} dB of the "
+                             "mainlobe; gross-error rate undefined; fine error at the correct-side peak")
+        else:
+            gross_mask = pout > pin
+            gw = wilson_ci(int(np.sum(gross_mask)), trials)
+            out.update({"gross_error_rate": gw["p"], "gross_error_lo": gw["lo"], "gross_error_hi": gw["hi"]})
         fine = ~gross_mask
-        tw, gw = wilson_ci(int(np.sum(tie)), trials), wilson_ci(int(np.sum(gross_mask)), trials)
-        out.update({"unresolved_tie_rate": tw["p"], "unresolved_tie_lo": tw["lo"], "unresolved_tie_hi": tw["hi"],
-                    "gross_error_rate": gw["p"], "gross_error_lo": gw["lo"], "gross_error_hi": gw["hi"],
-                    "fine_trials": int(np.sum(fine))})
+        out["fine_trials"] = int(np.sum(fine))
         if np.sum(fine) >= 200:
             m2 = mean_ci(err[fine] ** 2)
             out.update({"fine_rms_error_deg": math.sqrt(m2["mean"]), "fine_rms_lo": math.sqrt(max(m2["lo"], 0.0)),
                         "fine_rms_hi": math.sqrt(m2["hi"])})
         else:
             out["fine_rms_error_deg"] = float(np.sqrt(np.mean(err[fine] ** 2))) if np.any(fine) else float("nan")
-            out["status"] = "fewer than 200 non-gross trials: no interval on the fine RMS error"
+            out["status"] = (out.get("status", "") + "; " if out.get("status") else "") + \
+                "fewer than 200 non-gross trials: no interval on the fine RMS error"
         return out
 
     def mc_scenarios(self):
@@ -616,13 +631,14 @@ class Sim02AStudy:
             ("sigma_total_phase_deg", "Total phase sigma (deg)", ".1f"), ("signal_loss_db", "Signal loss (dB)", ".2f"),
             ("rag_degradation_db", "RAG loss, ISO eta 0 dB (dB)", ".2f"), ("ideal_outside_lobe_db", "Ideal outside lobe (dB)", ".1f"),
             ("amb_level_p90_db", "Outside lobe, 90th pct (dB)", ".1f"), ("p_amb_ge_m6db", "P(>= -6 dB)", ".2f"),
-            ("p_amb_ge_m10db", "P(>= -10 dB)", ".2f"), ("unresolved_tie_rate", "Unresolved tie rate", ".2f"),
+            ("p_amb_ge_m10db", "P(>= -10 dB)", ".2f"), ("structural_ambiguity", "Structural ambiguity", ""),
             ("gross_error_rate", "Gross bearing error rate", ".2f"),
             ("fine_rms_error_deg", "Fine RMS error (deg)", ".2f"), ("status", "Note", "")],
             "Channel-error Monte Carlo, target azimuth 30 deg (all target azimuths in mc_scenarios.csv)",
             ["Noise-free calibration effects only; additive-noise estimation errors are SIM-02B.",
-             "Unresolved tie: the largest lobe outside the mainlobe equals the mainlobe peak exactly (line arrays: "
-             "the left/right mirror, for every error draw). Fine error is measured at the correct-side peak.",
+             "Structural ambiguity: the error-free cut has a lobe outside the mainlobe within 1 dB of it (line-array "
+             "left/right mirror, grating lobes); peak picking cannot resolve it, so the gross-error rate is n/a. "
+             "Fine error is measured at the correct-side peak.",
              "Undefined (n/a) where the error-free cut has no half-power discrimination. Intervals in the CSV."])
         rows = []
         for r in thr_sum:

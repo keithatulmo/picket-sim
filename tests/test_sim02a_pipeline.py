@@ -2,6 +2,8 @@
 
 import copy
 import json
+
+import numpy as np
 from pathlib import Path
 
 import pytest
@@ -66,18 +68,22 @@ def test_sim02a_smoke_is_bitwise_reproducible(tmp_path):
     assert sc["parameters_by_provenance"]["measured"] == 0
 
 
-def test_line_array_mirror_is_an_unresolved_tie_not_a_gross_error():
-    """A line's scanned response is symmetric in azimuth for any channel errors (nominal steering vectors
-    depend only on cos az), so target and mirror tie exactly; this must be reported as a tie."""
+def test_bearing_statistics_structural_ambiguity_and_gross_errors():
+    """Line arrays: the scanned response is symmetric in azimuth for any channel errors (nominal weights depend
+    only on cos az), so the mirror is a structural ambiguity, not a gross error. Arrays without a near-0 dB
+    error-free outside lobe must report a measured gross-error rate, and large errors must produce gross errors."""
     st = Sim02AStudy(_cfg(), log=lambda *a, **k: None)
-    em = next(e for e in st.errors if e.scenario_id.startswith("E1"))
+    e1 = next(e for e in st.errors if e.scenario_id.startswith("E1"))
+    e4 = next(e for e in st.errors if e.scenario_id.startswith("E4"))
     line = next(g for s, g in st.cands if s["id"] == "A1")
-    r = st._mc_case(line, 5000.0, 30.0, em, 300, ("test", "A1"))
-    assert r["closed_mainlobe"] and r["unresolved_tie_rate"] == 1.0 and r["gross_error_rate"] == 0.0
+    r = st._mc_case(line, 5000.0, 30.0, e1, 300, ("test", "A1"))
+    assert r["closed_mainlobe"] and r["structural_ambiguity"] and np.isnan(r["gross_error_rate"])
     assert r["fine_rms_error_deg"] < 2.0
-    planar = next(g for s, g in st.cands if s["id"] == "P8-C")
-    r = st._mc_case(planar, 2000.0, 30.0, em, 300, ("test", "P8-C"))
-    assert r["unresolved_tie_rate"] == 0.0
+    p8 = next(g for s, g in st.cands if s["id"] == "P8-C")
+    r = st._mc_case(p8, 5000.0, 30.0, e1, 300, ("test", "P8-C", "E1"))
+    assert not r["structural_ambiguity"] and r["gross_error_rate"] < 0.05
+    r = st._mc_case(p8, 5000.0, 30.0, e4, 300, ("test", "P8-C", "E4"))
+    assert not r["structural_ambiguity"] and r["gross_error_rate"] > 0.3  # 100 us timing at 5 kHz is pi rad
 
 
 def test_cut_statistics_undefined_without_half_power_discrimination():

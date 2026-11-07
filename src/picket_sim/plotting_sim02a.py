@@ -295,12 +295,15 @@ def fig_mc_ambiguity(study, mc_rows, outdir, written):
     fig, axes = plt.subplots(2, len(freqs), figsize=(3.4 * len(freqs), 8.0), sharey=True)
     for j, f in enumerate(freqs):
         for row, (key, lab) in enumerate((("p_amb_ge_m6db", "P(lobe >= -6 dB outside mainlobe)"),
-                                          ("gross_error_rate", "Gross error (dots) / unresolved tie (squares) rate"))):
+                                          ("gross_error_rate", "Gross error rate (x at 1.0: structural ambiguity)"))):
             ax = axes[row, j]
             for k, sid in enumerate(scen):
                 for i, aid in enumerate(ids):
                     r = next((x for x in mc_rows if x["array_id"] == aid and x["f_hz"] == f and x["scenario"] == sid
                               and x["target_az_deg"] == 30.0), None)
+                    if r is not None and row == 1 and r.get("structural_ambiguity"):
+                        ax.plot(1.0, i + (k - 1.5) * 0.18, marker="x", markersize=4, color=PAL[k], linestyle="none")
+                        continue
                     if r is None or key not in r or not np.isfinite(r.get(key, np.nan)):
                         continue
                     lo = r[f"{key}_lo"] if f"{key}_lo" in r else r.get("gross_error_lo")
@@ -308,9 +311,6 @@ def fig_mc_ambiguity(study, mc_rows, outdir, written):
                     y = i + (k - 1.5) * 0.18
                     ax.errorbar(r[key], y, xerr=[[r[key] - lo], [hi - r[key]]], fmt="o", markersize=3, color=PAL[k],
                                 elinewidth=0.7)
-                    if row == 1 and r.get("unresolved_tie_rate", 0) > 0:
-                        ax.plot(r["unresolved_tie_rate"], y, marker="s", markersize=4, markerfacecolor="none",
-                                markeredgecolor=PAL[k], linestyle="none")
             ax.set_yticks(range(len(ids)), ids, fontsize=7)
             ax.set_xlim(-0.03, 1.03)
             ax.invert_yaxis()
