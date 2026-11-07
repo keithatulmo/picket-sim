@@ -17,10 +17,13 @@
 | Rev | Date | Change |
 |---|---|---|
 | 0 | 2026-11-07 | Initial delivery (review package `deliverables/PCK-SIM-001_SIM-02A_Review_Package_20261107T214846Z_c56c0048_31da01b.zip`, retained unchanged). |
-| A | 2026-11-07 | Corrections to statements that did not match the run tables or the physics, found by a programmatic check of every Section 0 claim before transmittal (`tools/check_sim02a_claims.py`; `results/sim02a/ERRATA.md`). (1) Section 0 item 1: the 0.07 dB figure is a band median; gain rises to 0.73 dB at 200 Hz. "Approach 10 log10 N at every frequency" replaced by the measured gaps. (2) Section 0 item 3: Rev 0 put both circles' sidelobes "near -8 dB". The six-element circle's plateau is -6.02 dB, only 0.02 dB below the -6 dB criterion, so its -6 dB band is knife-edge (`reports/SIM-02A_criterion_margin.md`). (3) Section 0 item 5: the 65 % gross-error rate is the 30 deg target only; across the four target azimuths it is 65 to 81 %. (4) Section 4.2: same correction as (1) for short-correlation noise. (5) Section 4.5: criterion-margin sensitivity added. No run, table or figure was changed. |
+| A | 2026-11-07 | Corrections to statements that did not match the run tables or the physics, found by a programmatic check of every Section 0 claim before transmittal (`tools/check_sim02a_claims.py`; `results/sim02a/ERRATA.md`). (1) Section 0 item 1: the 0.07 dB figure is a band median; gain rises to 0.73 dB at 200 Hz. "Approach 10 log10 N at every frequency" replaced by the measured gaps. (2) Section 0 item 3: Rev 0 put both circles' sidelobes "near -8 dB". The six-element circle's plateau is -6.02 dB, only 0.02 dB below the -6 dB criterion, so its -6 dB band is knife-edge (`reports/SIM-02A_criterion_margin.md`). (3) Section 0 item 5: the 65 % gross-error rate is the 30 deg target only; across the four target azimuths it is 65 to 81 %, and E3 combines all four error types (timing supplies about two thirds of its phase variance at 15 kHz). (4) Section 4.2: same correction as (1) for short-correlation noise. (5) Section 4.5: criterion-margin sensitivity added. (6) Section 0 item 6: exact endfire, where target and mirror coincide, noted as the only exception. (7) Section 0 item 7: the 2 kHz host-noise range given separately for candidates up to 1.07 m (5.6 to 12.0 dB) and including the 4 m envelopes (4.7 to 12.0 dB). No run, table or figure was changed. |
 
 All numbers are read from `results/sim02a/20261107T214846Z_c56c0048_31da01b/tables/`; figures are in
-`results/sim02a/20261107T214846Z_c56c0048_31da01b/figures/`. **Every sensor, ambient, host and channel-error level in this study
+`results/sim02a/20261107T214846Z_c56c0048_31da01b/figures/`. The exceptions are the criterion-margin values
+(sidelobe plateaus and bands at the criterion +/- 0.1 dB, Sections 0 and 4.5), which come from the Rev A
+supplement `reports/SIM-02A_criterion_margin.md`, computed with the study code and self-checked against these
+tables. **Every sensor, ambient, host and channel-error level in this study
 is an assumed scenario** (72 assumed parameters, 1 published constant, 0 measured values;
 `tables/parameters_by_provenance.md`). Results that depend on absolute levels are scenario results.
 Wherever possible results are expressed as ratios (self-noise to ambient, host to ambient) so that they
@@ -54,8 +57,11 @@ a detection range, or a hardware requirement.
 3. **At equal footprint, six and eight elements on a circle widen the conventional band under -3 and
    -6 dB criteria, but much less under -10 dB.** Guaranteed band ratios over horizon steering at the
    0.45 m footprint: 2x2 square 1.28 / 1.14 / 1.03, six-element circle 2.53 / 2.37 / 1.28,
-   eight-element circle 3.78 / 2.80 / 1.32 (-3 / -6 / -10 dB). The circles' intrinsic sidelobes, near
-   -8 dB, cap the -10 dB band. They also add gain where sensors are uncorrelated: 8.58 dB for the
+   eight-element circle 3.78 / 2.80 / 1.32 (-3 / -6 / -10 dB). The circles' intrinsic sidelobe
+   plateaus (worst horizon steering), -6.02 dB for six elements and -7.77 dB for eight, cap the -10 dB
+   band. The six-element -6 dB result is knife-edge: its plateau lies 0.02 dB below the criterion, and
+   the guaranteed ratio falls from 2.37 at -6.0 dB to 1.65 at -6.1 dB. No other candidate's guaranteed
+   ratio changes by more than 0.03 across +/- 0.1 dB of any criterion (`reports/SIM-02A_criterion_margin.md`). They also add gain where sensors are uncorrelated: 8.58 dB for the
    eight-element circle against 5.88 dB for the square from 2 to 10 kHz in isotropic noise (band
    medians). (High, for narrowband DAS.)
 4. **Four-element volumetric envelopes have no band free of -6 dB narrowband ambiguity lobes for every
@@ -73,8 +79,8 @@ a detection range, or a hardware requirement.
 7. **Arrays reject host noise only when the target is away from the host direction and the frequency is
    high enough.** With a host source at +10 dB relative to ambient, the median realized gain at 100 Hz
    is 0.0 to 0.2 dB for every candidate up to 1.07 m (2.1 to 3.2 dB for the 4 m envelopes). At 2 kHz
-   the median over target directions reaches 4.7 to 12.0 dB, but the worst steering direction stays at
-   0.3 to 1.7 dB.
+   the median over target directions reaches 5.6 to 12.0 dB for candidates up to 1.07 m (4.7 to 12.0 dB
+   including the 4 m envelopes), but the worst steering direction stays at 0.3 to 1.7 dB.
    Assumed generic host placements; no vessel geometry. (Moderate.)
 8. **Pareto results change with the provisional tolerances and are not a basis for elimination.**
    Doubling the SIM-01 engineering tolerances adds A2 to the dominated set; in the SIM-02A attribute
@@ -357,6 +363,14 @@ the correct-side peak):
 * **Stricter criteria shrink bands unevenly.** Line arrays keep most of their band (sidelobes of a
   4-element line are -11.3 dB below the mainlobe). Squares and circles lose most of it at -10 dB.
   Volumetric 4-element envelopes have no guaranteed band at -6 or -10 dB.
+* **Criterion margin (Rev A supplement).** `reports/SIM-02A_criterion_margin.md` recomputes every
+  guaranteed band at each criterion and at the criterion +/- 0.1 dB with the study code; at the nominal
+  criteria it reproduces this table to a relative 1e-9. One result is knife-edge. The six-element
+  circles (P6-C, P6-E) have a sidelobe plateau at -6.02 dB, which equals half amplitude
+  (20 log10 0.5) to within 1e-7 dB, so their -6 dB guaranteed ratio is 2.37 at -6.0 dB and 1.65 at
+  -6.1 dB. A -6 dB criterion read as half amplitude sits exactly on the plateau. Every other guaranteed
+  ratio changes by at most 0.03 across +/- 0.1 dB. The eight-element circles' plateau is -7.77 dB and
+  the four-element lines' is -11.30 dB.
 * These are criteria for narrowband DAS. No threshold is proposed as a requirement (D03).
 
 ### 4.6 Pareto tolerance sensitivity (D06)

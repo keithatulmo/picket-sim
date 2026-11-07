@@ -90,6 +90,9 @@ Revision A; no run, table or figure changed:
   fall 0.9 to 1.7 dB short below 2 kHz.
 * The 65 % gross-error rate is one of four target azimuths (range 65 to 81 %), and it comes from the
   combined E3 scenario, not from a 10 us timing error alone.
+* Two statements were imprecise in scope: the 2 kHz host-noise range (4.7 dB is the 4 m envelope;
+  candidates up to 1.07 m give 5.6 to 12.0 dB), and the line-array ambiguity, which has one exception
+  at exact endfire, where target and mirror coincide.
 
 ## 5. Principal SIM-02A findings
 
@@ -101,7 +104,9 @@ Revision A; no run, table or figure changed:
 2. Under the assumed sensors, ambient noise dominates almost everywhere. B4 is not acquirable by the
    low-cost scenario, and 16-bit quantization limits the mid scenario in B3 and B4.
 3. At equal footprint, 6- and 8-element circles widen the -3 dB guaranteed band from 1.28 (square) to
-   2.53 and 3.78, but only to 1.28 and 1.32 under -10 dB.
+   2.53 and 3.78, but only to 1.28 and 1.32 under -10 dB, because their sidelobe plateaus sit at
+   -6.02 and -7.77 dB. The six-element -6 dB ratio (2.37) is knife-edge: it falls to 1.65 at -6.1 dB.
+   No other guaranteed ratio moves by more than 0.03 across +/- 0.1 dB.
 4. Four-element volumetric envelopes have no guaranteed band at -6 or -10 dB (narrowband).
 5. Bearing statistics are stricter than signal loss. For example, under the loose scenario E3 (1 dB,
    10 deg, 1 cm, 10 us) at 15 kHz the 8-element compact circle loses 4.3 to 4.4 dB of signal but makes

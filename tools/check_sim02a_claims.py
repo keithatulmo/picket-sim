@@ -15,9 +15,12 @@ import argparse
 import csv
 import gzip
 import math
+import re
 import sys
 from collections import Counter
 from pathlib import Path
+
+import numpy as np
 
 RESULTS: list[tuple[bool, str, str, str]] = []
 
@@ -42,6 +45,9 @@ def main() -> int:
     ap.add_argument("run_dir")
     ap.add_argument("--sim01", default="results/sim01/20261107T203522Z_d64d297c_8043684")
     ap.add_argument("--supplement", default="reports/SIM-02A_criterion_margin")
+    ap.add_argument("--report", default="reports/SIM-02A_engineering_report.md")
+    ap.add_argument("--transmittal", default="reports/SIM-02A_transmittal.md")
+    ap.add_argument("--message", default="reports/SIM-02A_reviewer_message.md")
     a = ap.parse_args()
     T = Path(a.run_dir) / "tables"
     P = lambda f: list(csv.DictReader(open(T / f)))  # noqa: E731
@@ -102,15 +108,46 @@ def main() -> int:
     psl = list(csv.DictReader(open(f"{sup}_psl.csv")))
     bands = {r["array_id"]: r for r in csv.DictReader(open(f"{sup}_bands.csv"))}
 
-    def plateau(k):
-        v = sorted(float(r["psl_worst_steering_db"]) for r in psl if r["array_id"] == k and r["psl_worst_steering_db"] not in ("", "nan"))
-        return v[len(v) // 2] if len(v) % 2 else 0.5 * (v[len(v) // 2 - 1] + v[len(v) // 2])
+    import importlib.util
 
-    check("P6-C, P8-C median worst-steering PSL over -3 dB band (dB)", (-6.02, -7.77), (rd(plateau("P6-C"), 2), rd(plateau("P8-C"), 2)))
-    check("P6-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB", (2.37, 2.37, 1.69),
+    spec = importlib.util.spec_from_file_location("margin", Path(__file__).with_name("sim02a_criterion_margin.py"))
+    margin = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(margin)
+
+    def plateau(k):
+        ps = [r for r in psl if r["array_id"] == k]
+        return margin.plateau(np.array([float(r["f_hz"]) for r in ps]), np.array([float(r["psl_worst_steering_db"]) for r in ps]))
+
+    check("P6-C, P8-C worst-steering sidelobe plateau (dB)", (-6.02, -7.77), (rd(plateau("P6-C")[0], 2), rd(plateau("P8-C")[0], 2)))
+    check("P6-C plateau margin below the -6 dB criterion (dB)", 0.02, rd(-6.0 - plateau("P6-C")[0], 2))
+    check("P6-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB", (2.38, 2.37, 1.65),
           tuple(rd(bands["P6-C"][f"guaranteed_{t}_ratio"], 2) for t in ("m5p9db", "m6db", "m6p1db")))
-    check("P8-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB", (2.80, 2.80, 2.80),
+    check("P8-C guaranteed ratio at -5.9 / -6.0 / -6.1 dB", (2.81, 2.80, 2.79),
           tuple(rd(bands["P8-C"][f"guaranteed_{t}_ratio"], 2) for t in ("m5p9db", "m6db", "m6p1db")))
+    knife = set()
+    for k, r in bands.items():
+        for nom, lo_t, hi_t in (("3", "2p9", "3p1"), ("6", "5p9", "6p1"), ("10", "9p9", "10p1")):
+            v = [r[f"guaranteed_m{t}db_ratio"] for t in (lo_t, nom, hi_t)]
+            if any(x in ("", "nan", "inf") for x in v):
+                continue
+            a_, n_, b_ = (float(x) for x in v)
+            if abs(a_ - b_) > 0.1 * n_:
+                knife.add(k)
+    knife = sorted(knife)
+    check("knife-edge candidates (ratio change > 10 % across +/- 0.1 dB)", ["P6-C", "P6-E"], knife)
+    other = 0.0
+    for k, r in bands.items():
+        if k in knife:
+            continue
+        for nom, lo_t, hi_t in (("3", "2p9", "3p1"), ("6", "5p9", "6p1"), ("10", "9p9", "10p1")):
+            v = [r[f"guaranteed_m{t}db_ratio"] for t in (lo_t, nom, hi_t)]
+            if not any(x in ("", "nan", "inf") for x in v):
+                other = max(other, abs(float(v[0]) - float(v[2])))
+    check("largest ratio change across +/- 0.1 dB for all other candidates", 0.03, rd(other, 2))
+    check("P6-C plateau equals 20 log10(0.5) within 1e-7 dB", True, abs(plateau("P6-C")[0] - 20 * math.log10(0.5)) < 1e-7)
+    check("P6-E guaranteed ratio at -6.0 / -6.1 dB", (2.37, 1.65), tuple(rd(bands["P6-E"][f"guaranteed_{t}_ratio"], 2) for t in ("m6db", "m6p1db")))
+    lp = [rd(plateau(k)[0], 2) for k in ("A1", "A2", "P8-E")]
+    check("plateaus: A1, A2 (lines), P8-E (dB)", [-11.3, -11.3, -7.77], lp)
 
     # ---- item 4: volumetric
     vol = [ts[k] for k in ("V-C", "V-D", "V-DS")]
@@ -150,8 +187,11 @@ def main() -> int:
     check("host +10 dB, 100 Hz, median gain, arrays <= 1.07 m (dB)", (0.0, 0.2), rng([r["rag_median_db"] for r in h100 if r["array_id"] in small], 1))
     check("host +10 dB, 100 Hz, median gain, V-D and V-DS (dB)", (2.1, 3.2), rng([r["rag_median_db"] for r in h100 if r["array_id"] in ("V-D", "V-DS")], 1))
     h2k = [r for r in hn if float(r["f_hz"]) == 2000 and r["array_id"] in small]
-    check("host +10 dB, 2 kHz, median gain range (dB)", (4.7, 12.0), rng([r["rag_median_db"] for r in h2k], 1))
-    check("host +10 dB, 2 kHz, worst steering range (dB)", (0.3, 1.7), rng([r["rag_min_db"] for r in h2k], 1))
+    h2k_all = [r for r in hn if float(r["f_hz"]) == 2000 and r["array_id"] != "A0"]
+    check("host +10 dB, 2 kHz, median gain range, arrays <= 1.07 m (dB)", (5.6, 12.0), rng([r["rag_median_db"] for r in h2k], 1))
+    check("host +10 dB, 2 kHz, median gain range, all candidates (dB)", (4.7, 12.0), rng([r["rag_median_db"] for r in h2k_all], 1))
+    check("host +10 dB, 2 kHz, worst steering range, both scopes (dB)", ((0.3, 1.7), (0.3, 1.7)),
+          (rng([r["rag_min_db"] for r in h2k], 1), rng([r["rag_min_db"] for r in h2k_all], 1)))
 
     # ---- item 8: Pareto
     par = P("pareto_tolerance_sensitivity.csv")
@@ -174,6 +214,32 @@ def main() -> int:
 
     check("SIM-01 horizon guaranteed ratios A1, A3, A4", (1.77, 1.28, 1.06), tuple(ratios(k)[0] for k in ("A1", "A3", "A4")))
     check("SIM-01 horizon median ratios A1, A3, A4", (3.54, 1.54, 1.36), tuple(ratios(k)[1] for k in ("A1", "A3", "A4")))
+
+    # ---- the documents must quote the checked values and must not repeat the Rev 0 errors
+    docs = {"report": Path(a.report), "transmittal": Path(a.transmittal), "message": Path(a.message)}
+    text = {k: " ".join(p.read_text(encoding="utf-8").split()) for k, p in docs.items() if p.exists()}
+    required = {
+        "report": ["at most 0.07 dB from 20 to 200 Hz", "reaches at most 0.73 dB", "within 0.29 dB",
+                   "fall 0.9 to 1.7 dB short below 2 kHz", "-6.02 dB for six elements and -7.77 dB for eight",
+                   "falls from 2.37 at -6.0 dB to 1.65 at -6.1 dB", "4.3 to 4.4 dB of signal",
+                   "65 to 81 % of trials", "5.6 to 12.0 dB", "exact endfire"],
+        "transmittal": ["at most 0.73 dB at 200 Hz", "within 0.29 dB", "0.9 to 1.7 dB short below 2 kHz",
+                        "-6.02 and -7.77 dB", "falls to 1.65 at -6.1 dB", "4.3 to 4.4 dB", "65 to 81 %"],
+        "message": ["at most 0.73 dB at 200 Hz", "within 0.29 dB", "0.9 to 1.7 dB short below 2 kHz",
+                    "-6.02 and -7.77 dB", "from 2.37 to 1.65 at -6.1 dB", "4.3 to 4.4 dB",
+                    "65 to 81 percent", "1.77 for the line arrays", "3.54, 1.54 and 1.36", "72 parameters"],
+    }
+    forbidden = ["near -8 dB", "near -8", "approach 10 log10 N at every frequency", "approaches 10 log10 N even at",
+                 "10 us timing error at 15 kHz", "10 us timing error at 15 kHz causes", "—"]
+    for k, phrases in required.items():
+        if k not in text:
+            check(f"{k}: document present", True, False)
+            continue
+        missing = [ph for ph in phrases if ph not in text[k]]
+        check(f"{k}: quotes every checked value", [], missing)
+        unquoted = re.sub(r'"[^"]*"', "", text[k])  # Rev A quotes Rev 0 errors when describing them
+        bad = [ph for ph in forbidden if ph in unquoted]
+        check(f"{k}: contains no Rev 0 error phrase or em dash", [], bad)
 
     w = max(len(x[1]) for x in RESULTS)
     for ok, label, q, cpt in RESULTS:
