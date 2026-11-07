@@ -23,22 +23,37 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
 
     if args.cmd == "validate":
+        import yaml
+
         from .config import config_sha256, load_config
 
-        cfg = load_config(args.config)
+        with open(args.config, "r", encoding="utf-8") as fh:
+            raw = yaml.safe_load(fh)
+        if raw.get("experiment", {}).get("id") == "SIM-02A":
+            from .experiments.sim02a import load_sim02a_config
+
+            cfg = load_sim02a_config(args.config)
+        else:
+            cfg = load_config(args.config)
         print(f"OK {args.config} sha256={config_sha256(cfg)}")
         return 0
     from .config import load_config
 
-    exp = load_config(args.config)["experiment"]["id"]
-    if exp != "SIM-01":
+    import yaml
+
+    with open(args.config, "r", encoding="utf-8") as fh:
+        exp = (yaml.safe_load(fh) or {}).get("experiment", {}).get("id")
+    if exp == "SIM-01":
+        load_config(args.config)
+        from .experiments import sim01 as runner
+    elif exp == "SIM-02A":
+        from .experiments import sim02a as runner
+    else:
         print(f"no runner registered for experiment id {exp!r}", file=sys.stderr)
         return 2
-    from .experiments import sim01
-
     try:
-        sim01.run(args.config, args.output_root, args.allow_dirty, not args.no_figures,
-                  argv=["picket-sim", *argv])
+        runner.run(args.config, args.output_root, args.allow_dirty, not args.no_figures,
+                   argv=["picket-sim", *argv])
     except DirtyTreeError as exc:
         print(f"refusing to run: {exc}", file=sys.stderr)
         return 3

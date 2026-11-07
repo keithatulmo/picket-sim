@@ -55,4 +55,6 @@ def wilson_ci(k: int, n: int) -> dict:
     den = 1 + z2 / n
     centre = (p + z2 / (2 * n)) / den
     half = Z95 * np.sqrt(p * (1 - p) / n + z2 / (4 * n * n)) / den
-    return {"p": p, "lo": max(0.0, centre - half), "hi": min(1.0, centre + half), "k": int(k), "n": int(n)}
+    # The Wilson interval always contains p; enforce it against floating-point rounding at p = 0 or 1.
+    lo, hi = min(max(0.0, centre - half), p), max(min(1.0, centre + half), p)
+    return {"p": p, "lo": lo, "hi": hi, "k": int(k), "n": int(n)}

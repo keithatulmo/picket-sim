@@ -1,0 +1,548 @@
+# SMOKE configuration for automated tests only (coarse grids, candidate subset).
+# Generated from sim02a_baseline.yaml by tools/make_sim02a_smoke.py. Not for engineering conclusions.
+experiment:
+  id: SIM-02A
+  title: Sensor, noise and error modeling
+  description: Fast smoke configuration (coarse grids, subset of candidates) for automated tests. Not for engineering use.
+  assumptions:
+  - Narrowband, far-field plane-wave signals in a homogeneous medium (as SIM-01), plus near-field point sources for host noise.
+  - Ideal omnidirectional point hydrophones; per-channel errors are the only deviations from ideal elements.
+  - Conventional uniformly weighted delay-and-sum; nominal positions and timing in the beamformer.
+  - Sensor, ambient, host and error levels are assumed scenarios (provenance tagged); results are reported as ratios where
+    possible.
+  - Ambient noise spatial structure is modeled by unit-power fields; absolute ambient levels enter only the acquisition and
+    dynamic-range analysis.
+  - Channel errors are independent zero-mean Gaussian across channels and trials.
+  - Planar candidates lie in the horizontal x-y plane; lines along x; volumetric envelopes extend downward (z negative).
+physics:
+  sound_speed_mps: 1500.0
+frequency_grid:
+  f_min_hz: 20.0
+  f_max_hz: 20000.0
+  points_per_decade: 5
+bands_hz:
+  B1:
+  - 20.0
+  - 200.0
+  B2:
+  - 200.0
+  - 2000.0
+  B3:
+  - 2000.0
+  - 10000.0
+  B4:
+  - 10000.0
+  - 20000.0
+exploratory_bands:
+- B4
+steering:
+  horizon_az_step_deg: 90.0
+grids:
+  sphere:
+    n_el: 61
+    n_az: 120
+  cut_points: 720
+  reduced_1d_points: 801
+ambiguity_levels_db:
+- -3.0
+- -6.0
+- -10.0
+candidates:
+- id: A0
+  family: reference
+  footprint: none
+  label: Single hydrophone
+  type: single
+- id: A1
+  family: linear
+  footprint: C
+  label: Line L4(d=0.15)
+  type: linear
+  n_elements: 4
+  spacing_m: 0.15
+  axis:
+  - 1
+  - 0
+  - 0
+- id: A3
+  family: planar
+  footprint: C (0.42 m)
+  label: 2x2 square 0.30 m
+  type: rectangular
+  nx: 2
+  ny: 2
+  dx_m: 0.3
+  dy_m: 0.3
+- id: A4
+  family: volumetric
+  footprint: I
+  label: A4 (envelope 1.00x0.85x0.75 m)
+  type: envelope
+  envelope_m:
+  - 1.0
+  - 0.85
+  - 0.75
+- id: P6-C
+  family: planar
+  footprint: C
+  label: 6-el circle
+  0.45 m: null
+  type: circular
+  n_elements: 6
+  diameter_m: 0.45
+- id: V-DS
+  family: volumetric
+  footprint: D
+  label: Envelope 4.0x3.4x0.25 m (draft-limited)
+  type: envelope
+  envelope_m:
+  - 4.0
+  - 3.4
+  - 0.25
+sensor_scenarios:
+- id: S1-ASSUMED-lownoise
+  description: Illustrative low-noise chain (higher sensitivity, 24-bit, 96 kHz). Assumed; not a product.
+  hydrophone:
+    sensitivity_db_re_1v_per_upa:
+      value: -185.0
+      provenance: assumed
+      source: illustrative bare-element (open-circuit) sensitivity, larger element; used to refer element thermal noise
+    capacitance_f:
+      value: 1.0e-08
+      provenance: assumed
+      source: illustrative piezoceramic capacitance
+    loss_tangent:
+      value: 0.01
+      provenance: assumed
+      source: illustrative dielectric loss tangent
+    temperature_k:
+      value: 283.0
+      provenance: assumed
+      source: 10 degC water temperature assumed
+  preamp:
+    gain_db:
+      value: 20.0
+      provenance: assumed
+      source: illustrative preamplifier gain
+    voltage_noise_v_per_rthz:
+      value: 1.0e-09
+      provenance: assumed
+      source: illustrative low-noise input stage
+    current_noise_a_per_rthz:
+      value: 1.0e-15
+      provenance: assumed
+      source: illustrative input current noise
+    flicker_corner_hz:
+      value: 50.0
+      provenance: assumed
+      source: illustrative 1/f corner
+    max_output_v_peak:
+      value: 5.0
+      provenance: assumed
+      source: illustrative preamplifier swing
+  adc:
+    bits:
+      value: 24
+      provenance: assumed
+      source: illustrative 24-bit converter (ideal quantization; no ENOB loss modeled)
+    full_scale_v_peak:
+      value: 2.5
+      provenance: assumed
+      source: illustrative converter full scale
+    sample_rate_hz:
+      value: 96000.0
+      provenance: assumed
+      source: illustrative sample rate covering B4
+  bandwidth:
+    bandwidth_low_hz:
+      value: 10.0
+      provenance: assumed
+      source: declared usable band of the scenario
+    bandwidth_high_hz:
+      value: 40000.0
+      provenance: assumed
+      source: declared usable band of the scenario
+- id: S2-ASSUMED-mid
+  description: Illustrative mid-range chain (16-bit, 48 kHz). Assumed; not a product.
+  hydrophone:
+    sensitivity_db_re_1v_per_upa:
+      value: -195.0
+      provenance: assumed
+      source: illustrative bare-element (open-circuit) sensitivity, mid-size element
+    capacitance_f:
+      value: 5.0e-09
+      provenance: assumed
+      source: illustrative piezoceramic capacitance
+    loss_tangent:
+      value: 0.015
+      provenance: assumed
+      source: illustrative dielectric loss tangent
+    temperature_k:
+      value: 283.0
+      provenance: assumed
+      source: 10 degC water temperature assumed
+  preamp:
+    gain_db:
+      value: 30.0
+      provenance: assumed
+      source: illustrative preamplifier gain
+    voltage_noise_v_per_rthz:
+      value: 3.0e-09
+      provenance: assumed
+      source: illustrative input stage
+    current_noise_a_per_rthz:
+      value: 5.0e-15
+      provenance: assumed
+      source: illustrative input current noise
+    flicker_corner_hz:
+      value: 100.0
+      provenance: assumed
+      source: illustrative 1/f corner
+    max_output_v_peak:
+      value: 5.0
+      provenance: assumed
+      source: illustrative preamplifier swing
+  adc:
+    bits:
+      value: 16
+      provenance: assumed
+      source: illustrative 16-bit converter (ideal quantization)
+    full_scale_v_peak:
+      value: 2.5
+      provenance: assumed
+      source: illustrative converter full scale
+    sample_rate_hz:
+      value: 48000.0
+      provenance: assumed
+      source: illustrative sample rate
+  bandwidth:
+    bandwidth_low_hz:
+      value: 10.0
+      provenance: assumed
+      source: declared usable band of the scenario
+    bandwidth_high_hz:
+      value: 20000.0
+      provenance: assumed
+      source: declared usable band of the scenario
+- id: S3-ASSUMED-lowcost
+  description: Illustrative low-cost chain (low sensitivity, 16-bit, 32 kHz). Assumed; not a product.
+  hydrophone:
+    sensitivity_db_re_1v_per_upa:
+      value: -205.0
+      provenance: assumed
+      source: illustrative bare-element (open-circuit) sensitivity, small element
+    capacitance_f:
+      value: 1.0e-09
+      provenance: assumed
+      source: illustrative small-element capacitance
+    loss_tangent:
+      value: 0.02
+      provenance: assumed
+      source: illustrative dielectric loss tangent
+    temperature_k:
+      value: 283.0
+      provenance: assumed
+      source: 10 degC water temperature assumed
+  preamp:
+    gain_db:
+      value: 40.0
+      provenance: assumed
+      source: illustrative preamplifier gain
+    voltage_noise_v_per_rthz:
+      value: 1.0e-08
+      provenance: assumed
+      source: illustrative general-purpose input stage
+    current_noise_a_per_rthz:
+      value: 1.0e-14
+      provenance: assumed
+      source: illustrative input current noise
+    flicker_corner_hz:
+      value: 1000.0
+      provenance: assumed
+      source: illustrative 1/f corner
+    max_output_v_peak:
+      value: 5.0
+      provenance: assumed
+      source: illustrative preamplifier swing
+  adc:
+    bits:
+      value: 16
+      provenance: assumed
+      source: illustrative 16-bit converter (ideal quantization)
+    full_scale_v_peak:
+      value: 1.0
+      provenance: assumed
+      source: illustrative converter full scale
+    sample_rate_hz:
+      value: 32000.0
+      provenance: assumed
+      source: illustrative sample rate (does not cover B4)
+  bandwidth:
+    bandwidth_low_hz:
+      value: 20.0
+      provenance: assumed
+      source: declared usable band of the scenario
+    bandwidth_high_hz:
+      value: 12000.0
+      provenance: assumed
+      source: declared usable band of the scenario
+ambient_scenarios:
+- id: AMB-ASSUMED-quiet
+  level_db_re_1upa2_per_hz:
+    value: 45.0
+    provenance: assumed
+    source: illustrative low ambient level at 1 kHz
+  reference_frequency_hz:
+    value: 1000.0
+    provenance: assumed
+    source: reference frequency of the power law
+  slope_db_per_decade:
+    value: -17.0
+    provenance: assumed
+    source: illustrative spectral slope, not fitted to data
+- id: AMB-ASSUMED-moderate
+  level_db_re_1upa2_per_hz:
+    value: 60.0
+    provenance: assumed
+    source: illustrative moderate ambient level at 1 kHz
+  reference_frequency_hz:
+    value: 1000.0
+    provenance: assumed
+    source: reference frequency of the power law
+  slope_db_per_decade:
+    value: -17.0
+    provenance: assumed
+    source: illustrative spectral slope, not fitted to data
+- id: AMB-ASSUMED-loud
+  level_db_re_1upa2_per_hz:
+    value: 75.0
+    provenance: assumed
+    source: illustrative high ambient level at 1 kHz
+  reference_frequency_hz:
+    value: 1000.0
+    provenance: assumed
+    source: reference frequency of the power law
+  slope_db_per_decade:
+    value: -17.0
+    provenance: assumed
+    source: illustrative spectral slope, not fitted to data
+signal_classes:
+- id: tonal
+  kind: tonal
+- id: harmonic8
+  kind: harmonic
+  n_partials: 8
+- id: broadband
+  kind: specified
+  crest_factor_db:
+    value: 12.04
+    provenance: assumed
+    source: 4-sigma peak criterion for Gaussian noise (P(|x|>4 sigma) = 6.3e-5)
+- id: transient
+  kind: specified
+  crest_factor_db:
+    value: 25.0
+    provenance: assumed
+    source: illustrative impulsive crest factor for headroom sizing
+noise_fields:
+- id: WHITE
+  description: spatially uncorrelated ambient
+  components:
+  - type: white
+    fraction: 1.0
+- id: ISO
+  description: spherically isotropic (SIM-01 DI field)
+  components:
+  - type: spherical
+    fraction: 1.0
+- id: HOR
+  description: horizontally isotropic (all azimuths at el = 0)
+  components:
+  - type: horizontal
+    fraction: 1.0
+- id: UP2
+  description: upward-weighted density ((1 + sin el)/2)^2 (assumed shape)
+  components:
+  - type: directional
+    fraction: 1.0
+    shape: upward
+    exponent: 2.0
+noise_field_parameters:
+  provenance: assumed
+  source: Field shapes and the 0.1 m correlation length are assumed for sensitivity analysis; not fitted to data.
+eta_db:
+- null
+- 0.0
+- 20.0
+host_scenarios:
+  provenance: assumed
+  source: Generic host-noise source placements and levels for sensitivity analysis; no vessel geometry implied.
+  field: ISO
+  eta_db: -10.0
+  hnr_db:
+  - 10.0
+  frequencies_hz:
+  - 500.0
+  - 2000.0
+  sources:
+  - id: H-near
+    type: near_field
+    range_m: 3.0
+    az_deg: 180.0
+    el_deg: 20.0
+  - id: H-mid
+    type: near_field
+    range_m: 15.0
+    az_deg: 180.0
+    el_deg: 10.0
+  - id: H-far
+    type: far_field
+    az_deg: 180.0
+    el_deg: 5.0
+error_scenarios:
+- id: E1-ASSUMED-tight
+  sigma_gain_db:
+    value: 0.25
+    provenance: assumed
+    source: illustrative tight calibration
+  sigma_phase_deg:
+    value: 1.0
+    provenance: assumed
+    source: illustrative tight calibration
+  sigma_position_m:
+    value: 0.001
+    provenance: assumed
+    source: illustrative tight position knowledge
+  sigma_timing_s:
+    value: 1.0e-07
+    provenance: assumed
+    source: illustrative tight synchronization
+- id: E2-ASSUMED-moderate
+  sigma_gain_db:
+    value: 0.5
+    provenance: assumed
+    source: illustrative moderate calibration
+  sigma_phase_deg:
+    value: 3.0
+    provenance: assumed
+    source: illustrative moderate calibration
+  sigma_position_m:
+    value: 0.003
+    provenance: assumed
+    source: illustrative moderate position knowledge
+  sigma_timing_s:
+    value: 1.0e-06
+    provenance: assumed
+    source: illustrative moderate synchronization
+- id: E3-ASSUMED-loose
+  sigma_gain_db:
+    value: 1.0
+    provenance: assumed
+    source: illustrative loose calibration
+  sigma_phase_deg:
+    value: 10.0
+    provenance: assumed
+    source: illustrative loose calibration
+  sigma_position_m:
+    value: 0.01
+    provenance: assumed
+    source: illustrative loose position knowledge
+  sigma_timing_s:
+    value: 1.0e-05
+    provenance: assumed
+    source: illustrative loose synchronization
+- id: E4-ASSUMED-unsynchronized
+  sigma_gain_db:
+    value: 1.0
+    provenance: assumed
+    source: illustrative distributed modules without tight calibration
+  sigma_phase_deg:
+    value: 10.0
+    provenance: assumed
+    source: illustrative distributed modules
+  sigma_position_m:
+    value: 0.03
+    provenance: assumed
+    source: illustrative distributed-installation position knowledge
+  sigma_timing_s:
+    value: 0.0001
+    provenance: assumed
+    source: illustrative unsynchronized module clocks
+error_sweeps:
+  provenance: assumed
+  source: Sweep levels chosen to span tight to loose; not requirements.
+  sigma_phase_deg:
+  - 3.0
+  - 30.0
+  sigma_gain_db:
+  - 0.5
+  - 2.0
+  sigma_position_m:
+  - 0.003
+  - 0.03
+  sigma_timing_s:
+  - 1.0e-06
+  - 0.0001
+monte_carlo:
+  base_seed: 20261107
+  trials: 200
+  trials_sweep: 200
+  ci_relative_target: 0.1
+  frequencies_hz:
+  - 1000.0
+  - 5000.0
+  target_az_deg:
+  - 30.0
+  sweep_target_az_deg: 30.0
+  scan_step_deg: 0.5
+  rag_eta_db: 0.0
+  rag_thermal_fraction: 0.5
+regression: {}
+pareto:
+  tolerance_scales:
+  - 0.0
+  - 0.5
+  - 1.0
+  - 2.0
+  - 4.0
+  sim01_comparison: results/sim01/20261107T203522Z_d64d297c_8043684/tables/comparison.csv
+  sim01_config: configs/sim01/sim01_baseline.yaml
+  sim02a_attributes:
+  - key: n_elements
+    sense: min
+    label: channels
+    tol: 0
+  - key: aperture_m
+    sense: min
+    label: max dimension (m)
+    tol: 0.05
+  - key: rank
+    sense: max
+    label: observable dimensions
+    tol: 0
+  - key: rag_iso_eta0_B1_db
+    sense: max
+    label: RAG ISO eta 0 dB B1
+    tol: 0.25
+  - key: rag_iso_eta0_B2_db
+    sense: max
+    label: RAG ISO eta 0 dB B2
+    tol: 0.25
+  - key: rag_iso_eta0_B3_db
+    sense: max
+    label: RAG ISO eta 0 dB B3
+    tol: 0.25
+  - key: f_hp_median_hz
+    sense: min
+    label: half-power onset (Hz)
+    rel_tol: 0.05
+  - key: f_alias_m3db_hz
+    sense: max
+    label: worst-case -3 dB onset (Hz)
+    rel_tol: 0.05
+  - key: e2_p_amb6_5k
+    sense: min
+    label: P(lobe >= -6 dB outside mainlobe), E2, 5 kHz
+    tol: 0.05
+output:
+  root: results/_scratch/sim02a_smoke
