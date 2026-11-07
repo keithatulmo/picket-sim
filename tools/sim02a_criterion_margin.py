@@ -38,7 +38,7 @@ from picket_sim.acoustics import PlaneWaveManifold  # noqa: E402
 from picket_sim.analysis import _lvl  # noqa: E402
 from picket_sim.experiments.sim02a import Sim02AStudy  # noqa: E402
 from picket_sim.metrics import observable_lobe_metrics  # noqa: E402
-from picket_sim.records import git_state  # noqa: E402
+from picket_sim.records import git_state, software_versions  # noqa: E402
 
 NOMINAL = (-3.0, -6.0, -10.0)
 DELTA_DB = 0.1
@@ -179,6 +179,9 @@ def main() -> int:
         f"Code commit `{(gs['git_commit'] or 'unknown')[:7]}`"
         f"{' (DIRTY TREE)' if gs['git_dirty'] else ' (clean tree)'}. "
         "The run directory is read, never written.",
+        "",
+        "Software: " + ", ".join(f"{k} {v}" for k, v in software_versions().items() if k in ("picket_sim", "python", "numpy"))
+        + "; run of record: " + ", ".join(f"{k} {record['software'].get(k)}" for k in ("picket_sim", "python", "numpy")) + ".",
         "",
         f"Self-check: the guaranteed and median bands recomputed at -3, -6 and -10 dB reproduce the run-of-record "
         f"`thresholds_summary.csv` ({n_checked} values, relative tolerance {REPRO_REL_TOL:g}).",
