@@ -142,4 +142,4 @@ numbers do not.
 5. `reports/SIM-02A_criterion_margin.md` and `reports/SIM-02A_claims_check.txt`, for the Rev A corrections.
 6. Optional: reproduce with `make sim02a` (about 6 minutes including the test suite) and compare against
    `SHA256SUMS.txt`; `make sim02a-claims` rechecks every quoted number in seconds, and `make sim02a-margin`
-   regenerates the criterion-margin supplement (about 10 minutes).
+   regenerates the criterion-margin supplement (about 5 minutes).

@@ -30,7 +30,7 @@ sim02a-smoke:    ## fast SIM-02A pipeline check into results/_scratch (not for e
 
 SIM02A_RUN ?= results/sim02a/20261107T214846Z_c56c0048_31da01b
 
-sim02a-margin:   ## criterion-margin supplement for the SIM-02A run of record (~10 min; clean tree)
+sim02a-margin:   ## criterion-margin supplement for the SIM-02A run of record (~5 min; clean tree)
 	$(PY) tools/sim02a_criterion_margin.py $(SIM02A_RUN) --out reports/SIM-02A_criterion_margin
 
 sim02a-claims:   ## recheck every quantitative claim in the SIM-02A findings, transmittal and reviewer message
