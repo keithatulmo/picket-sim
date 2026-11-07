@@ -98,6 +98,9 @@ placeholder for elements spread around a small host and have no survey basis; Se
 how A4 conclusions scale with size. Orientation is an assumption: lines along x, square
 horizontal. Figure: `fig01_geometries.png`.
 
+![Figure 1. Candidate geometries, top and side views at a common scale.](../results/sim01/RUNID/figures/fig01_geometries.png)
+*Figure 1. Candidate geometries, top and side views at a common scale.*
+
 ---
 
 ## 3. Method
@@ -180,6 +183,9 @@ record (Section 9).
 
 `fig07_regime_map.png`; `tables/thresholds_summary.md`.
 
+![Figure 2. Directional regimes versus frequency (horizon steering).](../results/sim01/RUNID/figures/fig07_regime_map.png)
+*Figure 2. Directional regimes versus frequency (horizon steering).*
+
 | ID | f_HP best / median / worst (Hz) | f_SL median (Hz) | f_amb -3 dB earliest horizon steering (Hz) | f_amb -3 dB any steering (Hz) | Exact grating, any steering (Hz) | f_amb / f_SL |
 |---|---|---|---|---|---|---|
 | A1 | 569 / 667 / 1,139 | 1,465 | 4,432 | 4,432 | 5,000 | 3.03 |
@@ -206,6 +212,9 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
 
 `fig06_metrics_vs_frequency.png` (a); `tables/comparison.md`.
 
+![Figure 3. DI, horizontal half-power width, half-power sphere fraction and worst observable ambiguity lobe versus frequency.](../results/sim01/RUNID/figures/fig06_metrics_vs_frequency.png)
+*Figure 3. DI, horizontal half-power width, half-power sphere fraction and worst observable ambiguity lobe versus frequency.*
+
 | ID | WNG (dB) | DI median 0.1-1 kHz (dB) | DI median 1-3 kHz (dB) | DI median 3-10 kHz (dB) |
 |---|---|---|---|---|
 | A0 | 0.00 | 0.00 | 0.00 | 0.00 |
@@ -230,6 +239,18 @@ discrimination begins when the aperture (N - 1) d reaches 0.25 lambda (N = 2), 0
 `fig02_horizontal_beampatterns.png`, `fig03_vertical_beampatterns.png`,
 `fig04_frequency_azimuth_maps.png`, `fig05_sphere_ambiguity_maps.png`;
 `tables/representative_frequencies.md`.
+
+![Figure 4. Horizontal-plane beampatterns at representative frequencies, steered to az = 60 deg.](../results/sim01/RUNID/figures/fig02_horizontal_beampatterns.png)
+*Figure 4. Horizontal-plane beampatterns at representative frequencies, steered to az = 60 deg.*
+
+![Figure 5. Horizontal-plane response versus frequency (steered to az = 60 deg) with the -3 dB contour.](../results/sim01/RUNID/figures/fig04_frequency_azimuth_maps.png)
+*Figure 5. Horizontal-plane response versus frequency (steered to az = 60 deg) with the -3 dB contour.*
+
+![Figure 6. Full-sphere response for a target at az = 60, el = -20 deg: cone (lines), mirror (square) and lattice aliasing (A4).](../results/sim01/RUNID/figures/fig05_sphere_ambiguity_maps.png)
+*Figure 6. Full-sphere response for a target at az = 60, el = -20 deg: cone (lines), mirror (square) and lattice aliasing (A4).*
+
+![Figure 7. Vertical-plane beampatterns through the same target; dotted line marks the up/down mirror elevation.](../results/sim01/RUNID/figures/fig03_vertical_beampatterns.png)
+*Figure 7. Vertical-plane beampatterns through the same target; dotted line marks the up/down mirror elevation.*
 
 Median horizontal half-power width over horizon steering (deg):
 
@@ -280,6 +301,12 @@ This matters most for A4-like distributed layouts and is not evaluated in SIM-01
 `fig08_line_array_sensitivity.png`, `fig09_aperture_scaling.png`;
 `tables/sensitivity_*.md`.
 
+![Figure 8. Line-array sensitivity to element count and spacing.](../results/sim01/RUNID/figures/fig08_line_array_sensitivity.png)
+*Figure 8. Line-array sensitivity to element count and spacing.*
+
+![Figure 9. Threshold scaling with aperture for the A4 layout and the 2x2 square.](../results/sim01/RUNID/figures/fig09_aperture_scaling.png)
+*Figure 9. Threshold scaling with aperture for the A4 layout and the 2x2 square.*
+
 * **Aperture sets resolution; spacing sets aliasing; element count sets the ratio between them.**
   For lines, broadside HPBW collapses onto a single curve of aperture/lambda for each N (`fig08` (a)).
   The broadside first-sidelobe onset is c/(Nd) and the worst-case grating onset c/(2d), so the
@@ -298,21 +325,24 @@ This matters most for A4-like distributed layouts and is not evaluated in SIM-01
 
 `fig10_sound_speed_robustness.png`; `tables/robustness_sound_speed*.md`.
 
+![Figure 10. Sound-speed scaling of thresholds and peak bias under sound-speed mismatch.](../results/sim01/RUNID/figures/fig10_sound_speed_robustness.png)
+*Figure 10. Sound-speed scaling of thresholds and peak bias under sound-speed mismatch.*
+
 * **Thresholds scale exactly with c**, as the model depends only on f/c. Over 1450 to 1550 m/s every
   threshold moves by -3.3 % to +3.3 % (largest deviation from the exact ratio: SSCHECK). The ordering
   of candidates on every threshold is unchanged across the range.
 * **Mismatch between the true and assumed sound speed biases the peak deterministically**, matching
   the closed form p_est = (c_assumed / c_true) p_true in the observable space:
-  * Lines: zero bias at broadside and growing toward endfire. For c_true = 1550 m/s with 1500 assumed,
-    the bias is +1.06 deg at 60 deg from the axis, +3.06 deg at 30 deg and +14.59 deg at endfire.
-    For c_true = 1450, sources within 14.8 deg of endfire are reported at endfire.
-  * Horizontal square: azimuth is unbiased (0.00 deg). Elevation is strongly biased near the horizon:
-    a horizon source is reported at |el| = 14.59 deg when c_true = 1550, and a source at -10 deg is
-    reported at the horizon when c_true = 1450.
-  * A4: direction error at most 0.36 deg over the cases evaluated.
-  
-  Elevation from a horizontal planar array therefore needs in-situ sound speed, which is a cheap
-  sensor but a real requirement.
+    * Lines: zero bias at broadside and growing toward endfire. For c_true = 1550 m/s with 1500 assumed,
+      the bias is +1.06 deg at 60 deg from the axis, +3.06 deg at 30 deg and +14.59 deg at endfire.
+      For c_true = 1450, sources within 14.8 deg of endfire are reported at endfire.
+    * Horizontal square: azimuth is unbiased (0.00 deg). Elevation is strongly biased near the horizon:
+      a horizon source is reported at |el| = 14.59 deg when c_true = 1550, and a source at -10 deg is
+      reported at the horizon when c_true = 1450.
+    * A4: direction error at most 0.36 deg over the cases evaluated.
+
+Elevation from a horizontal planar array therefore needs in-situ sound speed: a cheap sensor, but a
+real requirement.
 
 ---
 
