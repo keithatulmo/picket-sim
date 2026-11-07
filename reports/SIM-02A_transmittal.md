@@ -11,6 +11,7 @@
 | SIM-02A run of record | `20261107T214846Z_c56c0048_31da01b` (code commit `31da01b`, clean tree) |
 | Prepared by | Claude Code (AI-generated engineering work product). Requires review by a qualified acoustic engineer before any of it informs requirements. |
 | Requested action | Confirm SIM-01 closure; review the SIM-02A numerical results; decide the items in Section 6 before SIM-02B is authorized |
+| Revision | A: SIM-02A report and this transmittal corrected before sending (Section 4, last group). Rev 0 package retained unchanged. |
 
 ## 1. SIM-01 documentation corrections (review Section 1)
 
@@ -43,7 +44,9 @@ and 1.36. The Rev 0 values (3.03, 1.44, 1.18) used a mixed convention.
 | 7 | Reproducible engineering report | Delivered | `reports/SIM-02A_engineering_report.md` / `.pdf`; `make sim02a` |
 | 8 | Recommendations for SIM-02B | Delivered | Report Section 7 |
 
-Additional item: acoustic vector sensor feasibility assessment (D05), `docs/avs_feasibility.md`.
+Additional items: acoustic vector sensor feasibility assessment (D05), `docs/avs_feasibility.md`;
+criterion-margin supplement (D03), `reports/SIM-02A_criterion_margin.md` (Rev A); claims check,
+`tools/check_sim02a_claims.py` with its output `reports/SIM-02A_claims_check.txt` (Rev A).
 SIM-02B work has not started.
 
 ## 3. Verification requirements (review Section 4)
@@ -75,18 +78,35 @@ Recorded in `results/sim02a/ERRATA.md`; both earlier runs are retained unchanged
 
 Every table other than the Monte Carlo bearing columns is byte-identical across the three runs.
 
+Documentation errors found by a programmatic check of every quantitative claim
+(`tools/check_sim02a_claims.py`) before this package was sent, corrected in report and transmittal
+Revision A; no run, table or figure changed:
+
+* The circles' sidelobes were stated as "near -8 dB". The six-element circle's plateau is -6.02 dB
+  (eight-element: -7.77 dB). That is 0.02 dB below the -6 dB criterion, so P6-C's -6 dB guaranteed
+  band is knife-edge (`reports/SIM-02A_criterion_margin.md`).
+* "At most 0.07 dB from 20 to 200 Hz" is a band median; the gain reaches 0.73 dB at 200 Hz.
+* "Approach 10 log10 N" in short-correlation noise overstated the result for A1, P6-C and P8-C, which
+  fall 0.9 to 1.7 dB short below 2 kHz.
+* The 65 % gross-error rate is one of four target azimuths (range 65 to 81 %), and it comes from the
+  combined E3 scenario, not from a 10 us timing error alone.
+
 ## 5. Principal SIM-02A findings
 
 1. Realized gain is governed by the spatial coherence of the dominant noise. In diffuse, ambient-limited
-   noise, arrays up to 1.07 m gain at most 0.07 dB over A0 from 20 to 200 Hz. In sensor-limited or
-   short-correlation noise the same arrays approach 10 log10 N.
+   noise, arrays up to 1.07 m gain at most 0.07 dB over A0 as a 20 to 200 Hz band median, and at most
+   0.73 dB at 200 Hz. With sensor self-noise 20 dB above ambient they come within 0.29 dB of
+   10 log10 N in every band. In short-correlation noise they come within 0.5 dB, except A1, P6-C and
+   P8-C, which fall 0.9 to 1.7 dB short below 2 kHz.
 2. Under the assumed sensors, ambient noise dominates almost everywhere. B4 is not acquirable by the
    low-cost scenario, and 16-bit quantization limits the mid scenario in B3 and B4.
 3. At equal footprint, 6- and 8-element circles widen the -3 dB guaranteed band from 1.28 (square) to
    2.53 and 3.78, but only to 1.28 and 1.32 under -10 dB.
 4. Four-element volumetric envelopes have no guaranteed band at -6 or -10 dB (narrowband).
-5. Bearing statistics are stricter than signal loss. For example, 10 us timing error at 15 kHz causes
-   gross azimuth errors in 65 % of trials for the 8-element compact circle, at a 4.4 dB signal loss.
+5. Bearing statistics are stricter than signal loss. For example, under the loose scenario E3 (1 dB,
+   10 deg, 1 cm, 10 us) at 15 kHz the 8-element compact circle loses 4.3 to 4.4 dB of signal but makes
+   gross azimuth errors in 65 to 81 % of trials across the four target azimuths. Timing supplies about
+   two thirds of E3's phase variance at 15 kHz.
 6. Line arrays stay structurally ambiguous left/right under any channel errors.
 7. Pareto dominance changes with the provisional tolerances; no candidate is eliminated.
 
@@ -103,8 +123,10 @@ numbers do not.
    to carry forward from D01.
 4. **Synchronization model** for distributed modules (timing dominates at high frequency).
 5. **Whether to fund the acoustic vector sensor data collection** in `docs/avs_feasibility.md`.
-6. **The structural-ambiguity level** (-1 dB) used for bearing statistics, and the Monte Carlo
-   steering set (4 azimuths), if a different convention is preferred.
+6. **Criterion conventions.** The structural-ambiguity level (-1 dB) used for bearing statistics and
+   the Monte Carlo steering set (4 azimuths), if a different convention is preferred. Also whether the
+   -6 dB criterion is applied at -6.00 dB in power or at half amplitude (-6.02 dB): P6-C's -6 dB band
+   depends on that choice (`reports/SIM-02A_criterion_margin.md`).
 
 ## 7. Suggested review path (about 45 minutes)
 
@@ -112,4 +134,7 @@ numbers do not.
 2. SIM-02A report Section 0 (findings), Figures 2, 5 and 6, and Section 7 (SIM-02B recommendations).
 3. `tables/parameters_by_provenance.md`, to confirm that nothing is presented as measured.
 4. SIM-01 report Rev A Section 0 and `reports/SIM-01_band_definitions.md`, for the closure corrections.
-5. Optional: reproduce with `make sim02a` (about 6 minutes including the test suite) and compare against `SHA256SUMS.txt`.
+5. `reports/SIM-02A_criterion_margin.md` and `reports/SIM-02A_claims_check.txt`, for the Rev A corrections.
+6. Optional: reproduce with `make sim02a` (about 6 minutes including the test suite) and compare against
+   `SHA256SUMS.txt`; `make sim02a-claims` rechecks every quoted number in seconds, and `make sim02a-margin`
+   regenerates the criterion-margin supplement (about 10 minutes).

@@ -19,7 +19,13 @@ and the latest `docs/SIM-*_plan.md` before changing anything.
 The program owner asked for this at the end of each cycle:
 
 1. Run of record from a clean commit; confirm self-checks and record the run id.
-2. Engineering report and transmittal generated from the run tables, with claims verified.
+2. Engineering report and transmittal generated from the run tables, with claims verified by a committed
+   script (`tools/check_<increment>_claims.py`, see `tools/check_sim02a_claims.py`) that recomputes every
+   quoted number in the findings, transmittal and reviewer message at the precision written. Physical
+   statements that are not in a run table (sidelobe levels, margins, scaling laws) must be computed with the
+   study code and written to a committed supplement table before they are quoted; never state them from
+   memory. Check that a band median is not quoted as a maximum, that a single Monte Carlo case is not
+   quoted as representative of a set, and that a combined error scenario is not attributed to one term.
 3. Review package: `python tools/build_review_package.py --run results/<study>/<run_id> --label <INCREMENT>
    --report reports/<INCREMENT>_engineering_report.md --transmittal reports/<INCREMENT>_transmittal.md
    [--extra ...]`; copy the PDFs to `reports/`; register the zip in `deliverables/README.md`.
@@ -29,5 +35,6 @@ The program owner asked for this at the end of each cycle:
    assumptions, discloses defects found and corrected, lists the decisions requested, notes that the
    work is AI-generated and needs qualified review, and gives the reproduction command, repository and
    branch, and a `[date]` placeholder. Save it as `reports/<INCREMENT>_reviewer_message.md` and include
-   the text in the final reply together with the attached files.
+   the text in the final reply together with the attached files. Run the claims check again after writing the message; it
+   must pass before the message is delivered.
 5. Commit and push to the designated branch; send the package and PDFs to the user.

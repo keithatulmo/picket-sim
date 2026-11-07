@@ -10,7 +10,14 @@
 | Code | `picket_sim` 0.1.0, git `31da01b` (clean tree) |
 | Configuration | `configs/sim02a/sim02a_baseline.yaml` (sha256 `c56c00480adbebce...`) |
 | Reproduce | `make sim02a` (equivalently `python -m picket_sim run configs/sim02a/sim02a_baseline.yaml`) |
-| Status | Complete for SIM-02A scope. Submitted for review of numerical results. SIM-02B not begun (gate, ADR-0009). No architecture selected. |
+| Status | Revision A. Complete for SIM-02A scope. Submitted for review of numerical results. SIM-02B not begun (gate, ADR-0009). No architecture selected. |
+
+**Revision history**
+
+| Rev | Date | Change |
+|---|---|---|
+| 0 | 2026-11-07 | Initial delivery (review package `deliverables/PCK-SIM-001_SIM-02A_Review_Package_20261107T214846Z_c56c0048_31da01b.zip`, retained unchanged). |
+| A | 2026-11-07 | Corrections to statements that did not match the run tables or the physics, found by a programmatic check of every Section 0 claim before transmittal (`tools/check_sim02a_claims.py`; `results/sim02a/ERRATA.md`). (1) Section 0 item 1: the 0.07 dB figure is a band median; gain rises to 0.73 dB at 200 Hz. "Approach 10 log10 N at every frequency" replaced by the measured gaps. (2) Section 0 item 3: Rev 0 put both circles' sidelobes "near -8 dB". The six-element circle's plateau is -6.02 dB, only 0.02 dB below the -6 dB criterion, so its -6 dB band is knife-edge (`reports/SIM-02A_criterion_margin.md`). (3) Section 0 item 5: the 65 % gross-error rate is the 30 deg target only; across the four target azimuths it is 65 to 81 %. (4) Section 4.2: same correction as (1) for short-correlation noise. (5) Section 4.5: criterion-margin sensitivity added. No run, table or figure was changed. |
 
 All numbers are read from `results/sim02a/20261107T214846Z_c56c0048_31da01b/tables/`; figures are in
 `results/sim02a/20261107T214846Z_c56c0048_31da01b/figures/`. **Every sensor, ambient, host and channel-error level in this study
@@ -27,12 +34,15 @@ a detection range, or a hardware requirement.
 1. **Realized array gain is set by the spatial coherence of the dominant noise, not by geometry alone.**
    Against diffuse, ambient-limited noise (spherically isotropic, no sensor noise) the band-median
    realized gain relative to A0 is at most 0.07 dB from 20 to 200 Hz for every candidate up to 1.07 m
-   (1.08 dB for the 4 m envelope V-D), and 0.6 to 5.2 dB from 200 Hz to 2 kHz. When sensor self-noise
-   dominates (self-noise 20 dB above ambient) or the noise is short-correlation (flow-like,
-   L = 0.1 m), the same arrays approach the white-noise gain of their equal weights, 10 log10 N, at
-   every frequency: for example 4.59 dB for A1 and 8.75 dB for P8-E from 20 to 200 Hz in the
-   short-correlation field. Low-frequency array value therefore depends on which noise dominates at
-   the sensors, which only measured sensor, ambient and host data can settle. (High, for the model.)
+   (1.08 dB for the 4 m envelope V-D), and 0.6 to 5.2 dB from 200 Hz to 2 kHz. Within the low band the
+   gain grows roughly as f squared, so the band median understates the top of the band: at 200 Hz it
+   reaches at most 0.73 dB (A4, median over steering). When sensor self-noise dominates (self-noise
+   20 dB above ambient), every candidate up to 1.07 m comes within 0.29 dB of the white-noise gain of
+   its equal weights, 10 log10 N, in every band. In short-correlation (flow-like, L = 0.1 m) noise the
+   same holds within 0.5 dB, except that A1, P6-C and P8-C, whose nearest elements are 0.15 to 0.23 m
+   apart, fall 0.9 to 1.7 dB short below 2 kHz (for example 4.59 dB for A1 against 6.02 dB from 20 to
+   200 Hz). Low-frequency array value therefore depends on which noise dominates at the sensors, which
+   only measured sensor, ambient and host data can settle. (High, for the model.)
 2. **Under the assumed sensor scenarios, ambient noise dominates almost everywhere, so realized gain
    follows the diffuse-field values.** The low-noise scenario S1 has band-median self-noise to ambient ratios of -20.0 to
    -74.4 dB in every band and ambient scenario. The mid scenario S2 is sensor-limited only in the exploratory band B4 under
@@ -54,10 +64,11 @@ a detection range, or a hardware requirement.
    ambiguity above that. Broadband and TDOA processing, which may resolve these ambiguities, is SIM-02B.
    (High for the narrowband statements.)
 5. **Calibration and synchronization tolerances scale with frequency, and bearing statistics are a
-   stricter constraint than signal loss.** Signal loss follows the verified closed form; total phase error grows with frequency, so timing and position errors dominate at high frequency. Under the moderate scenario E2 (0.5 dB, 3 deg, 3 mm, 1 us) the mean signal loss is at most 0.17 dB up to 15 kHz, but under E3 (1 dB, 10 deg, 1 cm, 10 us) it reaches 3.2 to 4.5 dB at 15 kHz, and under E4 (100 us timing) the coherent gain is essentially lost above 5 kHz. Bearing statistics are stricter than signal loss: for the 8-element compact circle at 15 kHz, E3 costs 4.4 dB of signal but gives a gross azimuth error (a wrong lobe higher than the true one) in 65 % of trials (95 % interval 62 to 68 %). (High for the model; error levels assumed.)
+   stricter constraint than signal loss.** Signal loss follows the verified closed form; total phase error grows with frequency, so timing and position errors dominate at high frequency. Under the moderate scenario E2 (0.5 dB, 3 deg, 3 mm, 1 us) the mean signal loss is at most 0.17 dB up to 15 kHz, but under E3 (1 dB, 10 deg, 1 cm, 10 us) it reaches 3.2 to 4.5 dB at 15 kHz, and under E4 (100 us timing) the coherent gain is essentially lost above 5 kHz. Bearing statistics are stricter than signal loss: for the 8-element compact circle at 15 kHz, E3 costs 4.3 to 4.4 dB of signal but gives a gross azimuth error (a wrong lobe higher than the true one) in 65 to 81 % of trials across the four Monte Carlo target azimuths (65 %, 95 % interval 62 to 68 %, at the 30 deg target used in Section 4.4). E3 combines all four error types; at 15 kHz its 10 us timing term supplies about two thirds of the total phase variance (54 of 66 deg rms), position about 30 % and phase about 2 %. (High for the model; error levels assumed.)
 6. **Line arrays remain structurally ambiguous left/right under any channel errors.** Their scanned
    response is exactly symmetric in azimuth because the beamformer's steering vectors depend only on the
    angle to the axis; calibration errors cannot break the tie (D02: unresolved ambiguity identified).
+   The only exception is exact endfire, where target and mirror coincide.
    (High; mathematical.)
 7. **Arrays reject host noise only when the target is away from the host direction and the frequency is
    high enough.** With a host source at +10 dB relative to ambient, the median realized gain at 100 Hz
@@ -211,9 +222,11 @@ Band-median RAG (dB) with no sensor noise, selected candidates:
   isotropic field, the directional shape changes band medians by at most 1.0 dB (largest: P8-C, B3,
   horizontal field; above 1 dB in 1 of 156 comparisons). Spatial coherence over the aperture matters
   far more than its directional shape.
-* **Short-correlation noise behaves like sensor noise**: with L = 0.1 m smaller than most element
-  spacings, it is nearly uncorrelated between sensors and the gain approaches 10 log10 N even at
-  20 Hz.
+* **Short-correlation noise behaves largely like sensor noise**: with L = 0.1 m it is weakly
+  correlated between sensors more than about 0.3 m apart, and the B1 gain is within 0.5 dB of
+  10 log10 N for every candidate up to 1.07 m except A1, P6-C and P8-C (1.0 to 1.7 dB short; nearest
+  elements 0.15 to 0.23 m apart, neighbor correlation 0.11 to 0.22). Above 2 kHz every candidate is
+  within 0.16 dB of 10 log10 N or above it.
 * **Sensor noise raises gain relative to A0.** In isotropic ambient, A1's B1 median rises from 0.01 dB
   (no sensor noise) to 2.05 dB at eta = 0 dB and 5.89 dB at eta = +20 dB. This is not an improvement
   in absolute sensitivity: the single-channel reference is degraded by the same sensor noise, and the
