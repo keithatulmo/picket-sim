@@ -5,10 +5,10 @@ Subject: PCK-SIM-001: SIM-01 closure (Rev A) and SIM-02A results (Rev A) for rev
 Your SIM-01 review required five documentation corrections before closure and authorized SIM-02A. Both are complete. The attached package closes SIM-01 and submits the SIM-02A numerical results for your review. SIM-02B has not started and waits on the decisions listed below.
 
 Attachments:
-1. SIM-02A_transmittal.pdf (Rev A, {TR_PAGES} pages). Start here. It maps every SIM-01 correction and SIM-02A deliverable to evidence, records the defects found and corrected, and lists the decisions needed for SIM-02B.
-2. SIM-02A_engineering_report.pdf (Rev A, {REP_PAGES} pages). Models, results, traceability to D01 through D06, limitations and SIM-02B recommendations.
+1. SIM-02A_transmittal.pdf (Rev A, 4 pages). Start here. It maps every SIM-01 correction and SIM-02A deliverable to evidence, records the defects found and corrected, and lists the decisions needed for SIM-02B.
+2. SIM-02A_engineering_report.pdf (Rev A, 8 pages). Models, results, traceability to D01 through D06, limitations and SIM-02B recommendations.
 3. SIM-01_engineering_report.pdf (Rev A, 15 pages). The corrected SIM-01 report with its revision history.
-4. {ZIP_NAME} ({ZIP_MB} MB). The documents above plus figures, tables, the run record and errata, the criterion-margin supplement, the claims check, the test log at the code commit, the model documentation, the acoustic vector sensor feasibility assessment and a source snapshot. SHA256SUMS.txt in the package verifies every file.
+4. PCK-SIM-001_SIM-02A-RevA_Review_Package_20261107T214846Z_c56c0048_31da01b.zip (10.8 MB). The documents above plus figures, tables, the run record and errata, the criterion-margin supplement, the claims check, the test log at the code commit, the model documentation, the acoustic vector sensor feasibility assessment and a source snapshot. SHA256SUMS.txt in the package verifies every file.
 
 SIM-01 closure. All five corrections are made without changing any experimental result and are recorded in ADR-0008. The band definition correction has the largest effect. Over the horizon steering set, the band guaranteed for every steering direction has a ratio of 1.77 for the line arrays, 1.28 for the 2x2 square and 1.06 for A4. The corresponding median-direction ratios are 3.54, 1.54 and 1.36. The Rev 0 figures mixed the two conventions.
 
@@ -16,7 +16,7 @@ SIM-02A results. Every sensor, ambient, host and calibration-error level in this
 
 1. Realized gain over A0 depends mainly on the spatial coherence of the dominant noise. In diffuse, ambient-limited noise, arrays up to 1.07 m gain at most 0.07 dB as a 20 to 200 Hz band median and at most 0.73 dB at 200 Hz. With sensor self-noise 20 dB above ambient, the same arrays come within 0.29 dB of 10 log10 N in every band. In short-correlation, flow-like noise they come within 0.5 dB, except A1, P6-C and P8-C, which fall 0.9 to 1.7 dB short below 2 kHz.
 2. At an equal 0.45 m footprint, six- and eight-element circles widen the guaranteed -3 dB band ratio from 1.28 for the square to 2.53 and 3.78. Under a -10 dB criterion the ratios fall to 1.28 and 1.32, because the circles' sidelobe plateaus sit at -6.02 and -7.77 dB. The six-element circle's -6 dB result is knife-edge: its plateau lies 0.02 dB below the criterion, and its guaranteed ratio drops from 2.37 to 1.65 at -6.1 dB.
-3. Calibration and synchronization errors degrade bearing well before they degrade signal level. Under the loose error scenario E3 (1 dB gain, 10 deg phase, 1 cm position, 10 us timing) at 15 kHz, the eight-element compact circle loses 4.3 to 4.4 dB of signal and locks onto a wrong lobe in 65 to 81 percent of trials across four target azimuths. Timing supplies about two thirds of that phase error.
+3. Calibration and synchronization errors degrade bearing well before they degrade signal level. Under the loose error scenario E3 (1 dB gain, 10 deg phase, 1 cm position, 10 us timing) at 15 kHz, the eight-element compact circle loses 4.3 to 4.4 dB of signal and locks onto a wrong lobe in 65 to 81 percent of trials across four target azimuths. Timing supplies about two thirds of the E3 phase-error variance at that frequency.
 4. Line arrays cannot resolve left from right under any channel error, except at exact endfire where target and mirror coincide.
 5. Pareto dominance shifts with the provisional tolerances. No candidate is eliminated.
 
