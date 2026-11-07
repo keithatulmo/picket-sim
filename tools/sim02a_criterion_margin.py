@@ -43,6 +43,26 @@ from picket_sim.records import git_state  # noqa: E402
 NOMINAL = (-3.0, -6.0, -10.0)
 DELTA_DB = 0.1
 REPRO_REL_TOL = 1e-9
+KNIFE_REL = 0.10
+PLATEAU_TOL_DB = 1e-3
+PLATEAU_MIN_POINTS = 3
+
+
+def plateau(f_hz: np.ndarray, psl_db: np.ndarray):
+    """Longest run of consecutive grid points with PSL constant to PLATEAU_TOL_DB.
+
+    Returns (mean PSL dB, first f, last f) or None if no run reaches PLATEAU_MIN_POINTS.
+    """
+    best, start = None, 0
+    n = len(psl_db)
+    for i in range(1, n + 1):
+        if i == n or not (np.isfinite(psl_db[i]) and np.isfinite(psl_db[i - 1])
+                          and abs(psl_db[i] - psl_db[i - 1]) <= PLATEAU_TOL_DB):
+            length = i - start
+            if length >= PLATEAU_MIN_POINTS and np.isfinite(psl_db[start]) and (best is None or length > best[3]):
+                best = (float(np.mean(psl_db[start:i])), float(f_hz[start]), float(f_hz[i - 1]), length)
+            start = i
+    return best[:3] if best else None
 
 
 def _f(x) -> float:
@@ -181,10 +201,20 @@ def main() -> int:
             cells.append(f"**{t}**" if L in NOMINAL else t)
         md.append(f"| {row['array_id']} | " + " | ".join(cells) + " |")
 
+    knife = []
+    for row in band_rows:
+        for L in NOMINAL:
+            lo_v, nom, hi_v = (float(row[f"guaranteed_{_lvl(x)}_ratio"]) for x in (L + DELTA_DB, L, L - DELTA_DB))
+            if all(np.isfinite([lo_v, nom, hi_v])) and abs(lo_v - hi_v) > KNIFE_REL * nom:
+                knife.append(f"{row['array_id']} at {L:g} dB ({_ratio_txt(lo_v)} at {L + DELTA_DB:g} dB, "
+                             f"{_ratio_txt(hi_v)} at {L - DELTA_DB:g} dB)")
     md += [
         "",
         "A large change across a 0.2 dB interval means the nominal band edge is set by a sidelobe plateau lying",
         "within 0.1 dB of the criterion, not by a lobe that rises steadily through it.",
+        "",
+        f"Knife-edge cases (guaranteed ratio changes by more than {KNIFE_REL:.0%} of its nominal value across the "
+        f"+/- {DELTA_DB:g} dB interval): " + ("; ".join(knife) if knife else "none") + ".",
         "",
         "## 2. Worst-steering peak sidelobe level across the guaranteed -3 dB band",
         "",
@@ -192,18 +222,24 @@ def main() -> int:
         f"frequency ({cfg['frequency_grid']['points_per_decade']} points per decade) inside the guaranteed -3 dB band. "
         "Full values in the `_psl.csv` file.",
         "",
-        "| ID | -3 dB band (Hz) | Grid points | Lowest worst-steering PSL (dB) | Median worst-steering PSL (dB) | Highest (dB) |",
-        "|---|---|---|---|---|---|",
+        f"Plateau: the worst-steering PSL where it is constant to {PLATEAU_TOL_DB:g} dB over at least "
+        f"{PLATEAU_MIN_POINTS} consecutive grid frequencies (longest such run), with its frequency span.",
+        "",
+        "| ID | -3 dB band (Hz) | Grid points | Lowest worst-steering PSL (dB) | Plateau (dB) | Plateau span (Hz) | Highest (dB) |",
+        "|---|---|---|---|---|---|---|",
     ]
     for aid, ps in by_id.items():
         v = np.array([p["psl_worst_steering_db"] for p in ps], dtype=float)
+        fs = np.array([p["f_hz"] for p in ps], dtype=float)
         fin = v[np.isfinite(v)]
         lo = float(summ[aid][f"guaranteed_{lv3}_lo_hz"])
         hi = float(summ[aid][f"guaranteed_{lv3}_hi_hz"])
+        pl = plateau(fs, v)
+        pl_txt = (f"{pl[0]:.2f}", f"{pl[1]:,.0f} to {pl[2]:,.0f}") if pl else ("none", "n/a")
         if fin.size:
-            md.append(f"| {aid} | {lo:,.0f} to {hi:,.0f} | {len(ps)} | {fin.min():.2f} | {np.median(fin):.2f} | {fin.max():.2f} |")
+            md.append(f"| {aid} | {lo:,.0f} to {hi:,.0f} | {len(ps)} | {fin.min():.2f} | {pl_txt[0]} | {pl_txt[1]} | {fin.max():.2f} |")
         else:
-            md.append(f"| {aid} | {lo:,.0f} to {hi:,.0f} | {len(ps)} | n/a | n/a | n/a |")
+            md.append(f"| {aid} | {lo:,.0f} to {hi:,.0f} | {len(ps)} | n/a | n/a | n/a | n/a |")
     md += ["", f"Computed in {time.time() - t0:.0f} s.", ""]
     Path(f"{out}.md").write_text("\n".join(md))
     log(f"wrote {out}.md, {out}_bands.csv, {out}_psl.csv")
