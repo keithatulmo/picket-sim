@@ -19,3 +19,7 @@ supersede rather than edit.
 | [0011](0011-noise-and-acquisition-model.md) | Noise covariance and acquisition-chain model | Accepted |
 | [0012](0012-channel-errors-and-monte-carlo.md) | Channel-error model and Monte Carlo statistics | Accepted |
 | [0013](0013-sim02a-candidate-set.md) | SIM-02A candidate set and footprint classes | Accepted |
+| [0014](0014-sim02a-review-disposition-and-sim02b-authorization.md) | SIM-02A review disposition and SIM-02B authorization | Accepted |
+| [0015](0015-detection-snr-conventions-and-decision-opportunities.md) | Detection SNR conventions, decision opportunities and false-alarm estimation | Accepted |
+| [0016](0016-frequency-domain-multichannel-synthesis.md) | Frequency-domain multichannel synthesis with waveform access | Accepted |
+| [0017](0017-published-inputs-and-integrated-hydrophones.md) | Published-reference inputs and integrated hydrophone transfer functions | Accepted |
