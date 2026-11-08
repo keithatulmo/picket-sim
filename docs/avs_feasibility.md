@@ -80,3 +80,35 @@ vector-sensor array processing," IEEE Transactions on Signal Processing, vol. 42
 Overall feasibility for further study: favorable for low-frequency directional sensing in the ideal
 (high confidence). Practical feasibility on Picket hosts is unknown until motion-channel noise and
 platform vibration are characterized.
+
+## 6. D05 desk research and bench-test recommendation (SIM-02B.1)
+
+Authorized scope: desk research and documented supplier data only (ADR-0014). Evidence, with verbatim quotes
+and URLs, is in [`docs/research/D05_avs_supplier_data.md`](research/D05_avs_supplier_data.md): 15 product rows
+from GeoSpectrum, Wilcoxon, Ocean Applied Acoustics, Micro-Fine, Integral Consulting and Greeneridge, plus six
+measurement sources (TNO 2019 tank and field tests, Raghukumar et al. 2019, Thode et al. 2012, Lawrence 2023,
+Mantouka et al. 2017, and a best-practice guide with the NPL calibration review).
+
+| Criterion | Evidence (sourced) | Reading |
+|---|---|---|
+| Low-frequency benefit | Realized bearing precision exists: 1 to 2 deg at SNR above 10 dB and 15 to 20 deg at 5 dB or less, below 450 Hz, bottom-mounted (Thode et al.); tank error at most 5.88 deg at 350 to 1300 Hz (Lawrence). Ambient-limited operation is shown only above about 25 Hz (TNO, extrapolated). Generic accelerometer self-noise would not be ambient-limited at low frequency in quiet conditions (derived in the evidence file). | Plausible for purpose-built sensors on decoupled mounts; unproven below about 25 to 50 Hz. SIM-02B.1 shows compact pressure arrays gain essentially nothing over A0 in diffuse low-band noise, so a single-point directional sensor is the only compact route to low-frequency direction. |
+| Size | Sensing heads from 0.011 kg (VS-403) and 43 g (VS-301) to 3.4 kg (M20-105); suspensions, cages and flow shields set the real envelope. | Favorable relative to a pressure array of equal low-frequency directivity. |
+| Power | Sub-watt per sensor in every vendor figure found (for example 40 mA at 6.5 to 12 VDC, VS-301). | Not a discriminator. |
+| Cost | No public prices; one survey table gives 9 to 15 kEUR per sensor; one system is lease-only; Wilcoxon units are reported as ITAR-controlled. | Unfavorable for a proliferated low-cost system if commercial units are required. |
+| Calibration | Shaker, standing-wave tube and water comparison methods are documented; no open numeric uncertainty for vector sensors; measured discrepancies of 1 to 20 % in amplitude, 4 dB in water versus air, and over 153 deg of phase. | A bench test is feasible; traceable low-frequency in-water calibration and channel phase matching are the hard part. |
+| Vibration and mounting | Every source names it the dominant practical problem: surface-buoy use poor below 50 to 100 Hz; seabed cages preferred; no numeric rejection specification published. | The main unknown for Picket hosts. |
+| Flow noise | A flow shield is described as critical in a tidal channel (0 to 500 Hz); no quantitative open data for sizing one. | Unfavorable in current unless shielded or drifting. |
+
+**Recommendation: conditional go for a limited bench test (moderate confidence).** The open literature
+cannot close the four gaps that decide feasibility: low-frequency motion-channel self-noise, vibration
+transfer from a representative host mount, flow-noise susceptibility, and achievable calibration and phase
+matching. A bench test is the cheapest way to measure them, and nothing else in the program can supply a
+compact low-frequency directional option. The test should measure, with stated uncertainty: (1)
+motion-channel self-noise from 20 Hz to 2 kHz on a decoupled mount, compared with the published-reference
+ambient envelope of SIM-02B.1; (2) noise added by a representative host mount under representative
+vibration; (3) per-unit sensitivity and inter-channel phase repeatability by shaker and tube calibration;
+(4) the bearing error against a known source in a tank above about 500 Hz. Pass/fail values for these
+quantities are a program decision and are not proposed here. A "no-go" is the better choice if Picket
+hosts cannot offer a decoupled, low-vibration mount, because then the vibration evidence above predicts
+the sensor would not be ambient-limited where its benefit lies. Unit cost remains unfavorable for
+proliferation unless a lower-cost design proves adequate in the same test.

@@ -1,7 +1,7 @@
 # Reproduction entry points (see README.md)
 PY ?= python
 
-.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims validate
+.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke validate
 
 install:
 	$(PY) -m pip install -r requirements.lock && $(PY) -m pip install -e . --no-deps
@@ -15,6 +15,7 @@ test-fast:       ## unit verification only
 validate:
 	$(PY) -m picket_sim validate configs/sim01/sim01_baseline.yaml
 	$(PY) -m picket_sim validate configs/sim02a/sim02a_baseline.yaml
+	$(PY) -m picket_sim validate configs/sim02b/sim02b1_baseline.yaml
 
 sim01: test      ## regenerate all SIM-01 results into a NEW run directory (requires a clean git tree)
 	$(PY) -m picket_sim run configs/sim01/sim01_baseline.yaml
@@ -44,3 +45,13 @@ sim02a-criteria-d06: ## D06 criterion sensitivity (-6.0206 dB and +/-0.5, +/-1 d
 
 sim02a-claims:   ## recheck every quantitative claim in the SIM-02A findings, transmittal and reviewer message
 	$(PY) tools/check_sim02a_claims.py $(SIM02A_RUN)
+
+sim02a-repro-check: ## rerun SIM-02A into a new build/ run and require every table byte-identical to the run of record (~6 min)
+	$(PY) -m picket_sim run configs/sim02a/sim02a_baseline.yaml --allow-dirty --no-figures --output-root build/sim02a_repro
+	$(PY) tools/compare_run_tables.py $(SIM02A_RUN) $$(ls -d build/sim02a_repro/2* | tail -1)
+
+sim02b1: test     ## SIM-02B.1 study of record into a NEW run directory (~75 min on 4 cores; clean tree)
+	$(PY) -m picket_sim run configs/sim02b/sim02b1_baseline.yaml
+
+sim02b1-smoke:    ## fast SIM-02B.1 pipeline check into results/_scratch (not for engineering use)
+	$(PY) -m picket_sim run configs/sim02b/sim02b1_smoke.yaml --allow-dirty

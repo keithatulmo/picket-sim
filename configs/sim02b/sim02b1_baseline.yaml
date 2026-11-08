@@ -387,6 +387,7 @@ snr_grid_offsets_db:
 - 6.0
 - 8.0
 trials:
+  # independent windows per set; per_band overrides keep the run near 75 min on 4 cores (B3 is 8000 to 80000 bins)
   0.1:
     cal: 10000
     eval: 10000
@@ -395,10 +396,24 @@ trials:
     cal: 10000
     eval: 10000
     pos: 400
+    per_band:
+      B3:
+        cal: 4000
+        eval: 4000
+        pos: 400
   10.0:
-    cal: 2000
-    eval: 2000
+    cal: 4000
+    eval: 4000
     pos: 200
+    per_band:
+      B2:
+        cal: 2000
+        eval: 2000
+        pos: 200
+      B3:
+        cal: 1000
+        eval: 1000
+        pos: 100
   60.0:
     cal: 1000
     eval: 1000

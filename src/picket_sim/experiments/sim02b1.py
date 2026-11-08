@@ -79,6 +79,10 @@ class Sim02B1Study:
             if not (0 < b["f_lo_hz"] < b["f_hi_hz"] < b["fs_hz"] / 2):
                 raise ConfigError(f"band {b['id']}: need 0 < f_lo < f_hi < fs/2")
         self.trials = {float(k): v for k, v in cfg["trials"].items()}
+        for w, v in self.trials.items():
+            for key in ("cal", "eval", "pos"):
+                if int(v[key]) < 1:
+                    raise ConfigError(f"trials[{w}].{key} must be positive")
         # spectra, self-noise, scenarios
         self.spectra = {}
         for sid, spec in cfg["spectra"].items():
@@ -125,6 +129,12 @@ class Sim02B1Study:
         self._srcs = {}
 
     # ------------------------------------------------------------------------------------------ cases
+    def trials_for(self, band: str, T: float) -> dict:
+        """Trial counts for a window, with optional per-band overrides (``per_band: {B3: {cal: ...}}``)."""
+        base = self.trials[float(T)]
+        over = base.get("per_band", {}).get(band, {})
+        return {k: int(over.get(k, base[k])) for k in ("cal", "eval", "pos")}
+
     def grid(self, band: str, T: float) -> Grid:
         b = self.bands[band]
         return Grid(float(T), float(b["fs_hz"]), float(b["f_lo_hz"]), float(b["f_hi_hz"]))
@@ -367,7 +377,7 @@ class Sim02B1Study:
             return out
 
         # ---- null sets
-        tr = self.trials[float(case.T)]
+        tr = self.trials_for(case.band, case.T)
         null = {}
         for set_name, model_id, fac in (("cal", case.assumed, f_ass), ("eval", case.truth, f_true)):
             n = int(tr[set_name])
@@ -517,7 +527,7 @@ class Sim02B1Study:
             truth = self.scenarios[sc]
             cmat = truth.covariance(pos, grid.f, self.c0)
             g_true = truth.element_psd(grid.f)
-            n = int(self.trials[T]["pos"])
+            n = self.trials_for(band, T)["pos"]
             src = self.source_params(cls, band, T, n, grid)
             ref = self.chirp_ref(band, grid) if cls == "chirp" else None
             i = int(ex["trial"])
