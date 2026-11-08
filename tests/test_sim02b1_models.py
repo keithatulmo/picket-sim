@@ -312,3 +312,25 @@ def test_pd_interval_contains_estimate_and_snr_interpolation():
     assert dt.snr_at_pd(np.array([0.0, 2.0, 4.0]), np.array([0.1, 0.3, 0.7]), 0.5) == (3.0, "ok")
     assert dt.snr_at_pd(np.array([0.0, 2.0]), np.array([0.6, 0.9]), 0.5)[1] == "below grid"
     assert dt.snr_at_pd(np.array([0.0, 2.0]), np.array([0.1, 0.2]), 0.5)[1] == "above grid"
+
+
+def test_incoherent_bound_is_conservative_for_correlated_channels():
+    """q_k = mean over channels of |z_n|^2 with correlated channels: the eigenvalue bound must not under-cover."""
+    n_ch, K, n = 4, 40, 40000
+    pos = SQUARE
+    f = np.linspace(100.0, 2000.0, K)
+    r = coherence_bins(CoherenceSpec("spherical"), pos, f, C)  # strongly correlated at low frequency
+    fac = covariance_factor(r)
+    z = draw_noise(fac, RNG, n)  # unit-variance channels
+    q = (np.abs(z) ** 2).mean(axis=2).max(axis=1)
+    lam = np.linalg.eigvalsh(r)[:, -1]
+    for p in (0.1, 0.01):
+        x = dt.incoherent_tonal_bound(p, lam, n_ch)
+        k = int(np.sum(q > x))
+        assert k <= n * p + 4 * math.sqrt(n * p), (p, k / n)
+    # white channels: the bound reduces to the exact Gamma(N)/N maximum and is then tight
+    lam_w = np.ones(K)
+    zw = (RNG.standard_normal((n, K, n_ch)) + 1j * RNG.standard_normal((n, K, n_ch))) / np.sqrt(2)
+    qw = (np.abs(zw) ** 2).mean(axis=2).max(axis=1)
+    x = dt.incoherent_tonal_bound(0.01, lam_w, n_ch)
+    assert abs(int(np.sum(qw > x)) - n * 0.01) <= 4 * math.sqrt(n * 0.01)

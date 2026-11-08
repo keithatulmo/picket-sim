@@ -26,7 +26,8 @@ import numpy as np
 from .signals import Grid
 from .synthesis import steering_bins
 
-__all__ = ["MODES", "DETECTORS", "harmonic_index", "beam_weights", "normalize", "Detectors"]
+__all__ = ["MODES", "DETECTORS", "harmonic_index", "beam_weights", "beam_sigma", "known_beams", "normalize",
+           "Detectors"]
 
 MODES = ("single", "beam_known", "beam_search", "incoherent")
 DETECTORS = ("tonal", "harmonic", "energy", "mf")
@@ -61,28 +62,39 @@ def beam_sigma(w: np.ndarray, c: np.ndarray) -> np.ndarray:
     return np.sqrt(v)
 
 
+def known_beams(look_u: np.ndarray, positions_m: np.ndarray, f_hz: np.ndarray, c_mps: float,
+                c_assumed: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Per-trial DAS weights at the true direction (t, K, N) and their noise normalization (t, K)."""
+    look_u = np.atleast_2d(look_u)
+    tau = -(look_u @ np.asarray(positions_m, dtype=float).T) / c_mps  # (t, N)
+    w = np.exp(-2j * np.pi * np.asarray(f_hz)[None, :, None] * tau[:, None, :]) / tau.shape[1]
+    v = np.einsum("tkn,knm,tkm->tk", w.conj(), c_assumed, w).real
+    if np.any(v <= 0):
+        raise ValueError("beam noise power must be positive")
+    return w, np.sqrt(v)
+
+
 def normalize(x: np.ndarray, mode: str, c_assumed: np.ndarray, positions_m=None, f_hz=None, c_mps=None,
-              look_u=None, search_w=None, search_sigma=None) -> np.ndarray:
+              look_u=None, search_w=None, search_sigma=None, known_w=None, known_sigma=None) -> np.ndarray:
     """Normalized streams z (t, S, K) from noise-plus-signal bins x (t, K, N).
 
     ``look_u`` (t, 3): true direction per trial for beam_known. ``search_w``/``search_sigma``: precomputed
     beam-search weights (K, N, B) and normalizations (K, B).
     """
+    rdt = x.real.dtype  # keep single precision when the bins are single precision
     if mode == "single":
-        return (x[..., 0] / np.sqrt(c_assumed[:, 0, 0])[None, :])[:, None, :]
+        return (x[..., 0] / np.sqrt(c_assumed[:, 0, 0]).astype(rdt)[None, :])[:, None, :]
     if mode == "incoherent":
-        sig = np.sqrt(np.einsum("knn->kn", c_assumed))  # (K, N)
+        sig = np.sqrt(np.einsum("knn->kn", c_assumed)).astype(rdt)  # (K, N)
         return np.swapaxes(x / sig[None], 1, 2)  # (t, N, K)
     if mode == "beam_search":
-        y = np.einsum("tkn,knb->tbk", x, search_w.conj())
-        return y / search_sigma.T[None]
+        y = np.einsum("tkn,knb->tbk", x, search_w.conj().astype(x.dtype))
+        return y / search_sigma.T.astype(rdt)[None]
     if mode == "beam_known":
-        look_u = np.atleast_2d(look_u)
-        tau = -(look_u @ np.asarray(positions_m, dtype=float).T) / c_mps  # (t, N)
-        w = np.exp(-2j * np.pi * f_hz[None, :, None] * tau[:, None, :]) / tau.shape[1]  # (t, K, N)
-        y = np.einsum("tkn,tkn->tk", x, w.conj())
-        v = np.einsum("tkn,knm,tkm->tk", w.conj(), c_assumed, w).real
-        return (y / np.sqrt(v))[:, None, :]
+        if known_w is None:
+            known_w, known_sigma = known_beams(look_u, positions_m, f_hz, c_mps, c_assumed)
+        y = np.einsum("tkn,tkn->tk", x, known_w.conj().astype(x.dtype))
+        return (y / known_sigma.astype(rdt))[:, None, :]
     raise ValueError(f"unknown mode {mode!r}")
 
 
@@ -114,7 +126,7 @@ class Detectors:
 
     def mf_lags(self, z: np.ndarray, replica: np.ndarray | None = None) -> np.ndarray:
         """Complex matched-filter output over lags, normalized to unit noise variance: (t, S, L)."""
-        s = self.replica if replica is None else replica
+        s = (self.replica if replica is None else replica).astype(z.dtype)
         L = self.oversample * z.shape[-1]
         norm = np.sqrt(np.sum(np.abs(s) ** 2, axis=-1))  # (S,) or (t, S)
         m = np.fft.ifft(z * s.conj(), n=L, axis=-1) * L

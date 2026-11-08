@@ -15,8 +15,9 @@ import numpy as np
 
 from .stats import Z95, wilson_ci
 
-__all__ = ["erlang_logsf", "erlang_isf", "maxexp_isf", "exp_isf", "empirical_threshold", "choose_threshold",
-           "realized_pfa", "pd_with_interval", "snr_at_pd", "MIN_EXCEEDANCES"]
+__all__ = ["erlang_logsf", "erlang_isf", "erlang_sf_small", "maxexp_isf", "exp_isf", "empirical_threshold",
+           "choose_threshold", "realized_pfa", "pd_with_interval", "snr_at_pd", "incoherent_tonal_bound",
+           "MIN_EXCEEDANCES"]
 
 #: Minimum expected number of calibration exceedances (n_cal * Pfa) for an empirical threshold.
 MIN_EXCEEDANCES = 10
@@ -52,6 +53,40 @@ def erlang_isf(p: float, k: int) -> float:
         if hi - lo < 1e-10 * max(1.0, hi):
             break
     return 0.5 * (lo + hi)
+
+
+def erlang_sf_small(y: np.ndarray, k: int) -> np.ndarray:
+    """P(Gamma(k, 1) > y), vectorized over y, for small integer k (closed-form Poisson sum)."""
+    y = np.asarray(y, dtype=float)
+    term = np.ones_like(y)
+    acc = np.ones_like(y)
+    for i in range(1, k):
+        term = term * y / i
+        acc = acc + term
+    return np.exp(-y) * acc
+
+
+def incoherent_tonal_bound(p: float, lam_max: np.ndarray, n: int) -> float:
+    """Conservative threshold for max over bins of q_k = (1/n) sum_i lam_ik E_ik (incoherent power).
+
+    Uses q_k <= (lam_max,k / n) Gamma(n, 1) per bin and the exact product over independent bins.
+    """
+    lam = np.asarray(lam_max, dtype=float)
+
+    def pfa(x):
+        b = np.minimum(erlang_sf_small(n * x / lam, n), 1.0)
+        return -np.expm1(np.sum(np.log1p(-b)))
+
+    lo, hi = 0.0, 1.0
+    while pfa(hi) > p:
+        hi *= 2.0
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        if pfa(mid) > p:
+            lo = mid
+        else:
+            hi = mid
+    return hi
 
 
 def exp_isf(p: float) -> float:

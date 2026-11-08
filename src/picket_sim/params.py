@@ -34,10 +34,18 @@ class Param:
     provenance: str
     source: str
     context: str = ""
+    frequency_range: str = ""
+    applicability: str = ""
+    uncertainty: str = ""
 
     def row(self) -> dict:
         return {"context": self.context, "parameter": self.name, "value": self.value, "unit": self.unit,
                 "provenance": self.provenance, "source": self.source}
+
+    def row_full(self) -> dict:
+        """Register row with the D01 fields (ADR-0017); ``row`` keeps the SIM-02A table format."""
+        return {**self.row(), "frequency_range": self.frequency_range, "applicability": self.applicability,
+                "uncertainty": self.uncertainty}
 
 
 #: Boltzmann constant, exact by the 2019 SI definition.
@@ -74,11 +82,23 @@ SCHEMA: dict[str, tuple[str, float, float]] = {
     "ratio_db": ("dB", -100.0, 100.0),
     "range_m": ("m", 0.0, 1e4),
     "correlation_length_m": ("m", 1e-4, 1e3),
+    # SIM-02B.1 (ADR-0017)
+    "shipping_activity": ("1", 0.0, 1.0),
+    "wind_speed_m_per_s": ("m/s", 0.0, 40.0),
+    "duration_s": ("s", 1e-4, 100.0),
+    "frequency_hz": ("Hz", 1.0, 1e6),
 }
 
+#: Optional D01 fields; required (non-empty) for published or measured records when ``require_d01`` is set.
+D01_FIELDS = ("frequency_range", "applicability", "uncertainty")
 
-def parse_param(name: str, spec, context: str = "") -> Param:
-    """Parse one ``{value, provenance, source}`` record for schema key ``name``."""
+
+def parse_param(name: str, spec, context: str = "", require_d01: bool = False) -> Param:
+    """Parse one ``{value, provenance, source}`` record for schema key ``name``.
+
+    Optional keys ``frequency_range``, ``applicability`` and ``uncertainty`` are carried into the record;
+    with ``require_d01`` they are mandatory for published and measured values (ADR-0017).
+    """
     where = f"{context}.{name}" if context else name
     if name not in SCHEMA:
         raise ParamError(f"{where}: unknown parameter key (no unit/range schema)")
@@ -100,7 +120,12 @@ def parse_param(name: str, spec, context: str = "") -> Param:
     unit, lo, hi = SCHEMA[name]
     if not math.isfinite(val) or not (lo <= val <= hi):
         raise ParamError(f"{where}: value {val} outside plausible range [{lo}, {hi}] {unit} (unit error?)")
-    return Param(name, val, unit, prov, src, context)
+    extra = {k: str(spec.get(k, "")).strip() for k in D01_FIELDS}
+    if require_d01 and prov in ("published", "measured"):
+        miss = [k for k, v in extra.items() if not v]
+        if miss:
+            raise ParamError(f"{where}: {prov} values must state {miss} (ADR-0017)")
+    return Param(name, val, unit, prov, src, context, **extra)
 
 
 def collect(block: dict, context: str, keys: list[str]) -> dict[str, Param]:
