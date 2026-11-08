@@ -5,9 +5,9 @@ Subject: PCK-SIM-001: SIM-02A closeout and SIM-02B.1 results for review
 Your SIM-02A review set five reproducibility actions and authorized SIM-02B in stages. The closeout actions are complete, and SIM-02B.1, the signal and detection-model foundation, is ready for your review. SIM-02B.2 has not started and waits on the decisions below.
 
 Attachments:
-1. SIM-02B1_transmittal.pdf ({TR_PAGES} pages). Start here. It maps each closeout action, deliverable and verification requirement to evidence, records the D01 to D06 dispositions and lists the decisions needed for SIM-02B.2.
-2. SIM-02B1_engineering_report.pdf ({REP_PAGES} pages). Methods, results by band and signal class, false-alarm calibration, limitations and recommendations.
-3. {ZIP_NAME} ({ZIP_MB} MB). The documents above plus figures, run tables, example waveforms, the input provenance register with its evidence files, the AVS assessment, the D06 criterion table and two source archives. SHA256SUMS.txt verifies every file.
+1. SIM-02B1_transmittal.pdf (4 pages). Start here. It maps each closeout action, deliverable and verification requirement to evidence, records the D01 to D06 dispositions and lists the decisions needed for SIM-02B.2.
+2. SIM-02B1_engineering_report.pdf (9 pages). Methods, results by band and signal class, false-alarm calibration, limitations and recommendations.
+3. PCK-SIM-001_SIM-02B.1_Review_Package_20261108T125126Z_1c70e065_8dbe019.zip (21.6 MB). The documents above plus figures, run tables, example waveforms, the input provenance register with its evidence files, the AVS assessment, the D06 criterion table and two source archives. SHA256SUMS.txt verifies every file.
 
 SIM-02A closeout. The package now ships the run's code commit and the final source baseline as separate archives, and the baseline archive carries the run-of-record tables. The package builder unpacked that archive without git and ran the documented commands: the 59 claims checks pass, the criterion-margin supplement regenerates byte for byte, and a full SIM-02A rerun reproduces every run table byte for byte. Fifteen new tests cover the supplementary tools, including a check that the claims tool still fails on the Revision 0 documents. On D06, the six-element circles' -6 dB band ratio is 2.37 at exactly -6.00 dB and 1.73 at -6.0206 dB; every other candidate is stable.
 

@@ -345,7 +345,8 @@ REQUIRED: dict = {
                 "4.3 to 9.0 dB below 200 Hz", "turns a 0.01 target into 0.075 to 0.332, and into 1.0",
                 "2.06 times longer on A0 for tones and 5.36 times", "2 records are published, 23 assumed and none measured",
                 "2.37 at exactly -6.00 dB and 1.73 at -6.0206 dB", "Fifteen new tests", "All 214 verification tests",
-                "98 minutes against a 75-minute estimate"],
+                "98 minutes against a 75-minute estimate", "(4 pages)", "(9 pages)", "(21.6 MB)",
+                "the 59 claims checks pass", "reproduces every run table byte for byte"],
 }
 FORBIDDEN = [chr(0x2014), "detection range of", "km detection", "earn their keep"]
 
