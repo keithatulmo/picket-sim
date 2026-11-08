@@ -17,7 +17,7 @@ from .stats import Z95, wilson_ci
 
 __all__ = ["erlang_logsf", "erlang_isf", "erlang_sf_small", "maxexp_isf", "exp_isf", "empirical_threshold",
            "choose_threshold", "realized_pfa", "pd_with_interval", "snr_at_pd", "incoherent_tonal_bound",
-           "MIN_EXCEEDANCES"]
+           "betabinom_pmf", "binom_pmf", "calibration_pvalue", "MIN_EXCEEDANCES"]
 
 #: Minimum expected number of calibration exceedances (n_cal * Pfa) for an empirical threshold.
 MIN_EXCEEDANCES = 10
@@ -167,3 +167,41 @@ def snr_at_pd(snr_db: np.ndarray, pd: np.ndarray, target: float) -> tuple[float,
     i = int(above[0])
     s0, s1, p0, p1 = s[i - 1], s[i], p[i - 1], p[i]
     return float(s0 + (target - p0) * (s1 - s0) / (p1 - p0)), "ok"
+
+
+def _lbeta(a: float, b: float) -> float:
+    return math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+
+
+def _lchoose(n: int) -> np.ndarray:
+    k = np.arange(n + 1)
+    return np.array([math.lgamma(n + 1) - math.lgamma(j + 1) - math.lgamma(n - j + 1) for j in k])
+
+
+def binom_pmf(n: int, p: float) -> np.ndarray:
+    k = np.arange(n + 1)
+    return np.exp(_lchoose(n) + k * math.log(p) + (n - k) * math.log1p(-p))
+
+
+def betabinom_pmf(n: int, a: float, b: float) -> np.ndarray:
+    k = np.arange(n + 1)
+    lb = np.array([_lbeta(j + a, n - j + b) for j in k]) - _lbeta(a, b)
+    return np.exp(_lchoose(n) + lb)
+
+
+def calibration_pvalue(method: str, k_eval: int, n_eval: int, pfa: float, n_cal: int = 0) -> tuple[float, float]:
+    """(two-sided p, upper-tail p) of an evaluation exceedance count under correct calibration.
+
+    empirical: the threshold is the ceil(n_cal (1 - pfa))-th order statistic of the calibration set, so for
+    exchangeable continuous statistics K_eval ~ BetaBinomial(n_eval, k_c + 1, n_cal - k_c), k_c = n_cal - m.
+    exact (or a bound): K_eval ~ Binomial(n_eval, pfa); for a valid bound only the upper tail is meaningful.
+    """
+    if method == "empirical":
+        m = int(math.ceil(n_cal * (1 - pfa)))
+        kc = n_cal - m
+        pmf = betabinom_pmf(n_eval, kc + 1, n_cal - kc)
+    else:
+        pmf = binom_pmf(n_eval, pfa)
+    up = min(1.0, float(np.sum(pmf[k_eval:])))
+    lo = min(1.0, float(np.sum(pmf[:k_eval + 1])))
+    return min(1.0, 2 * min(up, lo)), up

@@ -1,0 +1,1004 @@
+{
+  "assumptions": [
+    "Narrowband-free broadband synthesis: circular, band-limited, stationary Gaussian noise per window (ADR-0016).",
+    "Spatial coherence models are assumed (spherically isotropic, exponential flow-like, white); never inferred from single-channel spectra (ADR-0017).",
+    "Ambient level and shape from the published Coates/Wenz-type formulas with assumed shipping and wind parameters.",
+    "Sensor self-noise is the SIM-02A assumed S1 chain, or an assumed sensor-limited condition 20 dB above ambient.",
+    "No host noise, no channel calibration errors and no synchronization errors in SIM-02B.1 (SIM-02B.2).",
+    "Plane-wave sources on the horizon; azimuth uniform per trial; no propagation model, no detection ranges."
+  ],
+  "command": [
+    "picket-sim",
+    "run",
+    "configs/sim02b/sim02b1_baseline.yaml",
+    "--workers",
+    "4"
+  ],
+  "completed_utc": "2026-11-08T14:29:53+00:00",
+  "config_path": "configs/sim02b/sim02b1_baseline.yaml",
+  "config_resolved": {
+    "bands": [
+      {
+        "f_hi_hz": 200.0,
+        "f_lo_hz": 20.0,
+        "fs_hz": 1000.0,
+        "id": "B1"
+      },
+      {
+        "f_hi_hz": 2000.0,
+        "f_lo_hz": 200.0,
+        "fs_hz": 10000.0,
+        "id": "B2"
+      },
+      {
+        "f_hi_hz": 10000.0,
+        "f_lo_hz": 2000.0,
+        "fs_hz": 48000.0,
+        "id": "B3"
+      }
+    ],
+    "candidates": [
+      {
+        "family": "reference",
+        "footprint": "none",
+        "id": "A0",
+        "label": "Single hydrophone",
+        "role": "primary",
+        "type": "single"
+      },
+      {
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "family": "linear",
+        "footprint": "C",
+        "id": "A1",
+        "label": "Line L4(d=0.15)",
+        "n_elements": 4,
+        "role": "primary",
+        "spacing_m": 0.15,
+        "type": "linear"
+      },
+      {
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "family": "linear",
+        "footprint": "E",
+        "id": "A2",
+        "label": "Line L4(d=0.30)",
+        "n_elements": 4,
+        "role": "primary",
+        "spacing_m": 0.3,
+        "type": "linear"
+      },
+      {
+        "0.45 m": null,
+        "diameter_m": 0.45,
+        "family": "planar",
+        "footprint": "C",
+        "id": "P6-C",
+        "label": "6-el circle",
+        "n_elements": 6,
+        "role": "primary",
+        "type": "circular"
+      },
+      {
+        "0.45 m": null,
+        "diameter_m": 0.45,
+        "family": "planar",
+        "footprint": "C",
+        "id": "P8-C",
+        "label": "8-el circle",
+        "n_elements": 8,
+        "role": "primary",
+        "type": "circular"
+      },
+      {
+        "envelope_m": [
+          1.0,
+          0.85,
+          0.75
+        ],
+        "family": "volumetric",
+        "footprint": "I",
+        "id": "A4",
+        "label": "A4 (envelope 1.00x0.85x0.75 m)",
+        "role": "primary",
+        "type": "envelope"
+      },
+      {
+        "0.90 m": null,
+        "diameter_m": 0.9,
+        "family": "planar",
+        "footprint": "E",
+        "id": "P8-E",
+        "label": "8-el circle",
+        "n_elements": 8,
+        "role": "secondary",
+        "type": "circular"
+      },
+      {
+        "0.45 m diag": null,
+        "dx_m": 0.3181980515,
+        "dy_m": 0.3181980515,
+        "family": "planar",
+        "footprint": "C",
+        "id": "SQ4-C",
+        "label": "2x2 square",
+        "nx": 2,
+        "ny": 2,
+        "role": "secondary",
+        "type": "rectangular"
+      },
+      {
+        "envelope_m": [
+          0.45,
+          0.3825,
+          0.3375
+        ],
+        "family": "volumetric",
+        "footprint": "C",
+        "id": "V-C",
+        "label": "Envelope 0.45x0.38x0.34 m",
+        "role": "secondary",
+        "type": "envelope"
+      },
+      {
+        "envelope_m": [
+          4.0,
+          3.4,
+          3.0
+        ],
+        "family": "volumetric",
+        "footprint": "D",
+        "id": "V-D",
+        "label": "Envelope 4.0x3.4x3.0 m",
+        "role": "secondary",
+        "type": "envelope"
+      },
+      {
+        "envelope_m": [
+          4.0,
+          3.4,
+          0.25
+        ],
+        "family": "volumetric",
+        "footprint": "D",
+        "id": "V-DS",
+        "label": "Envelope 4.0x3.4x0.25 m (draft-limited)",
+        "role": "secondary",
+        "type": "envelope"
+      }
+    ],
+    "covariance_validation": {
+      "band": "B2",
+      "candidates": [
+        "A1",
+        "P8-C",
+        "V-D"
+      ],
+      "nperseg": 2000,
+      "scenarios": [
+        "N-AMB",
+        "N-FLOW",
+        "N-SENS"
+      ],
+      "window_s": 20.0
+    },
+    "experiment": {
+      "assumptions": [
+        "Narrowband-free broadband synthesis: circular, band-limited, stationary Gaussian noise per window (ADR-0016).",
+        "Spatial coherence models are assumed (spherically isotropic, exponential flow-like, white); never inferred from single-channel spectra (ADR-0017).",
+        "Ambient level and shape from the published Coates/Wenz-type formulas with assumed shipping and wind parameters.",
+        "Sensor self-noise is the SIM-02A assumed S1 chain, or an assumed sensor-limited condition 20 dB above ambient.",
+        "No host noise, no channel calibration errors and no synchronization errors in SIM-02B.1 (SIM-02B.2).",
+        "Plane-wave sources on the horizon; azimuth uniform per trial; no propagation model, no detection ranges."
+      ],
+      "id": "SIM-02B.1",
+      "title": "SIM-02B.1 signal and detection-model foundation"
+    },
+    "experiments": [
+      {
+        "bands": [
+          "B1",
+          "B2",
+          "B3"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "A2",
+          "P6-C",
+          "P8-C",
+          "A4"
+        ],
+        "id": "PRIMARY",
+        "scenarios": [
+          "N-AMB"
+        ],
+        "windows_s": [
+          0.1,
+          1.0,
+          10.0
+        ]
+      },
+      {
+        "bands": [
+          "B1",
+          "B2",
+          "B3"
+        ],
+        "candidates": [
+          "P8-E",
+          "SQ4-C",
+          "V-C",
+          "V-D",
+          "V-DS"
+        ],
+        "id": "SECONDARY",
+        "scenarios": [
+          "N-AMB"
+        ],
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "bands": [
+          "B1",
+          "B2",
+          "B3"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "A2",
+          "P6-C",
+          "P8-C",
+          "A4"
+        ],
+        "id": "SCENARIOS",
+        "scenarios": [
+          "N-FLOW",
+          "N-SENS"
+        ],
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "bands": [
+          "B1"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "A2",
+          "P6-C",
+          "P8-C",
+          "A4"
+        ],
+        "classes": [
+          "tone"
+        ],
+        "id": "LONG-TONAL",
+        "scenarios": [
+          "N-AMB"
+        ],
+        "windows_s": [
+          60.0
+        ]
+      }
+    ],
+    "mismatch": [
+      {
+        "assumed": "N-AMB",
+        "bands": [
+          "B2"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "P8-C",
+          "A4"
+        ],
+        "id": "MM-LEVEL+1",
+        "truth": "N-AMB-P1",
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "assumed": "N-AMB",
+        "bands": [
+          "B2"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "P8-C",
+          "A4"
+        ],
+        "id": "MM-LEVEL+3",
+        "truth": "N-AMB-P3",
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "assumed": "N-AMB",
+        "bands": [
+          "B2"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "P8-C",
+          "A4"
+        ],
+        "id": "MM-SHAPE",
+        "truth": "N-AMB-PL",
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "assumed": "N-AMB",
+        "bands": [
+          "B1",
+          "B2"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "P8-C",
+          "A4"
+        ],
+        "id": "MM-COH-FLOW",
+        "truth": "N-FLOW",
+        "windows_s": [
+          1.0
+        ]
+      },
+      {
+        "assumed": "N-AMB-WHITE",
+        "bands": [
+          "B1",
+          "B2"
+        ],
+        "candidates": [
+          "A0",
+          "A1",
+          "P8-C",
+          "A4"
+        ],
+        "id": "MM-COH-WHITE",
+        "truth": "N-AMB",
+        "windows_s": [
+          1.0
+        ]
+      }
+    ],
+    "noise_scenarios": [
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "spherical"
+            },
+            "spectrum": "AMB-WENZ"
+          }
+        ],
+        "description": "ambient-limited, spherically isotropic",
+        "id": "N-AMB",
+        "self_noise": "SN-S1"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "correlation_length_m": {
+                "applicability": "qualitative support only: flow noise reported spatially incoherent at 17 cm spacing (Dalhousie 2017 thesis; IEEE JOE doi:10.1109/JOE.2019.2944444 abstract)",
+                "frequency_range": "all bands",
+                "provenance": "assumed",
+                "source": "SIM-02A assumed flow-like correlation length; no published correlation length found",
+                "uncertainty": "unknown",
+                "value": 0.1
+              },
+              "kind": "exponential"
+            },
+            "spectrum": "AMB-WENZ"
+          }
+        ],
+        "description": "short-correlation (flow-like) noise at the ambient level",
+        "id": "N-FLOW",
+        "self_noise": "SN-S1"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "spherical"
+            },
+            "spectrum": "AMB-WENZ"
+          }
+        ],
+        "description": "sensor-limited",
+        "id": "N-SENS",
+        "self_noise": "SN-LIMITED"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "spherical"
+            },
+            "spectrum": "AMB-WENZ-P1"
+          }
+        ],
+        "description": "mismatch truth: ambient +1 dB",
+        "id": "N-AMB-P1",
+        "self_noise": "SN-S1"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "spherical"
+            },
+            "spectrum": "AMB-WENZ-P3"
+          }
+        ],
+        "description": "mismatch truth: ambient +3 dB",
+        "id": "N-AMB-P3",
+        "self_noise": "SN-S1"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "spherical"
+            },
+            "spectrum": "AMB-PL"
+          }
+        ],
+        "description": "mismatch truth: SIM-02A assumed power-law envelope",
+        "id": "N-AMB-PL",
+        "self_noise": "SN-S1"
+      },
+      {
+        "components": [
+          {
+            "coherence": {
+              "kind": "white"
+            },
+            "spectrum": "AMB-WENZ"
+          }
+        ],
+        "description": "mismatch assumption: ambient treated as spatially white",
+        "id": "N-AMB-WHITE",
+        "self_noise": "SN-S1"
+      }
+    ],
+    "output": {
+      "root": "results/sim02b1"
+    },
+    "pd_targets": [
+      0.5,
+      0.9
+    ],
+    "pfa": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "physics": {
+      "sound_speed_mps": 1500.0
+    },
+    "processing": {
+      "beam_search_az_step_deg": 15.0,
+      "mf_oversample": 2
+    },
+    "roc_cases": [
+      {
+        "band": "B2",
+        "candidate": "A0",
+        "class": "tone",
+        "scenario": "N-AMB",
+        "window_s": 1.0
+      },
+      {
+        "band": "B2",
+        "candidate": "P8-C",
+        "class": "tone",
+        "scenario": "N-AMB",
+        "window_s": 1.0
+      },
+      {
+        "band": "B2",
+        "candidate": "A1",
+        "class": "tone",
+        "scenario": "N-AMB",
+        "window_s": 1.0
+      }
+    ],
+    "seed": 20261108,
+    "self_noise": {
+      "SN-LIMITED": {
+        "ratio_db": {
+          "provenance": "assumed",
+          "source": "sensor-limited condition: self-noise 20 dB above ambient at every frequency (SIM-02A eta = +20 dB)",
+          "value": 20.0
+        },
+        "spectrum": "AMB-WENZ",
+        "type": "relative"
+      },
+      "SN-S1": {
+        "chain": {
+          "adc": {
+            "bits": {
+              "provenance": "assumed",
+              "source": "illustrative 24-bit converter (ideal quantization; no ENOB loss modeled)",
+              "value": 24
+            },
+            "full_scale_v_peak": {
+              "provenance": "assumed",
+              "source": "illustrative converter full scale",
+              "value": 2.5
+            },
+            "sample_rate_hz": {
+              "provenance": "assumed",
+              "source": "illustrative sample rate covering B4",
+              "value": 96000.0
+            }
+          },
+          "bandwidth": {
+            "bandwidth_high_hz": {
+              "provenance": "assumed",
+              "source": "declared usable band of the scenario",
+              "value": 40000.0
+            },
+            "bandwidth_low_hz": {
+              "provenance": "assumed",
+              "source": "declared usable band of the scenario",
+              "value": 10.0
+            }
+          },
+          "description": "Illustrative low-noise chain (higher sensitivity, 24-bit, 96 kHz). Assumed; not a product.",
+          "hydrophone": {
+            "capacitance_f": {
+              "provenance": "assumed",
+              "source": "illustrative piezoceramic capacitance",
+              "value": 1e-08
+            },
+            "loss_tangent": {
+              "provenance": "assumed",
+              "source": "illustrative dielectric loss tangent",
+              "value": 0.01
+            },
+            "sensitivity_db_re_1v_per_upa": {
+              "provenance": "assumed",
+              "source": "illustrative bare-element (open-circuit) sensitivity, larger element; used to refer element thermal noise",
+              "value": -185.0
+            },
+            "temperature_k": {
+              "provenance": "assumed",
+              "source": "10 degC water temperature assumed",
+              "value": 283.0
+            }
+          },
+          "id": "S1-ASSUMED-lownoise",
+          "preamp": {
+            "current_noise_a_per_rthz": {
+              "provenance": "assumed",
+              "source": "illustrative input current noise",
+              "value": 1e-15
+            },
+            "flicker_corner_hz": {
+              "provenance": "assumed",
+              "source": "illustrative 1/f corner",
+              "value": 50.0
+            },
+            "gain_db": {
+              "provenance": "assumed",
+              "source": "illustrative preamplifier gain",
+              "value": 20.0
+            },
+            "max_output_v_peak": {
+              "provenance": "assumed",
+              "source": "illustrative preamplifier swing",
+              "value": 5.0
+            },
+            "voltage_noise_v_per_rthz": {
+              "provenance": "assumed",
+              "source": "illustrative low-noise input stage",
+              "value": 1e-09
+            }
+          }
+        },
+        "type": "chain"
+      }
+    },
+    "signal_classes": {
+      "broadband": {
+        "windows_s": [
+          0.1,
+          1.0,
+          10.0
+        ]
+      },
+      "chirp": {
+        "arrival_margin_s": 0.006,
+        "per_band": {
+          "B1": {
+            "duration_s": 0.08,
+            "f1_hz": 50.0,
+            "f2_hz": 150.0,
+            "taper": 0.5
+          },
+          "B2": {
+            "duration_s": 0.05,
+            "f1_hz": 500.0,
+            "f2_hz": 1500.0,
+            "taper": 0.2
+          },
+          "B3": {
+            "duration_s": 0.05,
+            "f1_hz": 3000.0,
+            "f2_hz": 8000.0,
+            "taper": 0.2
+          }
+        },
+        "windows_s": [
+          0.1,
+          1.0
+        ]
+      },
+      "harmonic": {
+        "n_harmonics": 4,
+        "windows_s": [
+          0.1,
+          1.0,
+          10.0
+        ]
+      },
+      "tone": {
+        "windows_s": [
+          0.1,
+          1.0,
+          10.0,
+          60.0
+        ]
+      }
+    },
+    "snr_grid_offsets_db": [
+      -18.0,
+      -16.0,
+      -14.0,
+      -12.0,
+      -10.0,
+      -8.0,
+      -6.0,
+      -4.0,
+      -2.0,
+      0.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0
+    ],
+    "spectra": {
+      "AMB-PL": {
+        "level_db_re_1upa2_per_hz": {
+          "provenance": "assumed",
+          "source": "SIM-02A assumed moderate ambient envelope (AMB-ASSUMED-moderate)",
+          "value": 60.0
+        },
+        "reference_frequency_hz": {
+          "provenance": "assumed",
+          "source": "SIM-02A envelope reference frequency",
+          "value": 1000.0
+        },
+        "slope_db_per_decade": {
+          "provenance": "assumed",
+          "source": "SIM-02A assumed envelope slope",
+          "value": -17.0
+        },
+        "type": "power_law"
+      },
+      "AMB-WENZ": {
+        "applicability": "Wenz-type ambient envelope from turbulence, distant shipping, wind and thermal terms; source states dominance regions only (shipping 10-100 Hz, wind 100 Hz-100 kHz); no water depth or wind-speed range stated.",
+        "model_source": "Stojanovic, M., 'On the Relationship Between Capacity and Distance in an Underwater Acoustic Communication Channel', ACM SIGMOBILE Mobile Computing and Communications Review 11(4):34-43 (2007), doi:10.1145/1347364.1347373, Section II.B, Eq. (6), p. 3, citing R. Coates, Underwater Acoustic Systems, Wiley, 1989 (secondary source; Coates not opened; Wenz 1962, JASA 34(12):1936-1956, doi:10.1121/1.1909155, not opened). Read 2026-11-08 from the author copy at https://typeset.io/pdf/on-the-relationship-between-capacity-and-distance-in-an-1m9kacxwgf.pdf",
+        "shipping_activity": {
+          "provenance": "assumed",
+          "source": "scenario choice: moderate shipping (source range 0 low to 1 high)",
+          "value": 0.5
+        },
+        "type": "coates_wenz",
+        "uncertainty": "Not stated in the source. Measured ambient spectra vary widely about any envelope: monthly L10 minus L90 spreads have modes of 14 dB (Alaskan Arctic) and 9.2, 7.7 and 9.3 dB (Olympic Coast, Channel Islands, Gulf of Mexico), 10 Hz to 2 kHz (Haver et al., Marine Policy 90:6-13, 2018, doi:10.1016/j.marpol.2018.01.023). Unit label printed as 'dB re uPa per Hz', read as dB re 1 uPa^2/Hz.",
+        "valid_range_hz": [
+          20.0,
+          10000.0
+        ],
+        "wind_speed_m_per_s": {
+          "provenance": "assumed",
+          "source": "scenario choice: moderate wind (about Beaufort 3)",
+          "value": 5.0
+        }
+      },
+      "AMB-WENZ-P1": {
+        "base": "AMB-WENZ",
+        "ratio_db": {
+          "provenance": "assumed",
+          "source": "mismatch test: true ambient 1 dB above the detector assumption",
+          "value": 1.0
+        },
+        "type": "scaled"
+      },
+      "AMB-WENZ-P3": {
+        "base": "AMB-WENZ",
+        "ratio_db": {
+          "provenance": "assumed",
+          "source": "mismatch test: true ambient 3 dB above the detector assumption",
+          "value": 3.0
+        },
+        "type": "scaled"
+      }
+    },
+    "trials": {
+      "0.1": {
+        "cal": 10000,
+        "eval": 10000,
+        "pos": 400
+      },
+      "1.0": {
+        "cal": 10000,
+        "eval": 10000,
+        "per_band": {
+          "B3": {
+            "cal": 4000,
+            "eval": 4000,
+            "pos": 400
+          }
+        },
+        "pos": 400
+      },
+      "10.0": {
+        "cal": 4000,
+        "eval": 4000,
+        "per_band": {
+          "B2": {
+            "cal": 2000,
+            "eval": 2000,
+            "pos": 200
+          },
+          "B3": {
+            "cal": 1000,
+            "eval": 1000,
+            "pos": 100
+          }
+        },
+        "pos": 200
+      },
+      "60.0": {
+        "cal": 1000,
+        "eval": 1000,
+        "pos": 200
+      }
+    },
+    "waveform_examples": [
+      {
+        "band": "B2",
+        "candidate": "P8-C",
+        "class": "tone",
+        "scenario": "N-AMB",
+        "snr_db": 10.0,
+        "trial": 0,
+        "window_s": 1.0
+      },
+      {
+        "band": "B2",
+        "candidate": "P8-C",
+        "class": "harmonic",
+        "scenario": "N-AMB",
+        "snr_db": 5.0,
+        "trial": 0,
+        "window_s": 1.0
+      },
+      {
+        "band": "B2",
+        "candidate": "P8-C",
+        "class": "broadband",
+        "scenario": "N-AMB",
+        "snr_db": -5.0,
+        "trial": 0,
+        "window_s": 1.0
+      },
+      {
+        "band": "B2",
+        "candidate": "P8-C",
+        "class": "chirp",
+        "scenario": "N-AMB",
+        "snr_db": 15.0,
+        "trial": 0,
+        "window_s": 1.0
+      }
+    ]
+  },
+  "config_sha256": "1c70e065c14258683dc8d139ff52c8b82a22a216588fca565ed1a4601fb03433",
+  "created_utc": "2026-11-08T12:51:26+00:00",
+  "experiment_id": "SIM-02B.1",
+  "figures": [
+    "s2b1_fig01_pd_curves_B2_1s.png",
+    "s2b1_fig02_gain_beam_search.png",
+    "s2b1_fig03_gain_beam_known.png",
+    "s2b1_fig04_gain_incoherent.png",
+    "s2b1_fig05_scenarios.png",
+    "s2b1_fig06_pfa_calibration.png",
+    "s2b1_fig07_roc.png",
+    "s2b1_fig08_waveforms.png"
+  ],
+  "outputs": [
+    {
+      "bytes": 286781,
+      "path": "figures/s2b1_fig01_pd_curves_B2_1s.png",
+      "sha256": "e0424daf8ba6ef7e6194dd34421a721432a0e9e522c3ee157541c2d6f26b1ffe"
+    },
+    {
+      "bytes": 152561,
+      "path": "figures/s2b1_fig02_gain_beam_search.png",
+      "sha256": "b7f97f5fe5a0bf4465c026ed9a83d8d0356d0aede87021c2b6aae8a72550c73c"
+    },
+    {
+      "bytes": 150484,
+      "path": "figures/s2b1_fig03_gain_beam_known.png",
+      "sha256": "1bd8450c0a1af5aac030d166d2586b85dd8a817b1d80c04df3b895d0da3c0b27"
+    },
+    {
+      "bytes": 137891,
+      "path": "figures/s2b1_fig04_gain_incoherent.png",
+      "sha256": "dc778de4adfc63ad2c22f73e5d4047ae221d23264f458cf609e8bf23e66ddc17"
+    },
+    {
+      "bytes": 69804,
+      "path": "figures/s2b1_fig05_scenarios.png",
+      "sha256": "b65b515b790d7417fa7018d2475d011b3d758b27124d8c0cddf6218ee5f74f6e"
+    },
+    {
+      "bytes": 242104,
+      "path": "figures/s2b1_fig06_pfa_calibration.png",
+      "sha256": "95b26080a2eb769881dc164a28dc1a218366a5730b295333a1f24d80455fd142"
+    },
+    {
+      "bytes": 79581,
+      "path": "figures/s2b1_fig07_roc.png",
+      "sha256": "5ae6a6a900187c44a63201e3214efa2eead6385bbcac41897b6159e82f4d3e11"
+    },
+    {
+      "bytes": 400962,
+      "path": "figures/s2b1_fig08_waveforms.png",
+      "sha256": "e6e9ce6c6446955c4694334e504ea3a1bd719602c8c361f2ea5eb76c157e2923"
+    },
+    {
+      "bytes": 1508,
+      "path": "summary.md",
+      "sha256": "92b730ccc2a7a3316e288833e336b57ad8a131fbfa18adc61b1ea4afefa4d19b"
+    },
+    {
+      "bytes": 6153,
+      "path": "tables/case_timings.csv",
+      "sha256": "06fbcea5c1cba118f86f3caa88c5930c1404d7d6afc3030e9ae2cf72b6a05122"
+    },
+    {
+      "bytes": 8743,
+      "path": "tables/cases.csv",
+      "sha256": "75fd2e5a40b2f788796953fd192da86f9fbdeea79035e8bf8124c6ada6a40da6"
+    },
+    {
+      "bytes": 818,
+      "path": "tables/covariance_validation.csv",
+      "sha256": "08fd4c6d101743f64b347329eaba227bcbacbafbe71208654d4d5405b1ef1c96"
+    },
+    {
+      "bytes": 680647,
+      "path": "tables/detection_gain_vs_a0.csv",
+      "sha256": "421b423700aef2863cf9ff1fbcdbe44946582daa38ee626b24c3b19587e31474"
+    },
+    {
+      "bytes": 4194,
+      "path": "tables/parameters_by_provenance.csv",
+      "sha256": "79b2ab96b49c96727ae117fd9498ca0705150abc35e3e92182108de2d716edb8"
+    },
+    {
+      "bytes": 374545,
+      "path": "tables/pd_curves.csv.gz",
+      "sha256": "4c3eba5ad0845dec44e261ccfa4ab2db01d514edb4dd1e644a8c6634475ed258"
+    },
+    {
+      "bytes": 10922,
+      "path": "tables/roc_curves.csv",
+      "sha256": "30c130d9f4b302fef45efaa423d5c0e8b0587737c0e03316d60a0ed7d6ba43e2"
+    },
+    {
+      "bytes": 876657,
+      "path": "tables/snr_required.csv",
+      "sha256": "f2c23b1f3d791a2dfc48ac9fe77451c9a25566d709ba603fc89debb1a9056fb3"
+    },
+    {
+      "bytes": 844916,
+      "path": "tables/thresholds_and_pfa.csv",
+      "sha256": "2cdd67f7f89870da4b915ea8c6bea59ef4645ba8ee4bc71a1fe8799d4a72cd06"
+    },
+    {
+      "bytes": 431,
+      "path": "tables/waveform_examples.csv",
+      "sha256": "1452bff3f730521fd813c95c219e9d8afdf85f7041c3e3e719b9a70cb0fd0bcb"
+    },
+    {
+      "bytes": 1226972,
+      "path": "waveforms/wave_broadband_P8-C_B2_1s.npz",
+      "sha256": "1b90988e38d05b8779c221ea49f9d0a0838472d2528be11c1475d7b0920e5c92"
+    },
+    {
+      "bytes": 1227115,
+      "path": "waveforms/wave_chirp_P8-C_B2_1s.npz",
+      "sha256": "8ad8b67e0a305b9ec5bfe25e744df2d1658c2390b14817d2f5fbf70c8c8f6c09"
+    },
+    {
+      "bytes": 1224752,
+      "path": "waveforms/wave_harmonic_P8-C_B2_1s.npz",
+      "sha256": "70e4fa577fa563f19c58b06c627533f7713194b2a1e1dd83dd211d8aef10cfcb"
+    },
+    {
+      "bytes": 1224674,
+      "path": "waveforms/wave_tone_P8-C_B2_1s.npz",
+      "sha256": "f1aec3e342a59c15a25d4458a442c2d31c33d71d5fa877596584b2e1647ded90"
+    }
+  ],
+  "run_id": "20261108T125126Z_1c70e065_8dbe019",
+  "self_checks": {
+    "bound_cases_checked": 1804,
+    "bound_max_upper_realized_over_target": 3.0873506646506046,
+    "clipping_min_headroom_db": 10.483435106348168,
+    "covariance_validation_worst_median_error_in_se": 0.8435824129175393,
+    "covariance_validation_worst_variance_ratio": 0.007747838474295055,
+    "parameters_by_provenance": {
+      "assumed": 23,
+      "measured": 0,
+      "published": 2
+    },
+    "pfa_empirical_cases": 1460,
+    "pfa_empirical_fraction_ci_excluding_target": 0.1410958904109589,
+    "pfa_empirical_max_abs_z": 5.720775535473553,
+    "pfa_exact_cases": 344,
+    "pfa_exact_fraction_ci_excluding_target": 0.046511627906976744,
+    "pfa_exact_max_abs_z": 3.3371190623595726
+  },
+  "software": {
+    "git_commit": "8dbe0190a33dc1f3f55137e64e66d6c33f7c0cd1",
+    "git_dirty": false,
+    "git_status": [],
+    "machine": "x86_64",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "picket_sim": "0.1.0",
+    "platform": "Linux-6.18.44-fc-v310-x86_64-with-glibc2.39",
+    "python": "3.13.18",
+    "pyyaml": "6.0.3"
+  },
+  "status": "complete",
+  "timings_s": {
+    "cases_s": 5896.200007677078,
+    "covariance_validation_s": 1.979132890701294,
+    "figures_s": 7.4932708740234375,
+    "total_s": 5907.059592008591
+  },
+  "title": "SIM-02B.1 signal and detection-model foundation",
+  "warnings": [],
+  "workers": 4
+}

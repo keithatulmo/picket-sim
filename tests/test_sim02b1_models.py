@@ -334,3 +334,23 @@ def test_incoherent_bound_is_conservative_for_correlated_channels():
     qw = (np.abs(zw) ** 2).mean(axis=2).max(axis=1)
     x = dt.incoherent_tonal_bound(0.01, lam_w, n_ch)
     assert abs(int(np.sum(qw > x)) - n * 0.01) <= 4 * math.sqrt(n * 0.01)
+
+
+def test_beta_binomial_predictive_law_of_empirical_threshold_matches_simulation():
+    """K_eval for an order-statistic threshold follows BetaBinomial(n_e, k_c + 1, n_c - k_c) (exchangeability)."""
+    n_c, n_e, p, reps = 300, 300, 0.02, 20000
+    m = int(math.ceil(n_c * (1 - p)))
+    kc = n_c - m
+    cal = np.sort(RNG.exponential(size=(reps, n_c)), axis=1)[:, m - 1]
+    ev = RNG.exponential(size=(reps, n_e))
+    k = (ev > cal[:, None]).sum(axis=1)
+    pmf = dt.betabinom_pmf(n_e, kc + 1, n_c - kc)
+    assert pmf.sum() == pytest.approx(1.0, abs=1e-12)
+    assert k.mean() == pytest.approx(np.dot(np.arange(n_e + 1), pmf), rel=0.02)
+    for j in (2, 6, 12):
+        assert np.mean(k >= j) == pytest.approx(pmf[j:].sum(), abs=4 * math.sqrt(pmf[j:].sum() / reps) + 1e-3)
+    # the binomial law is too narrow for this count (threshold uncertainty is ignored)
+    assert np.var(k) > 1.5 * n_e * p * (1 - p)
+    two, up = dt.calibration_pvalue("empirical", 6, n_e, p, n_c)
+    assert 0 < up <= 1 and 0 < two <= 1
+    assert dt.calibration_pvalue("exact", 0, 1000, 1e-3)[1] == pytest.approx(1.0)

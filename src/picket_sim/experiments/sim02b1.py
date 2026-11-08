@@ -685,25 +685,27 @@ def run(config_path, output_root=None, allow_dirty: bool = False, make_figures: 
                                              "band": r["case"].band, "window_s": r["case"].T,
                                              "truth": r["case"].truth, "assumed": r["case"].assumed,
                                              "seconds": r["seconds"]} for r in results])
-        # self-checks on false-alarm calibration (matched noise only)
+        # self-checks on false-alarm calibration (matched noise only): exact predictive laws (ADR-0015).
+        # Empirical thresholds: beta-binomial; exact thresholds: binomial; bounds: upper tail at the target.
         matched = [r for r in thr_rows if r["kind"] == "primary"]
-        for meth in ("exact", "empirical"):
-            sel = [r for r in matched if r["method"] == meth and r["n_eval"] * r["pfa_target"] >= 10]
-            if not sel:
+        for meth in ("exact", "empirical", "bound"):
+            ps = []
+            for r in matched:
+                if meth == "bound":
+                    if not (math.isfinite(r["bound_eta"]) and math.isfinite(r["bound_realized_pfa"])):
+                        continue
+                    k = int(round(r["bound_realized_pfa"] * r["n_eval"]))
+                    ps.append(dt.calibration_pvalue("bound", k, r["n_eval"], r["pfa_target"])[1])
+                elif r["method"] == meth:
+                    ps.append(dt.calibration_pvalue(meth, r["realized_k"], r["n_eval"], r["pfa_target"], r["n_cal"])[0])
+            if not ps:
                 continue
-            z = np.array([(r["realized_pfa"] - r["pfa_target"]) / math.sqrt(r["pfa_target"] * (1 - r["pfa_target"])
-                                                                              / r["n_eval"]) for r in sel])
-            miss = np.mean([not (r["realized_lo"] <= r["pfa_target"] <= r["realized_hi"]) for r in sel])
-            study.self_checks[f"pfa_{meth}_cases"] = len(sel)
-            study.self_checks[f"pfa_{meth}_max_abs_z"] = float(np.max(np.abs(z)))
-            study.self_checks[f"pfa_{meth}_fraction_ci_excluding_target"] = float(miss)
-            if meth == "exact" and np.max(np.abs(z)) > 5.0:
-                raise RuntimeError("self-check failed: exact thresholds miscalibrated on evaluation trials (> 5 SE)")
-        bnd = [r for r in matched if math.isfinite(r["bound_eta"]) and r["n_eval"] * r["pfa_target"] >= 10]
-        if bnd:
-            ratio = [r["bound_realized_hi"] / r["pfa_target"] for r in bnd]
-            study.self_checks["bound_cases_checked"] = len(bnd)
-            study.self_checks["bound_max_upper_realized_over_target"] = float(max(ratio))
+            ps = np.array(ps)
+            study.self_checks[f"pfa_{meth}_rows"] = int(ps.size)
+            study.self_checks[f"pfa_{meth}_fraction_p_below_0p05"] = float(np.mean(ps < 0.05))
+            study.self_checks[f"pfa_{meth}_min_p_times_rows"] = float(min(1.0, ps.min() * ps.size))
+            if ps.min() * ps.size < 1e-3:
+                raise RuntimeError(f"self-check failed: {meth} thresholds miscalibrated (Bonferroni p < 1e-3)")
         clip = study.clipping_check(float(np.max(study.offsets)) + 40.0)
         study.self_checks["clipping_min_headroom_db"] = clip["min_headroom_db"]
         if clip["min_headroom_db"] < 0:

@@ -1,0 +1,7 @@
+# SIM-02B.1 results errata
+
+Run directories are immutable; problems found after a run are recorded here.
+
+| Run | Affected output | Problem | Corrected in |
+|---|---|---|---|
+| `20261108T125126Z_1c70e065_8dbe019` | `record.json` and `summary.md` self-checks `pfa_empirical_max_abs_z`, `pfa_empirical_fraction_ci_excluding_target`, `pfa_exact_max_abs_z`, `bound_max_upper_realized_over_target` | The self-checks compared realized Pfa with a Wilson interval that covers only the evaluation set. For empirical thresholds the threshold is itself an order statistic of the calibration set, so the realized count is beta-binomial, not binomial; the Wilson-based figures (largest z 5.72, 14.1 % of intervals excluding the target) overstate the scatter. For union bounds the Wilson upper limit exceeds the target by sampling even for a valid bound (largest 3.09 times). No threshold, Pd or gain value is affected. The exact test on the same rows (`tools/sim02b1_calibration_check.py`, `reports/SIM-02B1_calibration_check.md`) gives 3.8 % of empirical p-values below 0.05 with Bonferroni-adjusted smallest p-value 1.0, 2.8 % and 0.645 for exact thresholds, and 1.0 % and 0.203 (one-sided) for bounds: consistent with correct calibration. | Code after commit `c590147`: run self-checks use the exact predictive laws (`detection.calibration_pvalue`; test `test_beta_binomial_predictive_law_of_empirical_threshold_matches_simulation`). |

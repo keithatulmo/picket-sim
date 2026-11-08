@@ -1,0 +1,5 @@
+file,class,candidate,band,window_s,trial,snr_db,azimuth_deg,noise_rms_upa,signal_rms_upa
+wave_tone_P8-C_B2_1s.npz,tone,P8-C,B2,1,0,10,31.79152812,48295.53018,2634.701807
+wave_harmonic_P8-C_B2_1s.npz,harmonic,P8-C,B2,1,0,5,169.9460138,46502.34649,3806.413341
+wave_broadband_P8-C_B2_1s.npz,broadband,P8-C,B2,1,0,-5,208.1553291,47434.07715,27276.4534
+wave_chirp_P8-C_B2_1s.npz,chirp,P8-C,B2,1,0,15,296.4380266,47817.70028,6212.223112
