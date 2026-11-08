@@ -43,3 +43,18 @@ Numerical approximations (all checked):
 | AS-17 | Signal-class crest factors: tonal and harmonic analytic; broadband 12.04 dB (4-sigma criterion); transient 25 dB | Tonal and harmonic analytic; others assumed | Sets clipping headroom only. |
 | AS-18 | Noise-free calibration-induced bearing statistics | Modeled (noise-free) | Bearing errors caused by additive noise are SIM-02B. |
 | AS-19 | Volumetric envelopes V-C, V-D, V-DS | Assumed (parametric; not host surveys; V-DS represents a draft-limited mounting) | Results are reported against envelope dimensions; A4 (envelope 1.00 x 0.85 x 0.75 m) remains the regression case. |
+
+## SIM-02B.1 additions
+
+| ID | Item | Status | Effect on conclusions |
+|---|---|---|---|
+| AS-20 | Ambient level and shape: Coates/Wenz-type formulas (Stojanovic 2007, Eq. 6) with shipping s = 0.5 and wind w = 5 m/s | Equations published (secondary); s and w assumed; units read as dB re 1 uPa^2/Hz | Detection results are expressed as input SNR relative to the total element noise, so the absolute level matters only through the ambient-to-self-noise ratio and the spectral shape inside each band. |
+| AS-21 | Spatial coherence: spherically isotropic (N-AMB, N-SENS), exponential with L = 0.1 m (N-FLOW), white (mismatch assumption only) | Assumed; never inferred from single-channel spectra (ADR-0017) | Array gain and beam-search false-alarm behaviour are governed by coherence; this is the dominant unvalidated assumption. |
+| AS-22 | Sensor self-noise: SIM-02A S1 chain (N-AMB, N-FLOW); self-noise 20 dB above ambient (N-SENS) | Assumed | Sets whether noise is ambient- or sensor-limited. |
+| AS-23 | Noise statistics: stationary circular Gaussian within each window; windows independent | Assumed (ADR-0016) | Non-Gaussian, impulsive or non-stationary noise (biologics, transients, flow bursts) would change false-alarm behaviour, especially at Pfa 1e-3 and 1e-4. |
+| AS-24 | Host noise | Not modeled in SIM-02B.1 | Host-noise directionality could favour arrays (nulling) or hurt A0; deferred to later increments with measured host data. |
+| AS-25 | Channel calibration and synchronization errors | Not modeled in SIM-02B.1 (SIM-02B.2) | Beam-known and beam-search results are upper bounds with respect to calibration and timing. |
+| AS-26 | Sources: single plane wave on the horizon, azimuth uniform per trial; no propagation, multipath or Doppler | Assumed | No detection range is implied; elevated or multipath arrivals are not studied. |
+| AS-27 | Signal parameters: tone frequency uniform in band; four equal-SNR harmonics; flat-spectrum broadband source over the analysis band; LFM chirps (B1 50 to 150 Hz, 80 ms; B2 0.5 to 1.5 kHz, 50 ms; B3 3 to 8 kHz, 50 ms; Tukey tapers) | Assumed signal-class definitions | Results apply to these classes; other spectra or durations change the numbers. |
+| AS-28 | Detectors: conventional, fixed before experimentation (tonal maximum, harmonic sum, whitened energy, whitened matched filter); noise PSD and coherence assumed known (clairvoyant normalization) except in mismatch tests | Assumed processing | Practical detectors must estimate noise; the mismatch tests bound the consequences of getting it wrong. |
+| AS-29 | Trial counts per band and window (calibration, evaluation, positive) | Chosen for a run of about 75 minutes | Sets interval widths; thresholds at Pfa 1e-3 use exact or bound methods where the calibration set is too small (ADR-0015). |

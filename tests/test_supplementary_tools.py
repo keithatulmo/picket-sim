@@ -205,3 +205,19 @@ def test_claims_checker_detects_a_changed_number(tmp_path):
     assert claims.main([str(RUN_SIM02A), "--message", str(bad)], quiet=True) == 1
     failed = [label for ok, label, *_ in claims.RESULTS if not ok]
     assert failed == ["message: quotes every checked value"]
+
+
+# ------------------------------------------------------------------------------------------- reproduction tools
+def test_compare_run_tables_detects_differences(tmp_path):
+    import gzip
+
+    cmp = _load("compare_run_tables")
+    for name in ("a", "b"):
+        (tmp_path / name / "tables").mkdir(parents=True)
+        (tmp_path / name / "tables" / "x.csv").write_text("a,b\n1,2\n")
+        (tmp_path / name / "tables" / "y.csv.gz").write_bytes(gzip.compress(b"q\n1\n", mtime=1 if name == "a" else 2))
+    assert cmp.compare(tmp_path / "a", tmp_path / "b") == []  # gzip headers differ, content equal
+    (tmp_path / "b" / "tables" / "x.csv").write_text("a,b\n1,3\n")
+    assert cmp.compare(tmp_path / "a", tmp_path / "b") == ["differs: x.csv"]
+    (tmp_path / "b" / "tables" / "z.csv").write_text("")
+    assert "extra in second run: z.csv" in cmp.compare(tmp_path / "a", tmp_path / "b")
