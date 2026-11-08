@@ -1,7 +1,7 @@
 # Reproduction entry points (see README.md)
 PY ?= python
 
-.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke validate
+.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke sim02b1-claims sim02b1-calibration validate
 
 install:
 	$(PY) -m pip install -r requirements.lock && $(PY) -m pip install -e . --no-deps
@@ -50,8 +50,16 @@ sim02a-repro-check: ## rerun SIM-02A into a new build/ run and require every tab
 	$(PY) -m picket_sim run configs/sim02a/sim02a_baseline.yaml --allow-dirty --no-figures --output-root build/sim02a_repro
 	$(PY) tools/compare_run_tables.py $(SIM02A_RUN) $$(ls -d build/sim02a_repro/2* | tail -1)
 
-sim02b1: test     ## SIM-02B.1 study of record into a NEW run directory (~75 min on 4 cores; clean tree)
+sim02b1: test     ## SIM-02B.1 study of record into a NEW run directory (~100 min on 4 cores; clean tree)
 	$(PY) -m picket_sim run configs/sim02b/sim02b1_baseline.yaml
+
+SIM02B1_RUN ?= results/sim02b1/20261108T125126Z_1c70e065_8dbe019
+
+sim02b1-claims:   ## recheck every quantitative claim in the SIM-02B.1 report, transmittal and reviewer message
+	$(PY) tools/check_sim02b1_claims.py $(SIM02B1_RUN)
+
+sim02b1-calibration: ## exact false-alarm calibration test of the SIM-02B.1 run of record
+	$(PY) tools/sim02b1_calibration_check.py $(SIM02B1_RUN)
 
 sim02b1-smoke:    ## fast SIM-02B.1 pipeline check into results/_scratch (not for engineering use)
 	$(PY) -m picket_sim run configs/sim02b/sim02b1_smoke.yaml --allow-dirty

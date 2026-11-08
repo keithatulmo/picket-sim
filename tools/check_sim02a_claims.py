@@ -237,7 +237,7 @@ def main(argv=None, quiet: bool = False) -> int:
                     "65 to 81 percent", "1.77 for the line arrays", "3.54, 1.54 and 1.36", "72 parameters"],
     }
     forbidden = ["near -8 dB", "near -8", "approach 10 log10 N at every frequency", "approaches 10 log10 N even at",
-                 "10 us timing error at 15 kHz", "10 us timing error at 15 kHz causes", "—"]
+                 "10 us timing error at 15 kHz", "10 us timing error at 15 kHz causes", chr(0x2014)]
     for k, phrases in required.items():
         if k not in text:
             check(f"{k}: document present", True, False)
