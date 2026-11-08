@@ -13,8 +13,17 @@ Produces ``<out>/PCK-SIM-001_SIM-01_Review_Package_<run_id>/`` and a zip of it:
     04_run_record/                 record.json, summary.md, configuration, RUN_INDEX, ERRATA
     05_verification/               pytest log, JUnit XML, test inventory (run at the code commit)
     06_documentation/              plan, conventions, metrics, assumptions, ADRs
-    07_source/                     git archive of the code commit that produced the run, lock file
+    07_source/                     two source archives and SOURCE.md:
+                                   * picket-sim_<code>.tar.gz: git archive of the code commit that produced the run
+                                   * picket-sim_<head>_baseline.tar.gz: git archive of the packaging HEAD (the final
+                                     source baseline, including later report-generation tools) plus the record and
+                                     tables of each --include-results run, so documented commands work from it
     MANIFEST.md, SHA256SUMS.txt
+
+Options added for the SIM-02A review closeout: ``--include-results RUN ...`` embeds run-of-record tables in the
+baseline archive; ``--snapshot-check CMD`` (repeatable) runs CMD inside an unpacked copy of the baseline archive and
+logs the result to 05_verification/snapshot_checks.txt (the build fails if any command fails); the verification
+suite runs at both the code commit and the packaging HEAD.
 
 Requires: ``markdown`` and ``pypdf`` (Python), Node with Playwright/Chromium for PDF printing.
 The package is assembled only from committed files and the immutable run directory.
@@ -27,8 +36,10 @@ import hashlib
 import json
 import os
 import shutil
+import io
 import subprocess
 import sys
+import tarfile
 import tempfile
 import zipfile
 from pathlib import Path
@@ -89,12 +100,151 @@ def md_to_pdf(md_text: str, html_path: Path, pdf_path: Path, title: str, footer:
     writer = PdfWriter()
     for page in reader.pages:
         writer.add_page(page)
-    writer.add_metadata({"/Title": title, "/Subject": "Ulmo Picket PCK-SIM-001 SIM-01",
+    writer.add_metadata({"/Title": title, "/Subject": f"Ulmo Picket PCK-SIM-001 {footer.split('/')[-1].split('|')[0].strip()}",
                          "/Creator": "picket-sim tools/build_review_package.py",
                          "/Author": "Generated with Claude Code; requires human engineering review"})
     with open(pdf_path, "wb") as fh:
         writer.write(fh)
     return len(reader.pages)
+
+
+def _tar_add_bytes(tar: tarfile.TarFile, name: str, data: bytes, mode: int = 0o644):
+    info = tarfile.TarInfo(name)
+    info.size, info.mtime, info.mode = len(data), 1767225600, mode  # 2026-01-01T00:00:00Z
+    info.uid = info.gid = 0
+    info.uname = info.gname = ""
+    tar.addfile(info, io.BytesIO(data))
+
+
+def build_baseline_archive(head: str, out: Path, include_results: list[str]) -> list[str]:
+    """git archive of HEAD (without results/ and deliverables/) plus selected run records and tables.
+
+    Deterministic: sorted members, fixed timestamps and ownership. Returns the included result paths.
+    """
+    prefix = f"picket-sim-{head[:7]}/"
+    raw = subprocess.run(["git", "archive", "--format=tar", head, "--", ".", ":(exclude)results",
+                          ":(exclude)deliverables"], cwd=REPO, check=True, capture_output=True).stdout
+    members: dict[str, tuple[bytes, int]] = {}
+    with tarfile.open(fileobj=io.BytesIO(raw)) as t:
+        for m in t.getmembers():
+            if m.isfile():
+                members[m.name] = (t.extractfile(m).read(), 0o755 if m.mode & 0o111 else 0o644)
+    included = []
+    for rd in include_results:
+        run = (REPO / rd).resolve()
+        rel = run.relative_to(REPO).as_posix()
+        tracked = sh(["git", "ls-files", "--error-unmatch", f"{rel}/record.json"]).strip()
+        if not tracked:
+            raise SystemExit(f"{rel} is not a committed run directory")
+        files = [run / "record.json", run / "summary.md", *sorted((run / "tables").rglob("*"))]
+        files += [run.parent / f for f in ("ERRATA.md", "RUN_INDEX.csv")]
+        for f in files:
+            if f.is_file():
+                members[f.relative_to(REPO).as_posix()] = (f.read_bytes(), 0o644)
+        included.append(rel)
+    with open(out, "wb") as fh:
+        with tarfile.open(fileobj=fh, mode="w:gz", format=tarfile.PAX_FORMAT) as tar:
+            for name in sorted(members):
+                data, mode = members[name]
+                _tar_add_bytes(tar, prefix + name, data, mode)
+    return included
+
+
+def source_md(code_commit: str, head: str, code_archive: str, baseline_archive: str, included: list[str]) -> str:
+    log = sh(["git", "log", "--format=%h %ad %s", "--date=short", f"{code_commit}..{head}"]).strip()
+    stat = sh(["git", "diff", "--stat", f"{code_commit}..{head}", "--", "src", "configs", "tests", "tools",
+               "Makefile", "pyproject.toml", "requirements.lock"]).strip()
+    src_changed = sh(["git", "diff", "--name-only", f"{code_commit}..{head}", "--", "src"]).strip()
+    lines = [
+        "# Source snapshots and baselines",
+        "",
+        "| Baseline | Commit | Archive | Use |",
+        "|---|---|---|---|",
+        f"| Code commit of the run of record | `{code_commit}` | `{code_archive}` | The exact code that produced the "
+        "run of record (recorded in `04_run_record/record.json`). Verification log: `05_verification/pytest_log.txt`. |",
+        f"| Final source baseline (packaging HEAD) | `{head}` | `{baseline_archive}` | Everything committed when this "
+        "package was built, including report-generation and checking tools added after the code commit, plus the "
+        "run-of-record tables listed below so that documented commands run from the snapshot. Verification log: "
+        "`05_verification/pytest_log_baseline.txt`; snapshot command log: `05_verification/snapshot_checks.txt`. |",
+        "",
+        "Run-of-record directories embedded in the baseline archive (record.json, summary.md, tables/, and the "
+        "study's ERRATA.md and RUN_INDEX.csv; figures are in `02_figures`):",
+        "",
+        *[f"* `{r}`" for r in included],
+        "",
+        "## Changes between the code commit and the final baseline",
+        "",
+        "Library code under `src/` changed: " + ("yes, see the file list below." if src_changed else
+                                                 "no. The run of record reproduces from either baseline."),
+        "",
+        *([f"* `{x}`" for x in src_changed.splitlines()] + [""] if src_changed else []),
+        "Commits:",
+        "",
+        "```",
+        log or "(none)",
+        "```",
+        "",
+        "Changed code, configuration, test and tool files (`git diff --stat`):",
+        "",
+        "```",
+        stat or "(none)",
+        "```",
+        "",
+        "## Reproduce",
+        "",
+        "```",
+        f"tar xzf {baseline_archive} && cd {baseline_archive.split('_baseline')[0].replace('_', '-')}",
+        "python -m venv .venv && . .venv/bin/activate",
+        "pip install -r requirements.lock && pip install -e . --no-deps",
+        "make test",
+        "```",
+        "",
+        "Rendering PDFs with `tools/build_review_package.py` additionally needs `requirements-tools.lock` and Node "
+        "with Playwright/Chromium.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def run_suite(commit: str, ver: Path, suffix: str):
+    """Run the verification suite in a git worktree at ``commit``; write logs; fail the build on failure."""
+    with tempfile.TemporaryDirectory() as td:
+        subprocess.run(["git", "worktree", "add", "--detach", td, commit], cwd=REPO, check=True, capture_output=True)
+        try:
+            env = dict(os.environ, PYTHONPATH=str(Path(td) / "src"))
+            inv = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider"],
+                                 cwd=td, env=env, capture_output=True, text=True)
+            (ver / f"test_inventory{suffix}.txt").write_text(inv.stdout, encoding="utf-8")
+            res = subprocess.run([sys.executable, "-m", "pytest", "-v", "-p", "no:cacheprovider",
+                                  f"--junitxml={ver / f'pytest_junit{suffix}.xml'}"],
+                                 cwd=td, env=env, capture_output=True, text=True)
+            (ver / f"pytest_log{suffix}.txt").write_text(
+                f"# pytest at commit {commit} (git worktree), Python {sys.version.split()[0]}\n"
+                f"# exit status {res.returncode}\n\n{res.stdout}\n{res.stderr}", encoding="utf-8")
+            if res.returncode != 0:
+                raise SystemExit(f"verification suite failed at {commit}; package not built")
+        finally:
+            subprocess.run(["git", "worktree", "remove", "--force", td], cwd=REPO, capture_output=True)
+
+
+def run_snapshot_checks(baseline: Path, head: str, commands: list[str], log_path: Path):
+    """Unpack the baseline archive (no git metadata) and run each command there; log; fail on any failure."""
+    out = [f"# Commands run inside an unpacked copy of {baseline.name} (no .git directory), "
+           f"Python {sys.version.split()[0]} at {sys.executable}", ""]
+    failed = []
+    with tempfile.TemporaryDirectory() as td:
+        with tarfile.open(baseline) as t:
+            t.extractall(td, filter="data")
+        root = Path(td) / f"picket-sim-{head[:7]}"
+        env = dict(os.environ, PYTHONPATH=str(root / "src"), PY=sys.executable)
+        for cmd in commands:
+            res = subprocess.run(cmd, shell=True, cwd=root, env=env, capture_output=True, text=True)
+            out += [f"$ {cmd}", f"# exit status {res.returncode}", res.stdout.rstrip(), res.stderr.rstrip(), ""]
+            if res.returncode != 0:
+                failed.append(cmd)
+    log_path.write_text("\n".join(out) + "\n", encoding="utf-8")
+    if failed:
+        raise SystemExit(f"snapshot checks failed: {failed}; see {log_path}")
 
 
 def main(argv=None) -> int:
@@ -107,6 +257,10 @@ def main(argv=None) -> int:
     ap.add_argument("--transmittal", default="reports/SIM-01_transmittal.md")
     ap.add_argument("--label", default="SIM-01", help="increment label used in names and footers")
     ap.add_argument("--extra", nargs="*", default=[], help="additional repository files for 01_extra/")
+    ap.add_argument("--include-results", nargs="*", default=[],
+                    help="run directories whose record.json, summary.md and tables/ go into the baseline archive")
+    ap.add_argument("--snapshot-check", action="append", default=[],
+                    help="shell command run inside an unpacked baseline archive (repeatable)")
     args = ap.parse_args(argv)
 
     run = (REPO / args.run).resolve()
@@ -148,7 +302,7 @@ def main(argv=None) -> int:
     shutil.copytree(REPO / "docs", doc)
     shutil.copy2(REPO / "README.md", doc / "README.md")
 
-    # ---------------------------------------------------------------- source snapshot of the run's code
+    # ---------------------------------------------------------------- source snapshots
     src = stage / "07_source"
     src.mkdir()
     archive = src / f"picket-sim_{code_commit[:7]}.tar.gz"
@@ -158,36 +312,23 @@ def main(argv=None) -> int:
         subprocess.run(["git", "archive", "--format=tar.gz", f"--prefix=picket-sim-{code_commit[:7]}/", code_commit,
                         "--", ".", ":(exclude)results", ":(exclude)deliverables"],
                        cwd=REPO, check=True, stdout=fh)
+    baseline = src / f"picket-sim_{head[:7]}_baseline.tar.gz"
+    included = build_baseline_archive(head, baseline, args.include_results)
     shutil.copy2(REPO / "requirements.lock", src / "requirements.lock")
-    (src / "SOURCE.md").write_text(
-        f"# Source snapshot\n\n* Archive: `{archive.name}` = `git archive {code_commit}` (the commit recorded "
-        f"in the run of record).\n* Repository HEAD when packaged: `{head}`; commits after the code commit add "
-        "results, the report, the errata and this packaging tool only.\n"
-        "* Reproduce: unpack, `python -m venv .venv && . .venv/bin/activate && pip install -r requirements.lock "
-        "&& pip install -e . --no-deps && make sim01`.\n", encoding="utf-8")
+    if (REPO / "requirements-tools.lock").exists():
+        shutil.copy2(REPO / "requirements-tools.lock", src / "requirements-tools.lock")
+    (src / "SOURCE.md").write_text(source_md(code_commit, head, archive.name, baseline.name, included),
+                                   encoding="utf-8")
 
-    # ---------------------------------------------------------------- verification evidence at the code commit
+    # ---------------------------------------------------------------- verification evidence
     ver = stage / "05_verification"
     ver.mkdir()
     if not args.skip_tests:
-        with tempfile.TemporaryDirectory() as td:
-            subprocess.run(["git", "worktree", "add", "--detach", td, code_commit], cwd=REPO, check=True,
-                           capture_output=True)
-            try:
-                env = dict(os.environ, PYTHONPATH=str(Path(td) / "src"))
-                inv = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider"],
-                                     cwd=td, env=env, capture_output=True, text=True)
-                (ver / "test_inventory.txt").write_text(inv.stdout, encoding="utf-8")
-                res = subprocess.run([sys.executable, "-m", "pytest", "-v", "-p", "no:cacheprovider",
-                                      f"--junitxml={ver / 'pytest_junit.xml'}"],
-                                     cwd=td, env=env, capture_output=True, text=True)
-                (ver / "pytest_log.txt").write_text(
-                    f"# pytest at code commit {code_commit} (git worktree), Python {sys.version.split()[0]}\n"
-                    f"# exit status {res.returncode}\n\n{res.stdout}\n{res.stderr}", encoding="utf-8")
-                if res.returncode != 0:
-                    raise SystemExit("verification suite failed at the code commit; package not built")
-            finally:
-                subprocess.run(["git", "worktree", "remove", "--force", td], cwd=REPO, capture_output=True)
+        run_suite(code_commit, ver, "")
+        if head != code_commit:
+            run_suite(head, ver, "_baseline")
+    if args.snapshot_check:
+        run_snapshot_checks(baseline, head, args.snapshot_check, ver / "snapshot_checks.txt")
     (ver / "self_checks.json").write_text(json.dumps(record["self_checks"], indent=2) + "\n", encoding="utf-8")
 
     # ---------------------------------------------------------------- report and transmittal PDFs

@@ -22,7 +22,8 @@ from pathlib import Path
 
 import numpy as np
 
-RESULTS: list[tuple[bool, str, str, str]] = []
+REPO = Path(__file__).resolve().parents[1]
+RESULTS: list[tuple[bool, str, str, str]] = []  # (ok, label, quoted, computed); refilled by every main() call
 
 
 def check(label: str, quoted, computed, ok: bool | None = None):
@@ -40,15 +41,21 @@ def rng(vals, n):
     return (rd(min(v), n), rd(max(v), n))
 
 
-def main() -> int:
+def main(argv=None, quiet: bool = False) -> int:
+    """Run every check; fills RESULTS, prints the table unless ``quiet``; returns 1 if any check fails.
+
+    Default paths are resolved against the repository root, so the checker also works from an unpacked
+    source snapshot that contains the run-of-record tables.
+    """
+    RESULTS.clear()
     ap = argparse.ArgumentParser()
     ap.add_argument("run_dir")
-    ap.add_argument("--sim01", default="results/sim01/20261107T203522Z_d64d297c_8043684")
-    ap.add_argument("--supplement", default="reports/SIM-02A_criterion_margin")
-    ap.add_argument("--report", default="reports/SIM-02A_engineering_report.md")
-    ap.add_argument("--transmittal", default="reports/SIM-02A_transmittal.md")
-    ap.add_argument("--message", default="reports/SIM-02A_reviewer_message.md")
-    a = ap.parse_args()
+    ap.add_argument("--sim01", default=str(REPO / "results/sim01/20261107T203522Z_d64d297c_8043684"))
+    ap.add_argument("--supplement", default=str(REPO / "reports/SIM-02A_criterion_margin"))
+    ap.add_argument("--report", default=str(REPO / "reports/SIM-02A_engineering_report.md"))
+    ap.add_argument("--transmittal", default=str(REPO / "reports/SIM-02A_transmittal.md"))
+    ap.add_argument("--message", default=str(REPO / "reports/SIM-02A_reviewer_message.md"))
+    a = ap.parse_args(argv)
     T = Path(a.run_dir) / "tables"
     P = lambda f: list(csv.DictReader(open(T / f)))  # noqa: E731
 
@@ -241,6 +248,9 @@ def main() -> int:
         bad = [ph for ph in forbidden if ph in unquoted]
         check(f"{k}: contains no Rev 0 error phrase or em dash", [], bad)
 
+    nf = sum(not x[0] for x in RESULTS)
+    if quiet:
+        return 1 if nf else 0
     w = max(len(x[1]) for x in RESULTS)
     for ok, label, q, cpt in RESULTS:
         print(f"{'PASS' if ok else 'FAIL'}  {label:<{w}}  quoted {q}  computed {cpt}")

@@ -16,7 +16,16 @@ Self-check: the guaranteed bands recomputed at the nominal criteria must reprodu
     python tools/sim02a_criterion_margin.py results/sim02a/<run_id> --out reports/SIM-02A_criterion_margin
 
 Writes ``<out>.md``, ``<out>_bands.csv`` and ``<out>_psl.csv``. Requires a clean tree unless
-``--allow-dirty`` is given (the dirty flag is then printed in the output).
+``--allow-dirty`` is given (the dirty flag is then printed in the output). Outside a git checkout (for
+example an unpacked review-package source snapshot) the output says so instead of naming a commit.
+
+Other modes:
+
+* ``--levels L1 L2 ...`` computes guaranteed bands at the listed criteria (the nominal -3, -6 and -10 dB
+  are always added so that the self-check runs) and writes ``<out>.md`` and ``<out>_bands.csv`` only,
+  unless ``--psl`` is also given. Used for the D06 criterion-sensitivity table (SIM-02A review).
+* ``--expect STEM`` compares the CSV files just written with ``STEM_bands.csv`` (and ``STEM_psl.csv``)
+  byte for byte and exits with status 1 if they differ. Used to verify reproduction from a snapshot.
 """
 
 from __future__ import annotations
@@ -65,6 +74,61 @@ def plateau(f_hz: np.ndarray, psl_db: np.ndarray):
     return best[:3] if best else None
 
 
+def levels_for(nominal=NOMINAL, delta=DELTA_DB) -> list[float]:
+    """Criteria evaluated in the default mode: each nominal level and the level +/- delta."""
+    return sorted({round(L + d, 6) for L in nominal for d in (-delta, 0.0, delta)}, reverse=True)
+
+
+def check_reproduction(summ: dict, ref: dict, nominal=NOMINAL) -> int:
+    """Raise if recomputed bands at the nominal criteria differ from the run table; return values checked."""
+    n_checked = 0
+    if set(summ) != set(ref):
+        raise RuntimeError(f"self-check failed: candidate sets differ {sorted(summ)} vs {sorted(ref)}")
+    for aid, r in summ.items():
+        for L in nominal:
+            lv = _lvl(L)
+            for key in (f"guaranteed_{lv}_lo_hz", f"guaranteed_{lv}_hi_hz", f"guaranteed_{lv}_ratio",
+                        f"median_{lv}_ratio"):
+                a, b = float(r[key]), _f(ref[aid][key])
+                if not _same(a, b):
+                    raise RuntimeError(f"self-check failed: {aid} {key} recomputed {a!r} vs run table {b!r}")
+                n_checked += 1
+    return n_checked
+
+
+def knife_edges(band_rows: list[dict], nominal=NOMINAL, delta=DELTA_DB, rel=KNIFE_REL) -> list[str]:
+    """Candidates whose guaranteed ratio changes by more than ``rel`` of nominal across +/- delta."""
+    knife = []
+    for row in band_rows:
+        for L in nominal:
+            lo_v, nom, hi_v = (float(row[f"guaranteed_{_lvl(round(x, 6))}_ratio"]) for x in (L + delta, L, L - delta))
+            if all(np.isfinite([lo_v, nom, hi_v])) and abs(lo_v - hi_v) > rel * nom:
+                knife.append(f"{row['array_id']} at {L:g} dB ({_ratio_txt(lo_v)} at {L + delta:g} dB, "
+                             f"{_ratio_txt(hi_v)} at {L - delta:g} dB)")
+    return knife
+
+
+def compare_outputs(out: str, expect: str, suffixes=("_bands.csv", "_psl.csv")) -> list[str]:
+    """Byte-for-byte comparison of written CSV files against expected files; returns mismatch messages."""
+    problems = []
+    for suf in suffixes:
+        a, b = Path(f"{out}{suf}"), Path(f"{expect}{suf}")
+        if not a.exists():
+            continue
+        if not b.exists():
+            problems.append(f"expected file missing: {b}")
+        elif a.read_bytes() != b.read_bytes():
+            problems.append(f"differs from expected: {a} vs {b}")
+    return problems
+
+
+def provenance_text(gs: dict) -> str:
+    """Code provenance phrase for the output header."""
+    if gs.get("git_commit") is None:
+        return "No git metadata (run from a source snapshot, not a git checkout)"
+    return f"Code commit `{gs['git_commit'][:7]}`" + (" (DIRTY TREE)" if gs["git_dirty"] else " (clean tree)")
+
+
 def _f(x) -> float:
     if x in ("", None):
         return float("nan")
@@ -87,21 +151,28 @@ def _same(a: float, b: float) -> bool:
     return abs(a - b) <= REPRO_REL_TOL * max(1.0, abs(a), abs(b))
 
 
-def main() -> int:
+def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("run_dir")
     ap.add_argument("--out", required=True, help="output path stem, e.g. reports/SIM-02A_criterion_margin")
     ap.add_argument("--allow-dirty", action="store_true")
-    args = ap.parse_args()
+    ap.add_argument("--levels", nargs="+", type=float, default=None,
+                    help="custom criteria in dB (nominal levels are added); writes bands only unless --psl")
+    ap.add_argument("--psl", action="store_true", help="with --levels, also tabulate peak sidelobe levels")
+    ap.add_argument("--expect", default=None, help="compare written CSV files with STEM_bands.csv / STEM_psl.csv")
+    args = ap.parse_args(argv)
 
     run = Path(args.run_dir)
     record = json.load(open(run / "record.json"))
     cfg = record["config_resolved"]
     gs = git_state(REPO)
-    if gs["git_dirty"] and not args.allow_dirty:
+    if gs["git_dirty"] is True and not args.allow_dirty:
         raise SystemExit("working tree is dirty; commit first or pass --allow-dirty")
 
-    levels = sorted({round(L + d, 6) for L in NOMINAL for d in (-DELTA_DB, 0.0, DELTA_DB)}, reverse=True)
+    custom = args.levels is not None
+    levels = (sorted({round(x, 6) for x in list(args.levels) + list(NOMINAL)}, reverse=True) if custom
+              else levels_for())
+    do_psl = (not custom) or args.psl
     cfg_mod = dict(cfg)
     cfg_mod["ambiguity_levels_db"] = levels
     log = lambda m: print(m, file=sys.stderr, flush=True)  # noqa: E731
@@ -113,16 +184,7 @@ def main() -> int:
 
     # ---- self-check against the run of record
     ref = {r["array_id"]: r for r in csv.DictReader(open(run / "tables" / "thresholds_summary.csv"))}
-    n_checked = 0
-    for aid, r in summ.items():
-        for L in NOMINAL:
-            lv = _lvl(L)
-            for key in (f"guaranteed_{lv}_lo_hz", f"guaranteed_{lv}_hi_hz", f"guaranteed_{lv}_ratio",
-                        f"median_{lv}_ratio"):
-                a, b = float(r[key]), _f(ref[aid][key])
-                if not _same(a, b):
-                    raise RuntimeError(f"self-check failed: {aid} {key} recomputed {a!r} vs run table {b!r}")
-                n_checked += 1
+    n_checked = check_reproduction(summ, ref)
 
     band_rows = []
     for aid, r in summ.items():
@@ -137,7 +199,7 @@ def main() -> int:
     # ---- worst-steering peak sidelobe across each candidate's guaranteed -3 dB band (error-free)
     psl_rows = []
     lv3 = _lvl(-3.0)
-    for spec, g in study.multichannel:
+    for spec, g in (study.multichannel if do_psl else []):
         lo, hi = float(summ[g.array_id][f"guaranteed_{lv3}_lo_hz"]), float(summ[g.array_id][f"guaranteed_{lv3}_hi_hz"])
         if not (np.isfinite(lo) and np.isfinite(hi) and lo < hi):
             continue
@@ -161,10 +223,13 @@ def main() -> int:
         w = csv.DictWriter(fh, fieldnames=list(band_rows[0].keys()))
         w.writeheader()
         w.writerows(band_rows)
-    with open(f"{out}_psl.csv", "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(psl_rows[0].keys()))
-        w.writeheader()
-        w.writerows(psl_rows)
+    if do_psl:
+        with open(f"{out}_psl.csv", "w", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(psl_rows[0].keys()))
+            w.writeheader()
+            w.writerows(psl_rows)
+    if custom:
+        return _finish_custom(args, out, run, record, gs, levels, band_rows, n_checked, t0, log)
 
     # ---- plateau summary: maximum and median over the band of the worst-steering PSL
     by_id: dict[str, list[dict]] = {}
@@ -176,8 +241,7 @@ def main() -> int:
         "",
         f"Generated by `tools/sim02a_criterion_margin.py` from the resolved configuration in "
         f"`{run.as_posix()}/record.json` (config sha256 `{record['config_sha256'][:16]}...`). "
-        f"Code commit `{(gs['git_commit'] or 'unknown')[:7]}`"
-        f"{' (DIRTY TREE)' if gs['git_dirty'] else ' (clean tree)'}. "
+        f"{provenance_text(gs)}. "
         "The run directory is read, never written.",
         "",
         "Software: " + ", ".join(f"{k} {v}" for k, v in software_versions().items() if k in ("picket_sim", "python", "numpy"))
@@ -204,13 +268,7 @@ def main() -> int:
             cells.append(f"**{t}**" if L in NOMINAL else t)
         md.append(f"| {row['array_id']} | " + " | ".join(cells) + " |")
 
-    knife = []
-    for row in band_rows:
-        for L in NOMINAL:
-            lo_v, nom, hi_v = (float(row[f"guaranteed_{_lvl(x)}_ratio"]) for x in (L + DELTA_DB, L, L - DELTA_DB))
-            if all(np.isfinite([lo_v, nom, hi_v])) and abs(lo_v - hi_v) > KNIFE_REL * nom:
-                knife.append(f"{row['array_id']} at {L:g} dB ({_ratio_txt(lo_v)} at {L + DELTA_DB:g} dB, "
-                             f"{_ratio_txt(hi_v)} at {L - DELTA_DB:g} dB)")
+    knife = knife_edges(band_rows)
     md += [
         "",
         "A large change across a 0.2 dB interval means the nominal band edge is set by a sidelobe plateau lying",
@@ -246,7 +304,64 @@ def main() -> int:
     md += ["", f"Computed in {time.time() - t0:.0f} s.", ""]
     Path(f"{out}.md").write_text("\n".join(md))
     log(f"wrote {out}.md, {out}_bands.csv, {out}_psl.csv")
+    return _expect(args, out, log)
+
+
+def _expect(args, out, log) -> int:
+    if not args.expect:
+        return 0
+    problems = compare_outputs(str(out), args.expect)
+    for p in problems:
+        log(f"MISMATCH: {p}")
+    if problems:
+        return 1
+    log(f"reproduction check: written CSV files are byte-identical to {args.expect}_*.csv")
     return 0
+
+
+def _group(levels: list[float]) -> dict[float, list[float]]:
+    """Assign each criterion to the nearest nominal level (for table layout)."""
+    groups: dict[float, list[float]] = {L: [] for L in NOMINAL}
+    for x in levels:
+        groups[min(NOMINAL, key=lambda L: abs(L - x))].append(x)
+    return {L: sorted(v, reverse=True) for L, v in groups.items()}
+
+
+def _finish_custom(args, out, run, record, gs, levels, band_rows, n_checked, t0, log) -> int:
+    md = [
+        "# SIM-02A supplement: guaranteed bands under alternative ambiguity criteria (D06)",
+        "",
+        f"Generated by `tools/sim02a_criterion_margin.py --levels ...` from the resolved configuration in "
+        f"`{run.as_posix()}/record.json` (config sha256 `{record['config_sha256'][:16]}...`). "
+        f"{provenance_text(gs)}. The run directory is read, never written.",
+        "",
+        "Software: " + ", ".join(f"{k} {v}" for k, v in software_versions().items() if k in ("picket_sim", "python", "numpy"))
+        + "; run of record: " + ", ".join(f"{k} {record['software'].get(k)}" for k in ("picket_sim", "python", "numpy")) + ".",
+        "",
+        f"Self-check: the guaranteed and median bands recomputed at -3, -6 and -10 dB reproduce the run-of-record "
+        f"`thresholds_summary.csv` ({n_checked} values, relative tolerance {REPRO_REL_TOL:g}).",
+        "",
+        "Narrowband DAS, error-free, horizon steering set (24 azimuths at 15 deg), observable-space lobes. "
+        "Guaranteed band ratio: earliest f_amb(L) over latest f_SL across the steering set. Criteria are applied "
+        "in power; -6.0206 dB is half amplitude (20 log10 0.5 = -6.020600 dB to six decimals). The nominal -6 dB "
+        "criterion is exactly -6.00 dB in power (D06). Sensitivities, not requirements.",
+        "",
+    ]
+    for L, group in _group(levels).items():
+        md += [f"## Criteria near {L:g} dB", "",
+               "| ID | " + " | ".join((f"**{x:g}**" if x == L else f"{x:g}") for x in group) + " |",
+               "|---|" + "---|" * len(group)]
+        for row in band_rows:
+            cells = []
+            for x in group:
+                t = _ratio_txt(float(row[f"guaranteed_{_lvl(x)}_ratio"]))
+                cells.append(f"**{t}**" if x == L else t)
+            md.append(f"| {row['array_id']} | " + " | ".join(cells) + " |")
+        md.append("")
+    md += [f"Computed in {time.time() - t0:.0f} s.", ""]
+    Path(f"{out}.md").write_text("\n".join(md))
+    log(f"wrote {out}.md, {out}_bands.csv")
+    return _expect(args, out, log)
 
 
 if __name__ == "__main__":

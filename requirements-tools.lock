@@ -1,0 +1,4 @@
+# Report rendering and packaging tools only (tools/build_review_package.py); the simulation needs requirements.lock.
+# PDF printing also needs Node 22 with Playwright and Chromium (tools/print_pdf.mjs).
+markdown==3.11.3
+pypdf==7.0.0
