@@ -1,0 +1,119 @@
+SIM-02B.1 claims check (Revision 0)
+Command: python tools/check_sim02b1_claims.py results/sim02b1/20261108T125126Z_1c70e065_8dbe019
+Repository commit: 8a1698e (clean tree: yes); python 3.13.18, numpy 2.5.4
+Checks every quantitative claim in the SIM-02B.1 report findings, transmittal and reviewer message against the run-of-record tables and the supplementary outputs, and checks that the documents quote the verified values.
+
+PASS  run status, cases, workers                                    quoted ('complete', 139, 4)  computed ('complete', 139, 4)
+PASS  run time (s), rounded                                         quoted 5907  computed 5907
+PASS  code commit, clean                                            quoted ('8dbe019', False)  computed ('8dbe019', False)
+PASS  Python, NumPy                                                 quoted ('3.13.18', '2.5.4')  computed ('3.13.18', '2.5.4')
+PASS  provenance published / measured / assumed                     quoted (2, 0, 23)  computed (2, 0, 23)
+PASS  F1 B1 ambient-limited gain range (dB), valid cells            quoted (-0.2, 0.8, 120)  computed (-0.2, 0.8, 120)
+PASS  F1 B1 intervals containing zero                               quoted 119  computed 119
+PASS  F1/F3 search penalty B1 (dB)                                  quoted (-0.3, 0.1)  computed (-0.3, 0.1)
+PASS  F3 search penalty B2 (dB)                                     quoted (-0.4, 1.2)  computed (-0.4, 1.2)
+PASS  F3 search penalty B3 (dB)                                     quoted (0.5, 2.9)  computed (0.5, 2.9)
+PASS  F3 largest B3 penalty belongs to A4                           quoted A4  computed A4
+PASS  F1 V-D B1 beam search 1 s (dB)                                quoted (2.1, 4.0)  computed (2.1, 4.0)
+PASS  F1 V-DS B1 beam search 1 s (dB)                               quoted (1.6, 3.2)  computed (1.6, 3.2)
+PASS  S3.2 B2 beam_search all gain range (dB)                       quoted (1.5, 5.0)  computed (1.5, 5.0)
+PASS  S3.2 B2 beam_search A1 gain range (dB)                        quoted (1.5, 2.5)  computed (1.5, 2.5)
+PASS  S3.2 B2 beam_search A2 gain range (dB)                        quoted (3.0, 4.3)  computed (3.0, 4.3)
+PASS  S3.2 B2 beam_search P6-C gain range (dB)                      quoted (2.5, 3.7)  computed (2.5, 3.7)
+PASS  S3.2 B2 beam_search P8-C gain range (dB)                      quoted (2.1, 4.0)  computed (2.1, 4.0)
+PASS  S3.2 B2 beam_search A4 gain range (dB)                        quoted (4.2, 5.0)  computed (4.2, 5.0)
+PASS  S3.2 B2 beam_known A1 gain range (dB)                         quoted (1.4, 2.5)  computed (1.4, 2.5)
+PASS  S3.2 B2 beam_known A2 gain range (dB)                         quoted (3.3, 4.7)  computed (3.3, 4.7)
+PASS  S3.2 B2 beam_known P6-C gain range (dB)                       quoted (3.0, 4.8)  computed (3.0, 4.8)
+PASS  S3.2 B2 beam_known P8-C gain range (dB)                       quoted (2.8, 4.8)  computed (2.8, 4.8)
+PASS  S3.2 B2 beam_known A4 gain range (dB)                         quoted (5.0, 6.0)  computed (5.0, 6.0)
+PASS  S3.2 B2 incoherent all gain range (dB)                        quoted (0.5, 4.5)  computed (0.5, 4.5)
+PASS  S3.2 B2 incoherent A1 gain range (dB)                         quoted (0.5, 0.9)  computed (0.5, 0.9)
+PASS  S3.2 B2 incoherent A2 gain range (dB)                         quoted (1.0, 1.8)  computed (1.0, 1.8)
+PASS  S3.2 B2 incoherent P6-C gain range (dB)                       quoted (0.7, 1.3)  computed (0.7, 1.3)
+PASS  S3.2 B2 incoherent P8-C gain range (dB)                       quoted (0.7, 1.4)  computed (0.7, 1.4)
+PASS  S3.2 B2 incoherent A4 gain range (dB)                         quoted (1.5, 4.5)  computed (1.5, 4.5)
+PASS  S3.2 B3 beam_search all gain range (dB)                       quoted (3.5, 7.4)  computed (3.5, 7.4)
+PASS  S3.2 B3 beam_search A1 gain range (dB)                        quoted (4.6, 5.1)  computed (4.6, 5.1)
+PASS  S3.2 B3 beam_search A2 gain range (dB)                        quoted (4.4, 5.0)  computed (4.4, 5.0)
+PASS  S3.2 B3 beam_search P6-C gain range (dB)                      quoted (5.8, 6.5)  computed (5.8, 6.5)
+PASS  S3.2 B3 beam_search P8-C gain range (dB)                      quoted (6.9, 7.4)  computed (6.9, 7.4)
+PASS  S3.2 B3 beam_search A4 gain range (dB)                        quoted (3.5, 4.5)  computed (3.5, 4.5)
+PASS  S3.2 B3 beam_known A1 gain range (dB)                         quoted (5.4, 6.1)  computed (5.4, 6.1)
+PASS  S3.2 B3 beam_known A2 gain range (dB)                         quoted (5.5, 6.4)  computed (5.5, 6.4)
+PASS  S3.2 B3 beam_known P6-C gain range (dB)                       quoted (7.1, 7.7)  computed (7.1, 7.7)
+PASS  S3.2 B3 beam_known P8-C gain range (dB)                       quoted (8.0, 9.0)  computed (8.0, 9.0)
+PASS  S3.2 B3 beam_known A4 gain range (dB)                         quoted (5.8, 6.4)  computed (5.8, 6.4)
+PASS  S3.2 B3 incoherent all gain range (dB)                        quoted (2.3, 5.3)  computed (2.3, 5.3)
+PASS  S3.2 B3 incoherent A1 gain range (dB)                         quoted (3.0, 4.0)  computed (3.0, 4.0)
+PASS  S3.2 B3 incoherent A2 gain range (dB)                         quoted (2.7, 4.4)  computed (2.7, 4.4)
+PASS  S3.2 B3 incoherent P6-C gain range (dB)                       quoted (3.9, 5.0)  computed (3.9, 5.0)
+PASS  S3.2 B3 incoherent P8-C gain range (dB)                       quoted (4.4, 5.3)  computed (4.4, 5.3)
+PASS  S3.2 B3 incoherent A4 gain range (dB)                         quoted (2.3, 4.7)  computed (2.3, 4.7)
+PASS  S3.2 A1 B2 beam-known tone gains at 0.1 / 1 / 10 s (dB)       quoted (1.6, 1.7, 1.8)  computed (1.6, 1.7, 1.8)
+PASS  S3.2 P8-E B2 beam search 1 s (dB)                             quoted (5.3, 6.4)  computed (5.3, 6.4)
+PASS  S3.2 60 s tonal B1 beam known (dB)                            quoted (-0.1, 0.1)  computed (-0.1, 0.1)
+PASS  S3.3 N-AMB B1 beam search 1 s (dB)                            quoted (-0.2, 0.7)  computed (-0.2, 0.7)
+PASS  S3.3 N-AMB B1 incoherent 1 s (dB)                             quoted (-0.2, 0.4)  computed (-0.2, 0.4)
+PASS  S3.3 N-AMB B2 beam search 1 s (dB)                            quoted (1.7, 4.9)  computed (1.7, 4.9)
+PASS  S3.3 N-AMB B2 incoherent 1 s (dB)                             quoted (0.6, 4.1)  computed (0.6, 4.1)
+PASS  S3.3 N-FLOW B1 beam search 1 s (dB)                           quoted (4.3, 7.8)  computed (4.3, 7.8)
+PASS  S3.3 N-FLOW B1 incoherent 1 s (dB)                            quoted (3.1, 6.5)  computed (3.1, 6.5)
+PASS  S3.3 N-FLOW B2 beam search 1 s (dB)                           quoted (4.5, 7.3)  computed (4.5, 7.3)
+PASS  S3.3 N-FLOW B2 incoherent 1 s (dB)                            quoted (3.2, 6.7)  computed (3.2, 6.7)
+PASS  S3.3 N-SENS B1 beam search 1 s (dB)                           quoted (5.7, 9.0)  computed (5.7, 9.0)
+PASS  S3.3 N-SENS B1 incoherent 1 s (dB)                            quoted (3.3, 6.8)  computed (3.3, 6.8)
+PASS  S3.3 N-SENS B2 beam search 1 s (dB)                           quoted (4.9, 8.5)  computed (4.9, 8.5)
+PASS  S3.3 N-SENS B2 incoherent 1 s (dB)                            quoted (3.1, 7.1)  computed (3.1, 7.1)
+PASS  S3.3 N-AMB B3 beam search 1 s at Pfa 1e-2 (dB)                quoted (3.1, 7.4)  computed (3.1, 7.4)
+PASS  S3.3 N-FLOW B3 beam search 1 s at Pfa 1e-2 (dB)               quoted (3.3, 8.1)  computed (3.3, 8.1)
+PASS  S3.3 N-SENS B3 beam search 1 s at Pfa 1e-2 (dB)               quoted (3.1, 7.9)  computed (3.1, 7.9)
+PASS  S3.3 B3 1 s beam search has no valid cells at Pfa 1e-3        quoted 0  computed 0
+PASS  S3.3 P8-C sensor-limited beam known B1, B2 1 s (dB)           quoted (8.7, 9.1)  computed (8.7, 9.1)
+PASS  F5 incoherent flow-like or sensor-limited B1 1 s (dB)         quoted (3.1, 6.8)  computed (3.1, 6.8)
+PASS  S3.1 A0 SNR required, tone (dB)                               quoted [20.7, 11.7, 2.2, 21.7, 12.5, 3.2, 22.1, 13.0, 3.9]  computed [20.7, 11.7, 2.2, 21.7, 12.5, 3.2, 22.1, 13.0, 3.9]
+PASS  S3.1 A0 SNR required, harmonic (dB)                           quoted [16.1, 7.0, -2.4, 17.1, 8.0, -1.4, 17.2, 8.1, -1.4]  computed [16.1, 7.0, -2.4, 17.1, 8.0, -1.4, 17.2, 8.1, -1.4]
+PASS  S3.1 A0 SNR required, broadband (dB)                          quoted [-3.3, -8.5, -13.7, -6.9, -12.0, -16.8, -11.6, -16.8, -22.0]  computed [-3.3, -8.5, -13.7, -6.9, -12.0, -16.8, -11.6, -16.8, -22.0]
+PASS  S3.1 A0 SNR required, chirp (dB)                              quoted [9.5, 10.6, 10.8, 11.5, 11.3, 12.0]  computed [9.5, 10.6, 10.8, 11.5, 11.3, 12.0]
+PASS  F9 A0 per-decade improvement B2, tone / broadband (dB)        quoted (9.25, 4.94)  computed (9.25, 4.94)
+PASS  F9 P8-C beam search 1 s B2 gain, tone / broadband (dB)        quoted (2.9, 3.6)  computed (2.9, 3.6)
+PASS  F9 equivalent A0 integration factors                          quoted (2.06, 5.36)  computed (2.06, 5.36)
+PASS  F6 +1 dB: tonal/harmonic/mf, all candidates                   quoted (0.075, 0.332)  computed (0.075, 0.332)
+PASS  F6 +1 dB: energy                                              quoted (1.0, 1.0)  computed (1.0, 1.0)
+PASS  S4 +1 dB: A0 tonal/harmonic/mf                                quoted (0.112, 0.203)  computed (0.112, 0.203)
+PASS  F6 +3 dB: all                                                 quoted (0.844, 1.0)  computed (0.844, 1.0)
+PASS  F6 shape: tonal/harmonic/energy                               quoted (0.999, 1.0)  computed (0.999, 1.0)
+PASS  S4 shape: mf                                                  quoted (0.0, 0.001)  computed (0.0, 0.001)
+PASS  F7 white assumed: A0                                          quoted (0.009, 0.01)  computed (0.009, 0.01)
+PASS  F7 white assumed: arrays, beams, B1                           quoted (1.0, 1.0)  computed (1.0, 1.0)
+PASS  S4 white assumed: A1, P8-C beams B2                           quoted (1.0, 1.0)  computed (1.0, 1.0)
+PASS  S4 white assumed: A4 beams B2                                 quoted (0.033, 1.0)  computed (0.033, 1.0)
+PASS  S4 flow truth: A0                                             quoted (0.007, 0.012)  computed (0.007, 0.012)
+PASS  F7 flow truth: arrays B1                                      quoted (0.0, 0.0)  computed (0.0, 0.0)
+PASS  S4 flow truth: A1, P8-C B2                                    quoted (0.0, 0.0)  computed (0.0, 0.0)
+PASS  R1 Pfa multiplication for +1 dB (narrowband detectors)        quoted (7.5, 33)  computed (7.5, 33)
+PASS  F8 exact: rows, % p < 0.05, Bonferroni min p                  quoted (648, 2.8, 0.645)  computed (648, 2.8, 0.645)
+PASS  F8 empirical: rows, % p < 0.05, Bonferroni min p              quoted (1460, 3.8, 1.0)  computed (1460, 3.8, 1.0)
+PASS  F8 bound: rows, % p < 0.05, Bonferroni min p                  quoted (3324, 1.0, 0.203)  computed (3324, 1.0, 0.203)
+PASS  F8 bound median realized/target: beam search, incoherent      quoted (0.2, 0.0)  computed (0.2, 0.0)
+PASS  S4 single-stream bounds median realized/target                quoted (0.9, 0.93)  computed (0.9, 0.93)
+PASS  S5 covariance worst median error (SE)                         quoted 0.84  computed 0.84
+PASS  S5 waveform variance within 0.8 % of band power               quoted True  computed True
+PASS  S5 clipping headroom (dB)                                     quoted 10.5  computed 10.5
+PASS  message: flow-like or sensor-limited B1 beam search 1 s (dB)  quoted (4.3, 9.0)  computed (4.3, 9.0)
+PASS  transmittal: run minutes vs estimate                          quoted (98, 75)  computed (98, 75)
+PASS  transmittal: errata figures present                           quoted True  computed True
+PASS  transmittal: recorded self-check values                       quoted (5.72, 14.1, 3.09)  computed (5.72, 14.1, 3.09)
+PASS  tests collected (all / supplementary)                         quoted (214, 15)  computed (214, 15)
+PASS  A D06 six-element circles: -6, -6.0206, -6.5, -5, -7 dB       quoted [(2.37, 1.73, 1.55, 2.42, 1.48), (2.37, 1.73, 1.55, 2.42, 1.48)]  computed [(2.37, 1.73, 1.55, 2.42, 1.48), (2.37, 1.73, 1.55, 2.42, 1.48)]
+PASS  A D06 eight-element circles -5 / -7 dB                        quoted [(2.93, 2.72), (2.93, 2.72)]  computed [(2.93, 2.72), (2.93, 2.72)]
+PASS  A D06 other candidates' largest change -5 to -7 dB            quoted 0.07  computed 0.07
+PASS  A D06 candidates without a band between -5 and -7 dB          quoted ['A4', 'V-C', 'V-D', 'V-DS']  computed ['A4', 'V-C', 'V-D', 'V-DS']
+PASS  report: quotes every checked value                            quoted []  computed []
+PASS  report: contains no forbidden phrase or em dash               quoted []  computed []
+PASS  transmittal: quotes every checked value                       quoted []  computed []
+PASS  transmittal: contains no forbidden phrase or em dash          quoted []  computed []
+PASS  message: quotes every checked value                           quoted []  computed []
+PASS  message: contains no forbidden phrase or em dash              quoted []  computed []
+
+112 of 112 claims pass
