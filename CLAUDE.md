@@ -26,9 +26,16 @@ The program owner asked for this at the end of each cycle:
    study code and written to a committed supplement table before they are quoted; never state them from
    memory. Check that a band median is not quoted as a maximum, that a single Monte Carlo case is not
    quoted as representative of a set, and that a combined error scenario is not attributed to one term.
-3. Review package: `python tools/build_review_package.py --run results/<study>/<run_id> --label <INCREMENT>
+   Numbers from delegated desk research enter configurations only after the quote has been located in the
+   downloaded source text; record them in `docs/input_provenance_register.md` with all D01 fields.
+3. Review package: `.venv/bin/python tools/build_review_package.py --run results/<study>/<run_id> --label <INCREMENT>
    --report reports/<INCREMENT>_engineering_report.md --transmittal reports/<INCREMENT>_transmittal.md
-   [--extra ...]`; copy the PDFs to `reports/`; register the zip in `deliverables/README.md`.
+   [--extra ...] --include-results <every run of record the documented commands read>
+   --snapshot-check "make <claims target>" [--snapshot-check ...]`; copy the PDFs to `reports/`; register the zip
+   in `deliverables/README.md`. The package must ship both source baselines (the run's code commit and the
+   packaging HEAD), run the tests at both, and prove from an unpacked snapshot that every documented
+   reproduction command works (SIM-02A review, closeout actions; `docs/source_baselines.md`). Never delete
+   files with `rm -rf` in Makefiles or scripts; write new runs to new directories instead.
 4. **Reviewer message**: a ready-to-send cover message for the reviewer, written in the program owner's
    voice (use the `keith-voice` skill when available; no em dashes). It lists each attachment with page
    count or size, summarizes what closed and what is new, states the principal findings with their
