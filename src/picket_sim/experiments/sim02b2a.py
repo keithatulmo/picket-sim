@@ -82,6 +82,20 @@ def apply_normalizer(spec: dict, y_test_pow: np.ndarray, hist_pow: np.ndarray | 
     raise ValueError(f"unknown normalizer type {kind!r}")
 
 
+EXACT_FLAG_P = 1e-3  # realized counts are flagged when their exact predictive tail probability is below this
+
+
+def exact_tails(thr: dict, k: int, n: int, pfa: float) -> tuple[float, float]:
+    """(P(K >= k), P(K <= k)) for a realized count under correct calibration of the design threshold: binomial for
+    exact, quadratic-form and conditional Monte Carlo thresholds; beta-binomial for empirical and fast-simulation
+    thresholds, which carries the threshold's own sampling error (detection.calibration_pvalue)."""
+    meth = "empirical" if thr["method"] in ("empirical", "fast null simulation") else "exact"
+    n_cal = int(thr.get("n", 0)) if meth == "empirical" else 0
+    up = dt.calibration_pvalue(meth, k, n, pfa, n_cal)[1]
+    low = 1.0 - dt.calibration_pvalue(meth, k + 1, n, pfa, n_cal)[1] if k < n else 1.0
+    return up, low
+
+
 def history_needed(norms: list[dict]) -> int:
     return max([int(n["guard"]) + int(n["M"]) for n in norms if n["type"] in ("tref_ca", "tref_os")] + [0])
 
@@ -504,12 +518,16 @@ class Sim02B2AStudy:
                     if thr is None or not math.isfinite(thr["eta"]):
                         continue
                     rp = dt.realized_pfa(v, thr["eta"])
+                    # descriptive Wilson status (evaluation sampling only; biased toward 'liberal' when n Pfa ~ 1)
                     status = ("liberal" if rp["lo"] > pf else "conservative" if rp["hi"] < pf else "consistent")
+                    up, low = exact_tails(thr, rp["k"], rp["n"], pf)
+                    ex = "liberal" if up < EXACT_FLAG_P else "conservative" if low < EXACT_FLAG_P else "consistent"
                     rows_pfa.append({"candidate": case.cand, "cell": case.cell, "scenario": case.scenario,
                                      "normalizer": nid, "mode": m, "detector": d, "pfa_target": pf,
                                      "threshold_method": thr["method"], "n_eval": rp["n"], "realized_k": rp["k"],
                                      "realized_pfa": rp["p"], "realized_lo": rp["lo"], "realized_hi": rp["hi"],
-                                     "pfa_status": status, "false_alerts_per_hour": rp["p"] * 3600 / float(self.cells[case.cell]["window_s"])})
+                                     "pfa_status": status, "p_upper_exact": up, "p_lower_exact": low,
+                                     "pfa_status_exact": ex, "false_alerts_per_hour": rp["p"] * 3600 / float(self.cells[case.cell]["window_s"])})
             for (nid, m), e in errs.items():
                 rows_err.append({"candidate": case.cand, "cell": case.cell, "scenario": case.scenario, "normalizer": nid,
                                  "mode": m, "bias_db": float(np.mean(e)), "std_db": float(np.std(e)),
@@ -671,7 +689,9 @@ def derived_rows(study, snr_rows, pfa_rows=None):
     def fa(cand, cell, sc, nid, m, cls, pf):
         src = "STAT" if "contamination" in study.scen.get(sc, {}) else sc
         r = pidx.get((cand, cell, src, study.alias.get(nid, nid), m, CLASS_DETECTOR[cls], pf))
-        return (r["realized_pfa"], r["pfa_status"], src) if r else (float("nan"), "no null set", src)
+        if not r:
+            return float("nan"), "no null set", src
+        return r["realized_pfa"], r.get("pfa_status_exact", r["pfa_status"]), src
     loss, gain = [], []
     for k, r in idx.items():
         cand, cell, sc, cls, nid, m, pf, pd = k
@@ -863,11 +883,14 @@ def _self_checks(study, thr_rows, pfa_rows):
         if ps.min() * ps.size < 1e-3:
             raise RuntimeError("self-check failed: STAT false-alarm calibration inconsistent (Bonferroni p < 1e-3)")
     agree = []
-    for r in thr_rows:
+    for r in thr_rows:  # ORACLE only: NOMINAL is the same statistic under the nominal design
+        if r["normalizer"] != "ORACLE":
+            continue
         if "empirical_eta" in r and isinstance(r.get("empirical_eta"), float) and math.isfinite(r["empirical_eta"]):
             if r["empirical_eta_lo"] <= r["eta"] <= r["empirical_eta_hi"]:
                 agree.append(1)
             else:
                 agree.append(0)
     if agree:
-        study.self_checks["oracle_exact_or_cmc_within_empirical_interval"] = f"{sum(agree)} of {len(agree)}"
+        study.self_checks["oracle_exact_or_cmc_within_empirical_interval"] = (f"{sum(agree)} of {len(agree)} distinct "
+                                                                              "statistics")

@@ -1,0 +1,7 @@
+cell,class,normalizer,guard,M,tolerated_contaminated_windows,clean_fraction,clean_fraction_design,measured_pd_top_snr_min,measured_pd_top_snr_max,top_snr_db,rows
+C1,tone,TREF-CA16,2,16,0,0.11,0.12,0.11,0.1325,18.58463595,7
+C1,tone,TREF-CA16-G8,8,16,0,0.38,0.36,0.3775,0.3925,18.58463595,7
+C1,tone,TREF-OS16,2,16,4,0.285,0.28,0.225,0.2825,18.58463595,7
+C1,broadband,TREF-CA16,2,16,0,0.11,0.12,0.505,0.6175,-6.029413922,7
+C1,broadband,TREF-CA16-G8,8,16,0,0.3525,0.36,0.7425,0.84,-6.029413922,7
+C1,broadband,TREF-OS16,2,16,4,0.27,0.28,0.515,0.625,-6.029413922,7

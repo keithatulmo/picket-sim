@@ -1,0 +1,5 @@
+normalizer,type,ns_per_stream_bin,operations_per_stream_bin,memory_windows
+TREF-CA16,tref_ca,7.3348004,16,18
+TREF-OS16,tref_os,109.9249017,16,18
+FREF-CA8,fref_ca,24.70226957,16,0
+FREF-OS8,fref_os,254.7108192,16,0

@@ -266,6 +266,18 @@ def test_unreachable_pfa_is_reported_not_estimated(base_cfg):
     assert adaptive and all(r["method"] == "not estimated" and math.isnan(r["eta"]) for r in adaptive)
 
 
+def test_exact_tails_match_binomial_and_beta_binomial_laws():
+    """Exact thresholds: binomial tails. Empirical thresholds: beta-binomial tails, wider than binomial (the
+    threshold's own sampling error), so the same count is less surprising."""
+    up, low = sim02b2a.exact_tails({"method": "exact"}, 3, 1000, 0.001)
+    p0 = math.exp(-1) * (1 + 1 + 0.5)  # Poisson(1) approximation of P(K <= 2)
+    assert up == pytest.approx(1 - p0, abs=2e-3)
+    assert low == pytest.approx(p0 + math.exp(-1) / 6, abs=2e-3)
+    up_e, _ = sim02b2a.exact_tails({"method": "empirical", "n": 20000}, 25, 10000, 0.001)
+    up_x, _ = sim02b2a.exact_tails({"method": "exact"}, 25, 10000, 0.001)
+    assert up_x < up_e < 1
+
+
 def test_derived_rows_arithmetic(study):
     base = {"cell": "C1", "scenario": "STAT", "class": "tone", "pfa_target": 1e-3, "pd_target": 0.5,
             "threshold_method": "exact"}
@@ -351,6 +363,12 @@ def test_tiny_run_is_complete_and_independent_of_worker_count(tmp_path):
     g8 = [x for x in snr if x["scenario"] == "CONTAM" and x["normalizer"] == "TREF-CA16-G8"]
     assert g8 and all(x["threshold_method"] for x in g8)  # aliased thresholds were found
     assert {x["pfa_status"] for x in pfa} <= {"liberal", "conservative", "consistent"}
+    assert {x["pfa_status_exact"] for x in pfa} <= {"liberal", "conservative", "consistent"}
+    for x in pfa:  # the exact status follows the exact predictive tails at the stated level
+        up, low = float(x["p_upper_exact"]), float(x["p_lower_exact"])
+        assert x["pfa_status_exact"] == ("liberal" if up < 1e-3 else "conservative" if low < 1e-3 else "consistent")
+    assert [x["pfa_status_exact"] for x in pfa if x["scenario"] == "STEP+3" and x["candidate"] == "A0"
+            and x["normalizer"] == "NOMINAL" and x["detector"] == "tonal"] == ["liberal"]
     assert [x["pfa_status"] for x in pfa if x["scenario"] == "STEP+3" and x["candidate"] == "A0"
             and x["normalizer"] == "NOMINAL" and x["detector"] == "tonal"] == ["liberal"]
     fref_energy = [x for x in pfa if x["normalizer"].startswith("FREF") and x["detector"] == "energy"]

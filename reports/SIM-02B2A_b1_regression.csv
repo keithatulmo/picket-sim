@@ -1,0 +1,397 @@
+cell,band,window_s,candidate,mode,class,pfa_target,pd_target,b2a_snr_req_db,b1_snr_req_db,b2a_method,b1_method,b2a_status,b1_status,diff_db,combined_half_width_db,verdict
+C1,B2,1,A0,single,broadband,0.0001,0.5,-11.15387744,-11.18225235,exact,exact,ok,ok,0.02837491,0.1978614786,consistent
+C1,B2,1,A0,single,broadband,0.0001,0.9,-9.188834212,-9.205884511,exact,exact,ok,ok,0.017050299,0.3942417169,consistent
+C1,B2,1,A0,single,broadband,0.001,0.5,-11.84288543,-12.04231715,exact,exact,ok,ok,0.19943172,0.3024017788,consistent
+C1,B2,1,A0,single,broadband,0.001,0.9,-10.18485434,-10.21227107,exact,exact,ok,ok,0.02741673,0.1603062154,consistent
+C1,B2,1,A0,single,broadband,0.01,0.5,-13.21989011,-13.29393005,exact,exact,ok,ok,0.07403994,0.3181002876,consistent
+C1,B2,1,A0,single,broadband,0.01,0.9,-10.77941392,-10.7641078,exact,exact,ok,ok,-0.01530612,0.2639336402,consistent
+C1,B2,1,A0,single,chirp,0.0001,0.5,12.33162006,12.29932316,fast null simulation,bound,ok,ok,0.0322969,0.3075080564,bound holds
+C1,B2,1,A0,single,chirp,0.0001,0.9,14.33436104,14.39604935,fast null simulation,bound,ok,ok,-0.06168831,0.6128148054,bound holds
+C1,B2,1,A0,single,chirp,0.001,0.5,11.64223983,11.50890649,fast null simulation,empirical,ok,ok,0.13333334,0.6427424853,consistent
+C1,B2,1,A0,single,chirp,0.001,0.9,13.56271602,13.5941013,fast null simulation,empirical,ok,ok,-0.03138528,0.5546556307,consistent
+C1,B2,1,A0,single,chirp,0.01,0.5,10.76390649,10.5913017,fast null simulation,empirical,ok,ok,0.17260479,0.3848969349,consistent
+C1,B2,1,A0,single,chirp,0.01,0.9,13.16943747,13.12223983,fast null simulation,empirical,ok,ok,0.04719764,0.3347708442,consistent
+C1,B2,1,A0,single,harmonic,0.0001,0.5,8.291380444,8.462107321,fast null simulation,bound,ok,ok,-0.170726877,0.341886126,bound holds
+C1,B2,1,A0,single,harmonic,0.0001,0.9,10.62507028,10.71478991,fast null simulation,bound,ok,ok,-0.08971963,0.3088818192,bound holds
+C1,B2,1,A0,single,harmonic,0.001,0.5,7.715979375,8.021928922,fast null simulation,empirical,ok,ok,-0.305949547,0.4338375784,consistent
+C1,B2,1,A0,single,harmonic,0.001,0.9,10.0802427,10.22507028,fast null simulation,empirical,ok,ok,-0.14482758,0.6949558122,consistent
+C1,B2,1,A0,single,harmonic,0.01,0.5,6.911181395,6.948249092,fast null simulation,empirical,ok,ok,-0.037067697,0.4432713587,consistent
+C1,B2,1,A0,single,harmonic,0.01,0.9,9.133403617,9.159336018,fast null simulation,empirical,ok,ok,-0.025932401,0.2380870462,consistent
+C1,B2,1,A0,single,tone,0.0001,0.5,13.29727963,13.238724,exact,exact,ok,ok,0.05855563,0.3082416987,consistent
+C1,B2,1,A0,single,tone,0.0001,0.9,15.86463595,15.87731888,exact,exact,ok,ok,-0.01268293,0.3737088055,consistent
+C1,B2,1,A0,single,tone,0.001,0.5,12.5305819,12.48939786,exact,exact,ok,ok,0.04118404,0.3970458335,consistent
+C1,B2,1,A0,single,tone,0.001,0.9,15.23848211,15.3777394,exact,exact,ok,ok,-0.13925729,0.557644357,consistent
+C1,B2,1,A0,single,tone,0.01,0.5,11.64636435,11.59833458,exact,exact,ok,ok,0.04802977,0.3357303812,consistent
+C1,B2,1,A0,single,tone,0.01,0.9,14.31659472,14.38055432,exact,exact,ok,ok,-0.0639596,0.3484520421,consistent
+C1,B2,1,A1,beam_search,broadband,0.001,0.5,-14.45544943,-14.51217254,empirical,empirical,ok,ok,0.05672311,0.6295706836,consistent
+C1,B2,1,A1,beam_search,broadband,0.001,0.9,-12.33078379,-12.26821989,empirical,empirical,ok,ok,-0.0625639,0.4312812046,consistent
+C1,B2,1,A1,beam_search,broadband,0.01,0.5,-15.4732009,-15.52324108,empirical,empirical,ok,ok,0.05004018,0.3839243219,consistent
+C1,B2,1,A1,beam_search,broadband,0.01,0.9,-12.95899139,-12.96092077,empirical,empirical,ok,ok,0.00192938,0.4580196921,consistent
+C1,B2,1,A1,beam_search,chirp,0.001,0.5,9.451244157,9.408538396,empirical,empirical,ok,ok,0.042705761,0.5432431331,consistent
+C1,B2,1,A1,beam_search,chirp,0.001,0.9,11.65001761,11.68596532,empirical,empirical,ok,ok,-0.03594771,0.5711004506,consistent
+C1,B2,1,A1,beam_search,chirp,0.01,0.5,8.864855861,8.660701366,empirical,empirical,ok,ok,0.204154495,0.3662096068,consistent
+C1,B2,1,A1,beam_search,chirp,0.01,0.9,11.3287295,11.32082139,empirical,empirical,ok,ok,0.00790811,0.3315468449,consistent
+C1,B2,1,A1,beam_search,harmonic,0.001,0.5,6.172323031,6.166246754,empirical,empirical,ok,ok,0.006076277,0.5212198448,consistent
+C1,B2,1,A1,beam_search,harmonic,0.001,0.9,8.533504019,8.657628423,empirical,empirical,ok,ok,-0.124124404,0.5649348648,consistent
+C1,B2,1,A1,beam_search,harmonic,0.01,0.5,5.449915004,5.425070284,empirical,empirical,ok,ok,0.02484472,0.4250348207,consistent
+C1,B2,1,A1,beam_search,harmonic,0.01,0.9,7.475070284,7.89315539,empirical,empirical,ok,ok,-0.418085106,0.6163409371,consistent
+C1,B2,1,A1,beam_search,tone,0.0001,0.5,10.91250481,11.74592628,conditional Monte Carlo,bound,ok,ok,-0.83342147,0.4362567009,bound holds
+C1,B2,1,A1,beam_search,tone,0.0001,0.9,14.11095174,14.78463595,conditional Monte Carlo,bound,ok,ok,-0.67368421,0.5294169275,bound holds
+C1,B2,1,A1,beam_search,tone,0.001,0.5,10.18463595,10.77818434,conditional Monte Carlo,empirical,ok,ok,-0.59354839,0.6402036885,consistent
+C1,B2,1,A1,beam_search,tone,0.001,0.9,13.51567044,13.89970445,conditional Monte Carlo,empirical,ok,ok,-0.38403401,0.5802194759,consistent
+C1,B2,1,A1,beam_search,tone,0.01,0.5,9.384635953,9.688084229,conditional Monte Carlo,empirical,ok,ok,-0.303448276,0.5237535192,consistent
+C1,B2,1,A1,beam_search,tone,0.01,0.9,12.56289682,13.09527425,conditional Monte Carlo,empirical,ok,ok,-0.53237743,0.70854975,consistent
+C1,B2,1,A1,incoherent,broadband,0.001,0.5,-12.93296722,-12.94203528,empirical,empirical,ok,ok,0.00906806,0.4786535791,consistent
+C1,B2,1,A1,incoherent,broadband,0.001,0.9,-10.73850483,-10.77227107,empirical,empirical,ok,ok,0.03376624,0.3586482694,consistent
+C1,B2,1,A1,incoherent,broadband,0.01,0.5,-13.94191392,-13.89148289,empirical,empirical,ok,ok,-0.05043103,0.5159039015,consistent
+C1,B2,1,A1,incoherent,broadband,0.01,0.9,-11.73154158,-12.05240243,empirical,empirical,ok,ok,0.32086085,0.6303669936,consistent
+C1,B2,1,A1,incoherent,chirp,0.001,0.5,10.73524796,10.71047512,empirical,empirical,ok,ok,0.02477284,0.3894862775,consistent
+C1,B2,1,A1,incoherent,chirp,0.001,0.9,12.94446205,12.93833178,empirical,empirical,ok,ok,0.00613027,0.4572205363,consistent
+C1,B2,1,A1,incoherent,chirp,0.01,0.5,10.02754286,10.01243591,empirical,empirical,ok,ok,0.01510695,0.3865356767,consistent
+C1,B2,1,A1,incoherent,chirp,0.01,0.9,12.01112872,12.15625343,empirical,empirical,ok,ok,-0.14512471,0.6093697597,consistent
+C1,B2,1,A1,incoherent,harmonic,0.001,0.5,7.132076653,7.447416652,empirical,empirical,ok,ok,-0.315339999,0.6453245198,consistent
+C1,B2,1,A1,incoherent,harmonic,0.001,0.9,9.137570284,9.23512615,empirical,empirical,ok,ok,-0.097555866,0.5620724198,consistent
+C1,B2,1,A1,incoherent,harmonic,0.01,0.5,6.356104766,6.386109245,empirical,empirical,ok,ok,-0.030004479,0.3566224645,consistent
+C1,B2,1,A1,incoherent,harmonic,0.01,0.9,8.751802957,8.828579056,empirical,empirical,ok,ok,-0.076776099,0.2678394988,consistent
+C1,B2,1,A1,incoherent,tone,0.0001,0.5,12.35533659,14.632255,exact quadratic form,bound,ok,ok,-2.27691841,0.335628154,bound holds
+C1,B2,1,A1,incoherent,tone,0.0001,0.9,14.89574706,16.53701691,exact quadratic form,bound,ok,ok,-1.64126985,0.5239532192,bound holds
+C1,B2,1,A1,incoherent,tone,0.001,0.5,11.63341644,11.81993007,exact quadratic form,empirical,ok,ok,-0.18651363,0.6624969326,consistent
+C1,B2,1,A1,incoherent,tone,0.001,0.9,14.25810534,14.25130262,exact quadratic form,empirical,ok,ok,0.00680272,0.444953244,consistent
+C1,B2,1,A1,incoherent,tone,0.01,0.5,10.68608523,11.23169478,exact quadratic form,empirical,ok,ok,-0.54560955,0.4281384379,marginal
+C1,B2,1,A1,incoherent,tone,0.01,0.9,13.62035024,13.78463595,exact quadratic form,empirical,ok,ok,-0.16428571,0.5788273336,consistent
+C1,B2,1,A4,beam_search,broadband,0.001,0.5,-16.59642423,-16.80328327,empirical,empirical,ok,ok,0.20685904,0.6723611661,consistent
+C1,B2,1,A4,beam_search,broadband,0.001,0.9,-14.58113806,-14.6575131,empirical,empirical,ok,ok,0.07637504,0.3883975704,consistent
+C1,B2,1,A4,beam_search,broadband,0.01,0.5,-17.56202262,-17.54236729,empirical,empirical,ok,ok,-0.01965533,0.3309530809,consistent
+C1,B2,1,A4,beam_search,broadband,0.01,0.9,-15.38534613,-15.5108954,empirical,empirical,ok,ok,0.12554927,0.6148074915,consistent
+C1,B2,1,A4,beam_search,chirp,0.001,0.5,6.697997403,6.566108567,empirical,empirical,ok,ok,0.131888836,0.4855055276,consistent
+C1,B2,1,A4,beam_search,chirp,0.001,0.9,9.022949048,8.813296738,empirical,empirical,ok,ok,0.20965231,0.5311050719,consistent
+C1,B2,1,A4,beam_search,chirp,0.01,0.5,6.041918543,5.761879467,empirical,empirical,ok,ok,0.280039076,0.412799236,consistent
+C1,B2,1,A4,beam_search,chirp,0.01,0.9,8.34446205,7.763906494,empirical,empirical,ok,ok,0.580555556,0.5365475122,marginal
+C1,B2,1,A4,beam_search,harmonic,0.001,0.5,3.522039981,3.563001318,empirical,empirical,ok,ok,-0.040961337,0.5452621449,consistent
+C1,B2,1,A4,beam_search,harmonic,0.001,0.9,5.567927427,5.402081778,empirical,empirical,ok,ok,0.165845649,0.7230144223,consistent
+C1,B2,1,A4,beam_search,harmonic,0.01,0.5,2.829043794,2.855625839,empirical,empirical,ok,ok,-0.026582045,0.3991661855,consistent
+C1,B2,1,A4,beam_search,harmonic,0.01,0.9,5.141488194,5.188033247,empirical,empirical,ok,ok,-0.046545053,0.2287593808,consistent
+C1,B2,1,A4,beam_search,tone,0.0001,0.5,8.41922242,8.469986272,conditional Monte Carlo,bound,ok,ok,-0.050763852,0.3882963863,bound holds
+C1,B2,1,A4,beam_search,tone,0.0001,0.9,11.50130262,11.91796929,conditional Monte Carlo,bound,ok,ok,-0.41666667,0.7188910965,bound holds
+C1,B2,1,A4,beam_search,tone,0.001,0.5,7.642606968,7.842120983,conditional Monte Carlo,empirical,ok,ok,-0.199514015,0.5961656721,consistent
+C1,B2,1,A4,beam_search,tone,0.001,0.9,10.91796929,11.17287125,conditional Monte Carlo,empirical,ok,ok,-0.25490196,1.081870925,consistent
+C1,B2,1,A4,beam_search,tone,0.01,0.5,6.953866723,7.196880851,conditional Monte Carlo,empirical,ok,ok,-0.243014128,0.4223300432,consistent
+C1,B2,1,A4,beam_search,tone,0.01,0.9,10.4793728,10.55073765,conditional Monte Carlo,empirical,ok,ok,-0.07136485,0.8249929053,consistent
+C1,B2,1,A4,incoherent,broadband,0.001,0.5,-14.62369964,-14.48450374,empirical,empirical,ok,ok,-0.1391959,0.5559985246,consistent
+C1,B2,1,A4,incoherent,broadband,0.001,0.9,-12.49749903,-12.44499834,empirical,empirical,ok,ok,-0.05250069,0.2501328482,consistent
+C1,B2,1,A4,incoherent,broadband,0.01,0.5,-15.74369964,-15.67876457,empirical,empirical,ok,ok,-0.06493507,0.4875674605,consistent
+C1,B2,1,A4,incoherent,broadband,0.01,0.9,-13.29608059,-13.12530433,empirical,empirical,ok,ok,-0.17077626,0.5190837125,consistent
+C1,B2,1,A4,incoherent,chirp,0.001,0.5,7.379549769,7.418964298,empirical,empirical,ok,ok,-0.039414529,0.5223368201,consistent
+C1,B2,1,A4,incoherent,chirp,0.001,0.9,9.489586766,9.378968606,empirical,empirical,ok,ok,0.11061816,0.2541359607,consistent
+C1,B2,1,A4,incoherent,chirp,0.01,0.5,6.833850315,6.687302216,empirical,empirical,ok,ok,0.146548099,0.3325803205,consistent
+C1,B2,1,A4,incoherent,chirp,0.01,0.9,9.165053283,8.988906494,empirical,empirical,ok,ok,0.176146789,0.2931379636,consistent
+C1,B2,1,A4,incoherent,harmonic,0.001,0.5,5.834826381,5.855070284,empirical,empirical,ok,ok,-0.020243903,0.4863068654,consistent
+C1,B2,1,A4,incoherent,harmonic,0.001,0.9,7.395801991,7.564605167,empirical,empirical,ok,ok,-0.168803176,0.7372925763,consistent
+C1,B2,1,A4,incoherent,harmonic,0.01,0.5,4.902343011,5.000827859,empirical,empirical,ok,ok,-0.098484848,0.3861074938,consistent
+C1,B2,1,A4,incoherent,harmonic,0.01,0.9,7.008403617,7.137399051,empirical,empirical,ok,ok,-0.128995434,0.2110204542,consistent
+C1,B2,1,A4,incoherent,tone,0.0001,0.5,11.67554504,13.81686344,exact quadratic form,bound,ok,ok,-2.1413184,0.2357981986,bound holds
+C1,B2,1,A4,incoherent,tone,0.0001,0.9,14.02793492,15.98286604,exact quadratic form,bound,ok,ok,-1.95493112,0.2609907726,bound holds
+C1,B2,1,A4,incoherent,tone,0.001,0.5,10.93194134,10.98035788,exact quadratic form,empirical,ok,ok,-0.04841654,0.4544301965,consistent
+C1,B2,1,A4,incoherent,tone,0.001,0.9,13.34325664,12.99279922,exact quadratic form,empirical,ok,ok,0.35045742,0.6789119043,consistent
+C1,B2,1,A4,incoherent,tone,0.01,0.5,9.827239504,9.921592475,exact quadratic form,empirical,ok,ok,-0.094352971,0.3615643312,consistent
+C1,B2,1,A4,incoherent,tone,0.01,0.9,12.26884648,12.33684834,exact quadratic form,empirical,ok,ok,-0.06800186,0.3490544877,consistent
+C1,B2,1,P8-C,beam_search,broadband,0.001,0.5,-16.14262147,-15.62233428,empirical,empirical,ok,ok,-0.52028719,0.6265703505,consistent
+C1,B2,1,P8-C,beam_search,broadband,0.001,0.9,-14.34226308,-14.20640507,empirical,empirical,ok,ok,-0.13585801,0.5085527409,consistent
+C1,B2,1,P8-C,beam_search,broadband,0.01,0.5,-17.02941392,-17.04005222,empirical,empirical,ok,ok,0.0106383,0.3462894554,consistent
+C1,B2,1,P8-C,beam_search,broadband,0.01,0.9,-14.69012821,-14.75490412,empirical,empirical,ok,ok,0.06477591,0.2721821882,consistent
+C1,B2,1,P8-C,beam_search,chirp,0.001,0.5,8.568567511,8.311128717,empirical,empirical,ok,ok,0.257438794,0.4549219297,consistent
+C1,B2,1,P8-C,beam_search,chirp,0.001,0.9,10.94446205,10.59487664,empirical,empirical,ok,ok,0.34958541,0.5919264004,consistent
+C1,B2,1,P8-C,beam_search,chirp,0.01,0.5,7.729205002,7.66676909,empirical,empirical,ok,ok,0.062435912,0.4640783666,consistent
+C1,B2,1,P8-C,beam_search,chirp,0.01,0.9,9.935247958,9.762932468,empirical,empirical,ok,ok,0.17231549,0.522160737,consistent
+C1,B2,1,P8-C,beam_search,harmonic,0.001,0.5,5.15746465,5.311595106,empirical,empirical,ok,ok,-0.154130456,0.5100580385,consistent
+C1,B2,1,P8-C,beam_search,harmonic,0.001,0.9,7.6412865,7.883403617,empirical,empirical,ok,ok,-0.242117117,0.7648719659,consistent
+C1,B2,1,P8-C,beam_search,harmonic,0.01,0.5,4.397292506,4.646546794,empirical,empirical,ok,ok,-0.249254288,0.4140686287,consistent
+C1,B2,1,P8-C,beam_search,harmonic,0.01,0.9,7.180172325,7.349598586,empirical,empirical,ok,ok,-0.169426261,0.4697951553,consistent
+C1,B2,1,P8-C,beam_search,tone,0.0001,0.5,9.7981191,10.54253069,conditional Monte Carlo,bound,ok,ok,-0.74441159,0.5919639001,bound holds
+C1,B2,1,P8-C,beam_search,tone,0.0001,0.9,13.7327841,14.22099959,conditional Monte Carlo,bound,ok,ok,-0.48821549,0.5025939687,bound holds
+C1,B2,1,P8-C,beam_search,tone,0.001,0.5,9.113371586,9.606858176,conditional Monte Carlo,empirical,ok,ok,-0.49348659,0.8612038533,consistent
+C1,B2,1,P8-C,beam_search,tone,0.001,0.9,12.87035024,13.48463595,conditional Monte Carlo,empirical,ok,ok,-0.61428571,0.7963427119,consistent
+C1,B2,1,P8-C,beam_search,tone,0.01,0.5,8.408811778,8.788717586,conditional Monte Carlo,empirical,ok,ok,-0.379905808,0.6765471766,consistent
+C1,B2,1,P8-C,beam_search,tone,0.01,0.9,12.33848211,12.77068247,conditional Monte Carlo,empirical,ok,ok,-0.43220036,0.6494169613,consistent
+C1,B2,1,P8-C,incoherent,broadband,0.001,0.5,-13.29007743,-13.1681699,empirical,empirical,ok,ok,-0.12190753,0.5219053519,consistent
+C1,B2,1,P8-C,incoherent,broadband,0.001,0.9,-11.22344377,-11.01706824,empirical,empirical,ok,ok,-0.20637553,0.6213257968,consistent
+C1,B2,1,P8-C,incoherent,broadband,0.01,0.5,-14.61588009,-14.47717512,empirical,empirical,ok,ok,-0.13870497,0.5343850323,consistent
+C1,B2,1,P8-C,incoherent,broadband,0.01,0.9,-12.38315542,-12.30755962,empirical,empirical,ok,ok,-0.0755958,0.2297434979,consistent
+C1,B2,1,P8-C,incoherent,chirp,0.001,0.5,10.3034696,10.0859362,empirical,empirical,ok,ok,0.2175334,0.3999364111,consistent
+C1,B2,1,P8-C,incoherent,chirp,0.001,0.9,12.09325432,11.67009461,empirical,empirical,ok,ok,0.42315971,0.6243548085,consistent
+C1,B2,1,P8-C,incoherent,chirp,0.01,0.5,9.306978783,9.169023453,empirical,empirical,ok,ok,0.13795533,0.3437656363,consistent
+C1,B2,1,P8-C,incoherent,chirp,0.01,0.9,11.35753395,11.35095029,empirical,empirical,ok,ok,0.00658366,0.2072100374,consistent
+C1,B2,1,P8-C,incoherent,harmonic,0.001,0.5,6.906551765,7.185549326,empirical,empirical,ok,ok,-0.278997561,0.5035156507,consistent
+C1,B2,1,P8-C,incoherent,harmonic,0.001,0.9,9.094243216,9.122039981,empirical,empirical,ok,ok,-0.027796765,0.2607396572,consistent
+C1,B2,1,P8-C,incoherent,harmonic,0.01,0.5,6.11616976,6.367599019,empirical,empirical,ok,ok,-0.251429259,0.3722348864,consistent
+C1,B2,1,P8-C,incoherent,harmonic,0.01,0.9,8.439563037,8.758403617,empirical,empirical,ok,ok,-0.31884058,0.394721868,consistent
+C1,B2,1,P8-C,incoherent,tone,0.0001,0.5,12.35709104,15.85160428,exact quadratic form,bound,ok,ok,-3.49451324,0.271991701,bound holds
+C1,B2,1,P8-C,incoherent,tone,0.0001,0.9,14.52946354,18.06127147,exact quadratic form,bound,ok,ok,-3.53180793,0.3562656971,bound holds
+C1,B2,1,P8-C,incoherent,tone,0.001,0.5,11.67658998,11.78905584,exact quadratic form,empirical,ok,ok,-0.11246586,0.5253320166,consistent
+C1,B2,1,P8-C,incoherent,tone,0.001,0.9,14.11293784,14.10187733,exact quadratic form,empirical,ok,ok,0.01106051,0.3963251616,consistent
+C1,B2,1,P8-C,incoherent,tone,0.01,0.5,10.78589382,11.01892167,exact quadratic form,empirical,ok,ok,-0.23302785,0.4046533265,consistent
+C1,B2,1,P8-C,incoherent,tone,0.01,0.9,13.20281777,13.3777394,exact quadratic form,empirical,ok,ok,-0.17492163,0.6449859599,consistent
+C2,B1,1,A0,single,broadband,0.0001,0.5,-7.718965528,-7.630553435,exact,exact,ok,ok,-0.088412093,0.2215198782,consistent
+C2,B1,1,A0,single,broadband,0.0001,0.9,-5.617407895,-5.466403879,exact,exact,ok,ok,-0.151004016,0.329483013,consistent
+C2,B1,1,A0,single,broadband,0.001,0.5,-8.527884086,-8.516059148,exact,exact,ok,ok,-0.011824938,0.3361698204,consistent
+C2,B1,1,A0,single,broadband,0.001,0.9,-6.699312657,-6.666348165,exact,exact,ok,ok,-0.032964492,0.2103238302,consistent
+C2,B1,1,A0,single,broadband,0.01,0.5,-9.844858876,-9.848038526,exact,exact,ok,ok,0.00317965,0.3454662143,consistent
+C2,B1,1,A0,single,broadband,0.01,0.9,-7.29300927,-7.217407895,exact,exact,ok,ok,-0.075601375,0.2734705834,consistent
+C2,B1,1,A0,single,chirp,0.0001,0.5,11.35918876,11.73168976,fast null simulation,bound,ok,ok,-0.372501,0.3774984421,bound holds
+C2,B1,1,A0,single,chirp,0.0001,0.9,13.29916867,13.96741833,fast null simulation,bound,ok,ok,-0.66824966,0.6580534592,bound holds
+C2,B1,1,A0,single,chirp,0.001,0.5,10.47586945,10.6243435,fast null simulation,empirical,ok,ok,-0.14847405,0.5320428396,consistent
+C2,B1,1,A0,single,chirp,0.001,0.9,12.73856261,12.90046737,fast null simulation,empirical,ok,ok,-0.16190476,0.3452296329,consistent
+C2,B1,1,A0,single,chirp,0.01,0.5,9.482152354,9.755766911,fast null simulation,empirical,ok,ok,-0.273614557,0.4007619458,consistent
+C2,B1,1,A0,single,chirp,0.01,0.9,12.13071947,12.42073315,fast null simulation,empirical,ok,ok,-0.29001368,0.419436526,consistent
+C2,B1,1,A0,single,harmonic,0.0001,0.5,7.798318583,7.761685381,fast null simulation,bound,ok,ok,0.036633202,0.3126448574,bound holds
+C2,B1,1,A0,single,harmonic,0.0001,0.9,10.18506646,10.13700237,fast null simulation,bound,ok,ok,0.04806409,0.2585912756,bound holds
+C2,B1,1,A0,single,harmonic,0.001,0.5,7.135260211,6.970499909,fast null simulation,empirical,ok,ok,0.164760302,0.523318907,consistent
+C2,B1,1,A0,single,harmonic,0.001,0.9,9.606981668,9.639937792,fast null simulation,empirical,ok,ok,-0.032956124,0.4836491652,consistent
+C2,B1,1,A0,single,harmonic,0.01,0.5,6.023116258,5.922716657,fast null simulation,empirical,ok,ok,0.100399601,0.469016914,consistent
+C2,B1,1,A0,single,harmonic,0.01,0.9,8.558430943,8.566838023,fast null simulation,empirical,ok,ok,-0.00840708,0.4580378434,consistent
+C2,B1,1,A0,single,tone,0.0001,0.5,12.53190551,12.50965732,exact,exact,ok,ok,0.02224819,0.3416044752,consistent
+C2,B1,1,A0,single,tone,0.0001,0.9,15.14906769,15.17082785,exact,exact,ok,ok,-0.02176016,0.3071249526,consistent
+C2,B1,1,A0,single,tone,0.001,0.5,11.72222645,11.7039345,exact,exact,ok,ok,0.01829195,0.413788147,consistent
+C2,B1,1,A0,single,tone,0.001,0.9,14.57568147,14.42991875,exact,exact,ok,ok,0.14576272,0.5670891209,consistent
+C2,B1,1,A0,single,tone,0.01,0.5,10.62381188,10.68031246,exact,exact,ok,ok,-0.05650058,0.4098049376,consistent
+C2,B1,1,A0,single,tone,0.01,0.9,13.43387915,13.48706161,exact,exact,ok,ok,-0.05318246,0.2915064584,consistent
+C2,B1,1,A1,beam_search,broadband,0.001,0.5,-8.635847611,-8.858433536,empirical,empirical,ok,ok,0.222585925,0.6314993845,consistent
+C2,B1,1,A1,beam_search,broadband,0.001,0.9,-6.684074562,-6.698392235,empirical,empirical,ok,ok,0.014317673,0.4615130411,consistent
+C2,B1,1,A1,beam_search,broadband,0.01,0.5,-10.00528668,-10.0272513,empirical,empirical,ok,ok,0.02196462,0.4535383879,consistent
+C2,B1,1,A1,beam_search,broadband,0.01,0.9,-7.335551355,-7.331229033,empirical,empirical,ok,ok,-0.004322322,0.4243324418,consistent
+C2,B1,1,A1,beam_search,chirp,0.001,0.5,10.35761023,10.36601359,empirical,empirical,ok,ok,-0.00840336,0.5725001095,consistent
+C2,B1,1,A1,beam_search,chirp,0.001,0.9,12.67189594,12.74118728,empirical,empirical,ok,ok,-0.06929134,0.4591684798,consistent
+C2,B1,1,A1,beam_search,chirp,0.01,0.5,9.421895943,9.236075048,empirical,empirical,ok,ok,0.185820895,0.4703108598,consistent
+C2,B1,1,A1,beam_search,chirp,0.01,0.9,11.96078483,12.1290388,empirical,empirical,ok,ok,-0.16825397,0.5313818093,consistent
+C2,B1,1,A1,beam_search,harmonic,0.001,0.5,6.955489767,7.162976398,empirical,empirical,ok,ok,-0.207486631,0.486616954,consistent
+C2,B1,1,A1,beam_search,harmonic,0.001,0.9,9.148430943,9.470335705,empirical,empirical,ok,ok,-0.321904762,0.7408862559,consistent
+C2,B1,1,A1,beam_search,harmonic,0.01,0.5,6.031960355,6.137002372,empirical,empirical,ok,ok,-0.105042017,0.4658401213,consistent
+C2,B1,1,A1,beam_search,harmonic,0.01,0.9,8.43570367,8.499475719,empirical,empirical,ok,ok,-0.063772049,0.2592046958,consistent
+C2,B1,1,A1,beam_search,tone,0.0001,0.5,12.67329225,13.32036461,conditional Monte Carlo,bound,ok,ok,-0.64707236,0.3197589901,bound holds
+C2,B1,1,A1,beam_search,tone,0.0001,0.9,15.20626284,15.79713187,conditional Monte Carlo,bound,ok,ok,-0.59086903,0.4176596286,bound holds
+C2,B1,1,A1,beam_search,tone,0.001,0.5,11.8993632,11.572343,conditional Monte Carlo,empirical,ok,ok,0.3270202,0.831173709,consistent
+C2,B1,1,A1,beam_search,tone,0.001,0.9,14.56676086,14.22991875,conditional Monte Carlo,empirical,ok,ok,0.33684211,0.8984826793,consistent
+C2,B1,1,A1,beam_search,tone,0.01,0.5,10.8727759,10.57830585,conditional Monte Carlo,empirical,ok,ok,0.29447005,0.4244836654,consistent
+C2,B1,1,A1,beam_search,tone,0.01,0.9,13.49063304,13.44530337,conditional Monte Carlo,empirical,ok,ok,0.04532967,0.4869630544,consistent
+C2,B1,1,A1,incoherent,broadband,0.001,0.5,-8.607884086,-8.8221698,empirical,empirical,ok,ok,0.214285714,0.6454334585,consistent
+C2,B1,1,A1,incoherent,broadband,0.001,0.9,-6.682477755,-6.68319156,empirical,empirical,ok,ok,0.000713805,0.4920824748,consistent
+C2,B1,1,A1,incoherent,broadband,0.01,0.5,-9.966325644,-10.00040566,empirical,empirical,ok,ok,0.034080016,0.4614116002,consistent
+C2,B1,1,A1,incoherent,broadband,0.01,0.9,-7.306838789,-7.31264599,empirical,empirical,ok,ok,0.005807201,0.4034519251,consistent
+C2,B1,1,A1,incoherent,chirp,0.001,0.5,10.35761023,10.38315422,empirical,empirical,ok,ok,-0.02554399,0.5841258803,consistent
+C2,B1,1,A1,incoherent,chirp,0.001,0.9,12.67189594,12.75939594,empirical,empirical,ok,ok,-0.0875,0.4544390256,consistent
+C2,B1,1,A1,incoherent,chirp,0.01,0.5,9.442266314,9.23856261,empirical,empirical,ok,ok,0.203703704,0.4730816751,consistent
+C2,B1,1,A1,incoherent,chirp,0.01,0.9,11.96078483,12.15522928,empirical,empirical,ok,ok,-0.19444445,0.5312862929,consistent
+C2,B1,1,A1,incoherent,harmonic,0.001,0.5,6.965740885,7.171707779,empirical,empirical,ok,ok,-0.205966894,0.4852559108,consistent
+C2,B1,1,A1,incoherent,harmonic,0.001,0.9,9.148430943,9.470335705,empirical,empirical,ok,ok,-0.321904762,0.7354303093,consistent
+C2,B1,1,A1,incoherent,harmonic,0.01,0.5,6.05625703,6.130966154,empirical,empirical,ok,ok,-0.074709124,0.4678338784,consistent
+C2,B1,1,A1,incoherent,harmonic,0.01,0.9,8.450855185,8.497904627,empirical,empirical,ok,ok,-0.047049442,0.257289687,consistent
+C2,B1,1,A1,incoherent,tone,0.0001,0.5,12.7010844,14.46035354,exact quadratic form,bound,ok,ok,-1.75926914,0.2935285121,bound holds
+C2,B1,1,A1,incoherent,tone,0.0001,0.9,15.23198061,16.86022178,exact quadratic form,bound,ok,ok,-1.62824117,0.3759707065,bound holds
+C2,B1,1,A1,incoherent,tone,0.001,0.5,11.92647048,11.58749451,exact quadratic form,empirical,ok,ok,0.33897597,0.8315953885,consistent
+C2,B1,1,A1,incoherent,tone,0.001,0.9,14.58853944,14.22991875,exact quadratic form,empirical,ok,ok,0.35862069,0.894594022,consistent
+C2,B1,1,A1,incoherent,tone,0.01,0.5,10.86537975,10.57830585,exact quadratic form,empirical,ok,ok,0.2870739,0.4416806702,consistent
+C2,B1,1,A1,incoherent,tone,0.01,0.9,13.51799215,13.46628239,exact quadratic form,empirical,ok,ok,0.05170976,0.5306867365,consistent
+C2,B1,1,A4,beam_search,broadband,0.001,0.5,-8.933719952,-9.233971042,empirical,empirical,ok,ok,0.30025109,0.679929978,consistent
+C2,B1,1,A4,beam_search,broadband,0.001,0.9,-6.812179137,-7.006623581,empirical,empirical,ok,ok,0.194444444,0.2960604793,consistent
+C2,B1,1,A4,beam_search,broadband,0.01,0.5,-10.12838098,-10.10103709,empirical,empirical,ok,ok,-0.02734389,0.3959545775,consistent
+C2,B1,1,A4,beam_search,broadband,0.01,0.9,-7.621163764,-7.644491228,empirical,empirical,ok,ok,0.023327464,0.517702071,consistent
+C2,B1,1,A4,beam_search,chirp,0.001,0.5,10.34112671,10.24057064,empirical,empirical,ok,ok,0.10055607,0.4688396804,consistent
+C2,B1,1,A4,beam_search,chirp,0.001,0.9,12.74669269,12.61426882,empirical,empirical,ok,ok,0.13242387,0.3354781207,consistent
+C2,B1,1,A4,beam_search,chirp,0.01,0.5,9.516340388,9.194033348,empirical,empirical,ok,ok,0.32230704,0.4794215092,consistent
+C2,B1,1,A4,beam_search,chirp,0.01,0.9,12.24262765,12.07189594,empirical,empirical,ok,ok,0.17073171,0.4264037212,consistent
+C2,B1,1,A4,beam_search,harmonic,0.001,0.5,7.00254859,7.081312299,empirical,empirical,ok,ok,-0.078763709,0.6121313025,consistent
+C2,B1,1,A4,beam_search,harmonic,0.001,0.9,9.263986499,9.301023536,empirical,empirical,ok,ok,-0.037037037,0.8538791345,consistent
+C2,B1,1,A4,beam_search,harmonic,0.01,0.5,6.041764276,5.993199155,empirical,empirical,ok,ok,0.048565121,0.4639248692,consistent
+C2,B1,1,A4,beam_search,harmonic,0.01,0.9,8.390249125,8.364680943,empirical,empirical,ok,ok,0.025568182,0.2754499011,consistent
+C2,B1,1,A4,beam_search,tone,0.0001,0.5,12.35895101,12.8788698,conditional Monte Carlo,bound,ok,ok,-0.51991879,0.3508840401,bound holds
+C2,B1,1,A4,beam_search,tone,0.0001,0.9,15.02472395,15.51799215,conditional Monte Carlo,bound,ok,ok,-0.4932682,0.3290058158,bound holds
+C2,B1,1,A4,beam_search,tone,0.001,0.5,11.44371186,11.28177061,conditional Monte Carlo,empirical,ok,ok,0.16194125,0.7926009385,consistent
+C2,B1,1,A4,beam_search,tone,0.001,0.9,14.18547431,13.93802686,conditional Monte Carlo,empirical,ok,ok,0.24744745,0.9332399633,consistent
+C2,B1,1,A4,beam_search,tone,0.01,0.5,10.49178926,10.08188726,conditional Monte Carlo,empirical,ok,ok,0.409902,0.5192992322,consistent
+C2,B1,1,A4,beam_search,tone,0.01,0.9,13.31880764,13.15424308,conditional Monte Carlo,empirical,ok,ok,0.16456456,0.4480822958,consistent
+C2,B1,1,A4,incoherent,broadband,0.001,0.5,-8.657611457,-8.961337255,empirical,empirical,ok,ok,0.303725798,0.7014701179,consistent
+C2,B1,1,A4,incoherent,broadband,0.001,0.9,-6.718405899,-6.875416553,empirical,empirical,ok,ok,0.157010654,0.2857827469,consistent
+C2,B1,1,A4,incoherent,broadband,0.01,0.5,-9.989765619,-9.919788847,empirical,empirical,ok,ok,-0.069976772,0.4017661056,consistent
+C2,B1,1,A4,incoherent,broadband,0.01,0.9,-7.473818152,-7.425741228,empirical,empirical,ok,ok,-0.048076924,0.451812152,consistent
+C2,B1,1,A4,incoherent,chirp,0.001,0.5,10.39240876,10.24765352,empirical,empirical,ok,ok,0.14475524,0.5030666641,consistent
+C2,B1,1,A4,incoherent,chirp,0.001,0.9,12.75693531,12.61811443,empirical,empirical,ok,ok,0.13882088,0.332701759,consistent
+C2,B1,1,A4,incoherent,chirp,0.01,0.5,9.596033874,9.237309477,empirical,empirical,ok,ok,0.358724397,0.4704184991,consistent
+C2,B1,1,A4,incoherent,chirp,0.01,0.9,12.29028675,12.08522928,empirical,empirical,ok,ok,0.20505747,0.3694481007,consistent
+C2,B1,1,A4,incoherent,harmonic,0.001,0.5,7.103911169,7.093046328,empirical,empirical,ok,ok,0.010864841,0.6226640596,consistent
+C2,B1,1,A4,incoherent,harmonic,0.001,0.9,9.34000989,9.218234865,empirical,empirical,ok,ok,0.121775025,0.8532764969,consistent
+C2,B1,1,A4,incoherent,harmonic,0.01,0.5,6.07755846,6.023867185,empirical,empirical,ok,ok,0.053691275,0.4656579856,consistent
+C2,B1,1,A4,incoherent,harmonic,0.01,0.9,8.420552155,8.38535402,empirical,empirical,ok,ok,0.035198135,0.2661133969,consistent
+C2,B1,1,A4,incoherent,tone,0.0001,0.5,12.48860139,14.08842216,exact quadratic form,bound,ok,ok,-1.59982077,0.3377014124,bound holds
+C2,B1,1,A4,incoherent,tone,0.0001,0.9,15.06068799,16.81453414,exact quadratic form,bound,ok,ok,-1.75384615,0.4136563875,bound holds
+C2,B1,1,A4,incoherent,tone,0.001,0.5,11.50134733,11.3706595,exact quadratic form,empirical,ok,ok,0.13068783,0.7220706982,consistent
+C2,B1,1,A4,incoherent,tone,0.001,0.9,14.2743632,14.16325209,exact quadratic form,empirical,ok,ok,0.11111111,0.9043854897,consistent
+C2,B1,1,A4,incoherent,tone,0.01,0.5,10.60325209,10.19212348,exact quadratic form,empirical,ok,ok,0.41112861,0.5253699849,consistent
+C2,B1,1,A4,incoherent,tone,0.01,0.9,13.35800864,13.22991875,exact quadratic form,empirical,ok,ok,0.12808989,0.4329193197,consistent
+C2,B1,1,P8-C,beam_search,broadband,0.001,0.5,-8.74252205,-8.959191933,empirical,empirical,ok,ok,0.216669883,0.6473538909,consistent
+C2,B1,1,P8-C,beam_search,broadband,0.001,0.9,-6.770253424,-6.815641891,empirical,empirical,ok,ok,0.045388467,0.3390128071,consistent
+C2,B1,1,P8-C,beam_search,broadband,0.01,0.5,-9.871254049,-9.893023108,empirical,empirical,ok,ok,0.021769059,0.4128920673,consistent
+C2,B1,1,P8-C,beam_search,broadband,0.01,0.9,-7.297993976,-7.260418648,empirical,empirical,ok,ok,-0.037575328,0.3434753799,consistent
+C2,B1,1,P8-C,beam_search,chirp,0.001,0.5,10.35080751,10.31060562,empirical,empirical,ok,ok,0.04020189,0.6988154858,consistent
+C2,B1,1,P8-C,beam_search,chirp,0.001,0.9,12.74377094,12.72763365,empirical,empirical,ok,ok,0.01613729,0.5095123092,consistent
+C2,B1,1,P8-C,beam_search,chirp,0.01,0.5,9.300467372,9.493664651,empirical,empirical,ok,ok,-0.193197279,0.479954908,consistent
+C2,B1,1,P8-C,beam_search,chirp,0.01,0.9,12.14652281,12.21475309,empirical,empirical,ok,ok,-0.06823028,0.4472707923,consistent
+C2,B1,1,P8-C,beam_search,harmonic,0.001,0.5,7.063986499,6.854772406,empirical,empirical,ok,ok,0.209214093,0.585928698,consistent
+C2,B1,1,P8-C,beam_search,harmonic,0.001,0.9,9.179019178,9.048856475,empirical,empirical,ok,ok,0.130162703,0.8754859355,consistent
+C2,B1,1,P8-C,beam_search,harmonic,0.01,0.5,6.070133071,5.796666237,empirical,empirical,ok,ok,0.273466834,0.4833706979,consistent
+C2,B1,1,P8-C,beam_search,harmonic,0.01,0.9,8.519454565,8.341764276,empirical,empirical,ok,ok,0.177690289,0.2998723986,consistent
+C2,B1,1,P8-C,beam_search,tone,0.0001,0.5,12.60207065,13.49434828,conditional Monte Carlo,bound,ok,ok,-0.89227763,0.3423394348,bound holds
+C2,B1,1,P8-C,beam_search,tone,0.0001,0.9,15.26173694,15.97626022,conditional Monte Carlo,bound,ok,ok,-0.71452328,0.4635408187,bound holds
+C2,B1,1,P8-C,beam_search,tone,0.001,0.5,11.8718768,11.87469487,conditional Monte Carlo,empirical,ok,ok,-0.00281807,0.6139403491,consistent
+C2,B1,1,P8-C,beam_search,tone,0.001,0.9,14.5706595,14.72222645,conditional Monte Carlo,empirical,ok,ok,-0.15156695,0.6154463671,consistent
+C2,B1,1,P8-C,beam_search,tone,0.01,0.5,10.85391875,10.795436,conditional Monte Carlo,empirical,ok,ok,0.05848275,0.5267722195,consistent
+C2,B1,1,P8-C,beam_search,tone,0.01,0.9,13.64643252,13.69907763,conditional Monte Carlo,empirical,ok,ok,-0.05264511,0.4801423379,consistent
+C2,B1,1,P8-C,incoherent,broadband,0.001,0.5,-8.650741228,-8.88167648,empirical,empirical,ok,ok,0.230935252,0.6562757003,consistent
+C2,B1,1,P8-C,incoherent,broadband,0.001,0.9,-6.707367734,-6.794330972,empirical,empirical,ok,ok,0.086963238,0.4098423381,consistent
+C2,B1,1,P8-C,incoherent,broadband,0.01,0.5,-9.86242954,-9.861552039,empirical,empirical,ok,ok,-0.000877501,0.4144303388,consistent
+C2,B1,1,P8-C,incoherent,broadband,0.01,0.9,-7.268132533,-7.224425439,empirical,empirical,ok,ok,-0.043707094,0.3389047492,consistent
+C2,B1,1,P8-C,incoherent,chirp,0.001,0.5,10.35956718,10.36990919,empirical,empirical,ok,ok,-0.01034201,0.7117066289,consistent
+C2,B1,1,P8-C,incoherent,chirp,0.001,0.9,12.74631455,12.75693531,empirical,empirical,ok,ok,-0.01062076,0.5193830437,consistent
+C2,B1,1,P8-C,incoherent,chirp,0.01,0.5,9.313030695,9.517841889,empirical,empirical,ok,ok,-0.204811194,0.4735905816,consistent
+C2,B1,1,P8-C,incoherent,chirp,0.01,0.9,12.14652281,12.2257421,empirical,empirical,ok,ok,-0.07921929,0.4501063947,consistent
+C2,B1,1,P8-C,incoherent,harmonic,0.001,0.5,7.062022103,6.87916265,empirical,empirical,ok,ok,0.182859453,0.5874697819,consistent
+C2,B1,1,P8-C,incoherent,harmonic,0.001,0.9,9.148430943,9.116594208,empirical,empirical,ok,ok,0.031836735,0.8795059972,consistent
+C2,B1,1,P8-C,incoherent,harmonic,0.01,0.5,6.099735291,5.809880218,empirical,empirical,ok,ok,0.289855073,0.4935117508,consistent
+C2,B1,1,P8-C,incoherent,harmonic,0.01,0.9,8.523815558,8.341764276,empirical,empirical,ok,ok,0.182051282,0.2969562066,consistent
+C2,B1,1,P8-C,incoherent,tone,0.0001,0.5,12.62738711,15.88255033,exact quadratic form,bound,ok,ok,-3.25516322,0.3353313861,bound holds
+C2,B1,1,P8-C,incoherent,tone,0.0001,0.9,15.2743632,18.30991875,exact quadratic form,bound,ok,ok,-3.03555555,0.498596899,bound holds
+C2,B1,1,P8-C,incoherent,tone,0.001,0.5,11.89888427,11.93136803,exact quadratic form,empirical,ok,ok,-0.03248376,0.5990215179,consistent
+C2,B1,1,P8-C,incoherent,tone,0.001,0.9,14.5706595,14.73616875,exact quadratic form,empirical,ok,ok,-0.16550925,0.6349778073,consistent
+C2,B1,1,P8-C,incoherent,tone,0.01,0.5,10.87056916,10.795436,exact quadratic form,empirical,ok,ok,0.07513316,0.5077429524,consistent
+C2,B1,1,P8-C,incoherent,tone,0.01,0.9,13.64973857,13.66478114,exact quadratic form,empirical,ok,ok,-0.01504257,0.4805575852,consistent
+C3,B3,0.1,A0,single,broadband,0.0001,0.5,-10.97997328,-10.87495271,exact,exact,ok,ok,-0.10502057,0.1951021481,consistent
+C3,B3,0.1,A0,single,broadband,0.0001,0.9,-9.369827989,-8.848286039,exact,exact,ok,ok,-0.52154195,0.4781787658,marginal
+C3,B3,0.1,A0,single,broadband,0.001,0.5,-11.66349072,-11.6074452,exact,exact,ok,ok,-0.05604552,0.3085850285,consistent
+C3,B3,0.1,A0,single,broadband,0.001,0.9,-9.979280191,-9.877715468,exact,exact,ok,ok,-0.101564723,0.1523088523,consistent
+C3,B3,0.1,A0,single,broadband,0.01,0.5,-13.01766273,-12.9652451,exact,exact,ok,ok,-0.05241763,0.304232686,consistent
+C3,B3,0.1,A0,single,broadband,0.01,0.9,-10.56696216,-10.50121987,exact,exact,ok,ok,-0.06574229,0.2811260228,consistent
+C3,B3,0.1,A0,single,chirp,0.0001,0.5,12.09189172,11.93570216,fast null simulation,bound,ok,ok,0.15618956,0.3219518519,bound holds
+C3,B3,0.1,A0,single,chirp,0.0001,0.9,14.29127401,14.17002818,fast null simulation,bound,ok,ok,0.12124583,0.5296577693,bound holds
+C3,B3,0.1,A0,single,chirp,0.001,0.5,11.21198913,11.27302274,fast null simulation,empirical,ok,ok,-0.06103361,0.6038709194,consistent
+C3,B3,0.1,A0,single,chirp,0.001,0.9,13.37002818,13.42771691,fast null simulation,empirical,ok,ok,-0.05768873,0.5275831082,consistent
+C3,B3,0.1,A0,single,chirp,0.01,0.5,10.38654783,10.30093088,fast null simulation,empirical,ok,ok,0.08561695,0.3995142534,consistent
+C3,B3,0.1,A0,single,chirp,0.01,0.9,12.82593427,12.88267186,fast null simulation,empirical,ok,ok,-0.05673759,0.3274527567,consistent
+C3,B3,0.1,A0,single,harmonic,0.0001,0.5,18.05908104,17.87334777,fast null simulation,bound,ok,ok,0.18573327,0.3102885495,bound holds
+C3,B3,0.1,A0,single,harmonic,0.0001,0.9,20.34427041,20.20548584,fast null simulation,bound,ok,ok,0.13878457,0.2641737045,bound holds
+C3,B3,0.1,A0,single,harmonic,0.001,0.5,17.43919273,17.17461116,fast null simulation,empirical,ok,ok,0.26458157,0.4825678671,consistent
+C3,B3,0.1,A0,single,harmonic,0.001,0.9,19.74442481,19.47134576,fast null simulation,empirical,ok,ok,0.27307905,0.7018085036,consistent
+C3,B3,0.1,A0,single,harmonic,0.01,0.5,16.42669838,16.35393048,fast null simulation,empirical,ok,ok,0.0727679,0.4436631947,consistent
+C3,B3,0.1,A0,single,harmonic,0.01,0.9,18.68017161,18.59903289,fast null simulation,empirical,ok,ok,0.08113872,0.2457051356,consistent
+C3,B3,0.1,A0,single,tone,0.0001,0.5,23.21554338,23.00803706,exact,exact,ok,ok,0.20750632,0.3063014901,consistent
+C3,B3,0.1,A0,single,tone,0.0001,0.9,25.62031915,25.61714105,exact,exact,ok,ok,0.0031781,0.3079158236,consistent
+C3,B3,0.1,A0,single,tone,0.001,0.5,22.55679292,22.08319044,exact,exact,ok,ok,0.47360248,0.3557686119,marginal
+C3,B3,0.1,A0,single,tone,0.001,0.9,24.96282007,24.71616916,exact,exact,ok,ok,0.24665091,0.5906460244,consistent
+C3,B3,0.1,A0,single,tone,0.01,0.5,21.54652377,21.36021746,exact,exact,ok,ok,0.18630631,0.3477775654,consistent
+C3,B3,0.1,A0,single,tone,0.01,0.9,24.03066943,24.0419283,exact,exact,ok,ok,-0.01125887,0.2760645856,consistent
+C3,B3,0.1,A1,beam_search,broadband,0.001,0.5,-16.66540459,-16.23202029,empirical,empirical,ok,ok,-0.4333843,0.5887041605,consistent
+C3,B3,0.1,A1,beam_search,broadband,0.001,0.9,-14.48965018,-14.18161937,empirical,empirical,ok,ok,-0.30803081,0.339771692,consistent
+C3,B3,0.1,A1,beam_search,broadband,0.01,0.5,-17.49673777,-17.12179031,empirical,empirical,ok,ok,-0.37494746,0.3256097524,marginal
+C3,B3,0.1,A1,beam_search,broadband,0.01,0.9,-15.74810389,-15.16574636,empirical,empirical,ok,ok,-0.58235753,0.5982267746,consistent
+C3,B3,0.1,A1,beam_search,chirp,0.001,0.5,6.171289747,6.205588527,empirical,empirical,ok,ok,-0.03429878,0.5743346804,consistent
+C3,B3,0.1,A1,beam_search,chirp,0.001,0.9,8.65522088,8.435052813,empirical,empirical,ok,ok,0.220168067,0.6223290193,consistent
+C3,B3,0.1,A1,beam_search,chirp,0.01,0.5,5.446397351,5.533953912,empirical,empirical,ok,ok,-0.087556561,0.4572486997,consistent
+C3,B3,0.1,A1,beam_search,chirp,0.01,0.9,7.695679991,7.51230149,empirical,empirical,ok,ok,0.183378501,0.5739682615,consistent
+C3,B3,0.1,A1,beam_search,harmonic,0.001,0.5,12.39125317,12.31271544,empirical,empirical,ok,ok,0.07853773,0.5530293444,consistent
+C3,B3,0.1,A1,beam_search,harmonic,0.001,0.9,14.7120865,14.66169891,empirical,empirical,ok,ok,0.05038759,0.4326892842,consistent
+C3,B3,0.1,A1,beam_search,harmonic,0.01,0.5,11.69803028,11.54132986,empirical,empirical,ok,ok,0.15670042,0.3511377677,consistent
+C3,B3,0.1,A1,beam_search,harmonic,0.01,0.9,14.32061364,14.16989241,empirical,empirical,ok,ok,0.15072123,0.3842244079,consistent
+C3,B3,0.1,A1,beam_search,tone,0.0001,0.5,17.95583195,17.98786669,conditional Monte Carlo,bound,ok,ok,-0.03203474,0.3600778344,bound holds
+C3,B3,0.1,A1,beam_search,tone,0.0001,0.9,21.01176186,21.01319044,conditional Monte Carlo,bound,ok,ok,-0.00142858,0.5833928679,bound holds
+C3,B3,0.1,A1,beam_search,tone,0.001,0.5,17.41538222,17.17235127,conditional Monte Carlo,empirical,ok,ok,0.24303095,0.4968424517,consistent
+C3,B3,0.1,A1,beam_search,tone,0.001,0.9,20.13901568,20.04430155,conditional Monte Carlo,empirical,ok,ok,0.09471413,0.5113318534,consistent
+C3,B3,0.1,A1,beam_search,tone,0.01,0.5,16.57709287,16.45626736,conditional Monte Carlo,empirical,ok,ok,0.12082551,0.4894724113,consistent
+C3,B3,0.1,A1,beam_search,tone,0.01,0.9,19.61714105,19.52069044,conditional Monte Carlo,empirical,ok,ok,0.09645061,0.4584461265,consistent
+C3,B3,0.1,A1,incoherent,broadband,0.001,0.5,-14.7522503,-14.61027137,empirical,empirical,ok,ok,-0.14197893,0.6037771608,consistent
+C3,B3,0.1,A1,incoherent,broadband,0.001,0.9,-12.52068008,-12.43892931,empirical,empirical,ok,ok,-0.08175077,0.3684357278,consistent
+C3,B3,0.1,A1,incoherent,broadband,0.01,0.5,-15.85838705,-15.64193683,empirical,empirical,ok,ok,-0.21645022,0.4514929123,consistent
+C3,B3,0.1,A1,incoherent,broadband,0.01,0.9,-13.77588461,-13.73717493,empirical,empirical,ok,ok,-0.03870968,0.5790754888,consistent
+C3,B3,0.1,A1,incoherent,chirp,0.001,0.5,7.598119015,7.281045844,empirical,empirical,ok,ok,0.317073171,0.6400796956,consistent
+C3,B3,0.1,A1,incoherent,chirp,0.001,0.9,9.549338527,9.534950038,empirical,empirical,ok,ok,0.014388489,0.7868150942,consistent
+C3,B3,0.1,A1,incoherent,chirp,0.01,0.5,6.659094625,6.586375564,empirical,empirical,ok,ok,0.072719061,0.3756089765,consistent
+C3,B3,0.1,A1,incoherent,chirp,0.01,0.9,9.089161536,9.026816005,empirical,empirical,ok,ok,0.062345531,0.2915801223,consistent
+C3,B3,0.1,A1,incoherent,harmonic,0.001,0.5,14.01140623,13.93029956,empirical,empirical,ok,ok,0.08110667,0.4526344761,consistent
+C3,B3,0.1,A1,incoherent,harmonic,0.001,0.9,16.28062233,16.19914152,empirical,empirical,ok,ok,0.08148081,0.3834714164,consistent
+C3,B3,0.1,A1,incoherent,harmonic,0.01,0.5,13.12415194,13.14290411,empirical,empirical,ok,ok,-0.01875217,0.4237848657,consistent
+C3,B3,0.1,A1,incoherent,harmonic,0.01,0.9,15.48589603,15.58843059,empirical,empirical,ok,ok,-0.10253456,0.5867815731,consistent
+C3,B3,0.1,A1,incoherent,tone,0.0001,0.5,19.91939733,21.41829682,exact quadratic form,bound,ok,ok,-1.49889949,0.2807083972,bound holds
+C3,B3,0.1,A1,incoherent,tone,0.0001,0.9,22.15671985,23.79853697,exact quadratic form,bound,ok,ok,-1.64181712,0.2550044651,bound holds
+C3,B3,0.1,A1,incoherent,tone,0.001,0.5,19.13778814,18.94078537,exact quadratic form,empirical,ok,ok,0.19700277,0.4934788268,consistent
+C3,B3,0.1,A1,incoherent,tone,0.001,0.9,21.5916174,21.58319044,exact quadratic form,empirical,ok,ok,0.00842696,0.4813831548,consistent
+C3,B3,0.1,A1,incoherent,tone,0.01,0.5,18.06828977,17.7814663,exact quadratic form,empirical,ok,ok,0.28682347,0.4243073793,consistent
+C3,B3,0.1,A1,incoherent,tone,0.01,0.9,20.59406,20.1652515,exact quadratic form,empirical,ok,ok,0.4288085,0.5175050663,consistent
+C3,B3,0.1,A4,beam_search,broadband,0.001,0.5,-14.91082762,-15.10926795,empirical,empirical,ok,ok,0.19844033,0.7187840787,consistent
+C3,B3,0.1,A4,beam_search,broadband,0.001,0.9,-12.47186881,-12.68717493,empirical,empirical,ok,ok,0.21530612,0.6377405249,consistent
+C3,B3,0.1,A4,beam_search,broadband,0.01,0.5,-16.28262947,-16.12236011,empirical,empirical,ok,ok,-0.16026936,0.5309743899,consistent
+C3,B3,0.1,A4,beam_search,broadband,0.01,0.9,-13.7867617,-13.79514594,empirical,empirical,ok,ok,0.00838424,0.5536493951,consistent
+C3,B3,0.1,A4,beam_search,chirp,0.001,0.5,7.653042231,7.781222585,empirical,empirical,ok,ok,-0.128180354,0.6126818436,consistent
+C3,B3,0.1,A4,beam_search,chirp,0.001,0.9,10.59851886,10.59043442,empirical,empirical,ok,ok,0.00808444,0.5852018296,consistent
+C3,B3,0.1,A4,beam_search,chirp,0.01,0.5,6.861026839,6.975911954,empirical,empirical,ok,ok,-0.114885115,0.4273665499,consistent
+C3,B3,0.1,A4,beam_search,chirp,0.01,0.9,9.874919923,9.739814718,empirical,empirical,ok,ok,0.135105205,0.6451867375,consistent
+C3,B3,0.1,A4,beam_search,harmonic,0.001,0.5,13.35653095,13.23986428,empirical,empirical,ok,ok,0.11666667,0.5388573034,consistent
+C3,B3,0.1,A4,beam_search,harmonic,0.001,0.9,15.65841419,16.01388831,empirical,empirical,ok,ok,-0.35547412,0.6305706602,consistent
+C3,B3,0.1,A4,beam_search,harmonic,0.01,0.5,12.53259933,12.35320573,empirical,empirical,ok,ok,0.1793936,0.4687580178,consistent
+C3,B3,0.1,A4,beam_search,harmonic,0.01,0.9,14.72597539,14.81625317,empirical,empirical,ok,ok,-0.09027778,0.4643049636,consistent
+C3,B3,0.1,A4,beam_search,tone,0.0001,0.5,18.37215147,18.35933423,conditional Monte Carlo,bound,ok,ok,0.01281724,0.3614024627,bound holds
+C3,B3,0.1,A4,beam_search,tone,0.0001,0.9,20.75179509,20.73319044,conditional Monte Carlo,bound,ok,ok,0.01860465,0.6612286061,bound holds
+C3,B3,0.1,A4,beam_search,tone,0.001,0.5,17.66652377,17.58319044,conditional Monte Carlo,empirical,ok,ok,0.08333333,0.6061757069,consistent
+C3,B3,0.1,A4,beam_search,tone,0.001,0.9,20.11470304,20.03494482,conditional Monte Carlo,empirical,ok,ok,0.07975822,0.6021152945,consistent
+C3,B3,0.1,A4,beam_search,tone,0.01,0.5,16.93199283,16.87864498,conditional Monte Carlo,empirical,ok,ok,0.05334785,0.369937372,consistent
+C3,B3,0.1,A4,beam_search,tone,0.01,0.9,19.54445804,19.54838031,conditional Monte Carlo,empirical,ok,ok,-0.00392227,0.4328127614,consistent
+C3,B3,0.1,A4,incoherent,broadband,0.001,0.5,-14.83670099,-15.03876223,empirical,empirical,ok,ok,0.20206124,0.5845216656,consistent
+C3,B3,0.1,A4,incoherent,broadband,0.001,0.9,-12.67693396,-12.75050826,empirical,empirical,ok,ok,0.0735743,0.6679134536,consistent
+C3,B3,0.1,A4,incoherent,broadband,0.01,0.5,-16.19550826,-16.30661937,empirical,empirical,ok,ok,0.11111111,0.5197790949,consistent
+C3,B3,0.1,A4,incoherent,broadband,0.01,0.9,-13.96095115,-13.94770124,empirical,empirical,ok,ok,-0.01324991,0.2982763831,consistent
+C3,B3,0.1,A4,incoherent,chirp,0.001,0.5,9.104894083,8.935702164,empirical,empirical,ok,ok,0.169191919,0.5442459804,consistent
+C3,B3,0.1,A4,incoherent,chirp,0.001,0.9,11.19317414,11.1197089,empirical,empirical,ok,ok,0.07346524,0.291128345,consistent
+C3,B3,0.1,A4,incoherent,chirp,0.01,0.5,8.327716906,8.167520346,empirical,empirical,ok,ok,0.16019656,0.348128738,consistent
+C3,B3,0.1,A4,incoherent,chirp,0.01,0.9,10.69567999,10.65777226,empirical,empirical,ok,ok,0.03790773,0.3626535848,consistent
+C3,B3,0.1,A4,incoherent,harmonic,0.001,0.5,13.19790211,13.05626796,empirical,empirical,ok,ok,0.14163415,0.4547249007,consistent
+C3,B3,0.1,A4,incoherent,harmonic,0.001,0.9,14.97399127,15.13962274,empirical,empirical,ok,ok,-0.16563147,0.6976707317,consistent
+C3,B3,0.1,A4,incoherent,harmonic,0.01,0.5,12.34788897,12.44079697,empirical,empirical,ok,ok,-0.092908,0.4244797781,consistent
+C3,B3,0.1,A4,incoherent,harmonic,0.01,0.9,14.53832764,14.60060748,empirical,empirical,ok,ok,-0.06227984,0.2142188241,consistent
+C3,B3,0.1,A4,incoherent,tone,0.0001,0.5,18.40636117,18.75235211,exact quadratic form,bound,ok,ok,-0.34599094,0.330361959,bound holds
+C3,B3,0.1,A4,incoherent,tone,0.0001,0.9,20.43319044,21.20819044,exact quadratic form,bound,ok,ok,-0.775,0.49528812,bound holds
+C3,B3,0.1,A4,incoherent,tone,0.001,0.5,17.67496259,17.42514446,exact quadratic form,empirical,ok,ok,0.24981813,0.4276979385,consistent
+C3,B3,0.1,A4,incoherent,tone,0.001,0.9,20.04747615,19.95319044,exact quadratic form,empirical,ok,ok,0.09428571,0.3418927119,consistent
+C3,B3,0.1,A4,incoherent,tone,0.01,0.5,16.95223805,16.93812871,exact quadratic form,empirical,ok,ok,0.01410934,0.3627056444,consistent
+C3,B3,0.1,A4,incoherent,tone,0.01,0.9,19.50652377,19.55396966,exact quadratic form,empirical,ok,ok,-0.04744589,0.4402029382,consistent
+C3,B3,0.1,P8-C,beam_search,broadband,0.001,0.5,-18.75881995,-18.67522803,empirical,empirical,ok,ok,-0.08359192,0.3276107454,consistent
+C3,B3,0.1,P8-C,beam_search,broadband,0.001,0.9,-16.68717493,-16.57588461,empirical,empirical,ok,ok,-0.11129032,0.4527291632,consistent
+C3,B3,0.1,P8-C,beam_search,broadband,0.01,0.5,-19.5732405,-19.51268513,empirical,empirical,ok,ok,-0.06055537,0.3699253893,consistent
+C3,B3,0.1,P8-C,beam_search,broadband,0.01,0.9,-17.82460662,-17.88003207,empirical,empirical,ok,ok,0.05542545,0.2504353954,consistent
+C3,B3,0.1,P8-C,beam_search,chirp,0.001,0.5,4.022244931,3.90401833,empirical,empirical,ok,ok,0.118226601,0.4713865043,consistent
+C3,B3,0.1,P8-C,beam_search,chirp,0.001,0.9,5.776611255,5.48037301,empirical,empirical,ok,ok,0.296238245,0.6319112065,consistent
+C3,B3,0.1,P8-C,beam_search,chirp,0.01,0.5,3.216005194,3.043314431,empirical,empirical,ok,ok,0.172690763,0.3868506304,consistent
+C3,B3,0.1,P8-C,beam_search,chirp,0.01,0.9,5.26908375,5.188227416,empirical,empirical,ok,ok,0.080856334,0.1934972364,consistent
+C3,B3,0.1,P8-C,beam_search,harmonic,0.001,0.5,10.26858368,10.27161031,empirical,empirical,ok,ok,-0.00302663,0.4841469942,consistent
+C3,B3,0.1,P8-C,beam_search,harmonic,0.001,0.9,12.48481378,12.56867565,empirical,empirical,ok,ok,-0.08386187,0.2887834504,consistent
+C3,B3,0.1,P8-C,beam_search,harmonic,0.01,0.5,9.685571353,9.688001726,empirical,empirical,ok,ok,-0.002430373,0.3475547541,consistent
+C3,B3,0.1,P8-C,beam_search,harmonic,0.01,0.9,12.12875317,12.14541984,empirical,empirical,ok,ok,-0.01666667,0.3438857543,consistent
+C3,B3,0.1,P8-C,beam_search,tone,0.0001,0.5,15.6369879,15.55331622,conditional Monte Carlo,bound,ok,ok,0.08367168,0.3247229536,bound holds
+C3,B3,0.1,P8-C,beam_search,tone,0.0001,0.9,18.20819044,18.23610306,conditional Monte Carlo,bound,ok,ok,-0.02791262,0.4841837842,bound holds
+C3,B3,0.1,P8-C,beam_search,tone,0.001,0.5,15.09862253,14.92142573,conditional Monte Carlo,empirical,ok,ok,0.1771968,0.4788849767,consistent
+C3,B3,0.1,P8-C,beam_search,tone,0.001,0.9,17.76176186,17.91343735,conditional Monte Carlo,empirical,ok,ok,-0.15167549,0.4287784274,consistent
+C3,B3,0.1,P8-C,beam_search,tone,0.01,0.5,14.36096821,14.07232087,conditional Monte Carlo,empirical,ok,ok,0.28864734,0.4404366288,consistent
+C3,B3,0.1,P8-C,beam_search,tone,0.01,0.9,17.03907279,17.29319044,conditional Monte Carlo,empirical,ok,ok,-0.25411765,0.7162873513,consistent
+C3,B3,0.1,P8-C,incoherent,broadband,0.001,0.5,-16.1902136,-15.96690466,empirical,empirical,ok,ok,-0.22330894,0.6370601518,consistent
+C3,B3,0.1,P8-C,incoherent,broadband,0.001,0.9,-14.13985949,-14.09349677,empirical,empirical,ok,ok,-0.04636272,0.2517809817,consistent
+C3,B3,0.1,P8-C,incoherent,broadband,0.01,0.5,-17.27176612,-17.22288921,empirical,empirical,ok,ok,-0.04887691,0.3990923615,consistent
+C3,B3,0.1,P8-C,incoherent,broadband,0.01,0.9,-14.73717493,-14.86760971,empirical,empirical,ok,ok,0.13043478,0.4404153919,consistent
+C3,B3,0.1,P8-C,incoherent,chirp,0.001,0.5,6.30171948,6.383419245,empirical,empirical,ok,ok,-0.081699765,0.3494126707,consistent
+C3,B3,0.1,P8-C,incoherent,chirp,0.001,0.9,8.389918237,8.406481384,empirical,empirical,ok,ok,-0.016563147,0.5791138664,consistent
+C3,B3,0.1,P8-C,incoherent,chirp,0.01,0.5,5.535915709,5.61350965,empirical,empirical,ok,ok,-0.077593941,0.3804309734,consistent
+C3,B3,0.1,P8-C,incoherent,chirp,0.01,0.9,7.366481384,7.324739597,empirical,empirical,ok,ok,0.041741787,0.1766686475,consistent
+C3,B3,0.1,P8-C,incoherent,harmonic,0.001,0.5,12.26173189,12.42319762,empirical,empirical,ok,ok,-0.16146573,0.6096427335,consistent
+C3,B3,0.1,P8-C,incoherent,harmonic,0.001,0.9,14.42420772,14.47606861,empirical,empirical,ok,ok,-0.05186089,0.3242029721,consistent
+C3,B3,0.1,P8-C,incoherent,harmonic,0.01,0.5,11.4916564,11.6808365,empirical,empirical,ok,ok,-0.1891801,0.3058997673,consistent
+C3,B3,0.1,P8-C,incoherent,harmonic,0.01,0.9,13.7773039,13.9375767,empirical,empirical,ok,ok,-0.1602728,0.401283457,consistent
+C3,B3,0.1,P8-C,incoherent,tone,0.0001,0.5,17.71362522,19.67299626,exact quadratic form,bound,ok,ok,-1.95937104,0.2549913968,bound holds
+C3,B3,0.1,P8-C,incoherent,tone,0.0001,0.9,19.99448076,21.96150902,exact quadratic form,bound,ok,ok,-1.96702826,0.2468089894,bound holds
+C3,B3,0.1,P8-C,incoherent,tone,0.001,0.5,16.95956406,16.73825373,exact quadratic form,empirical,ok,ok,0.22131033,0.536585647,consistent
+C3,B3,0.1,P8-C,incoherent,tone,0.001,0.9,19.33319044,19.36349347,exact quadratic form,empirical,ok,ok,-0.03030303,0.6142315424,consistent
+C3,B3,0.1,P8-C,incoherent,tone,0.01,0.5,15.95583195,15.81319044,exact quadratic form,empirical,ok,ok,0.14264151,0.3994753444,consistent
+C3,B3,0.1,P8-C,incoherent,tone,0.01,0.9,18.20369403,18.28480334,exact quadratic form,empirical,ok,ok,-0.08110931,0.4761665553,consistent

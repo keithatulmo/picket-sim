@@ -83,7 +83,7 @@ def main(argv=None):
     for r in thr_run:
         k = (r["candidate"], r["cell"], r["normalizer"], r["mode"], r["detector"], float(r["pfa_target"]))
         thresholds[k] = {"eta": _num(r["eta"]), "eta_lo": _num(r["eta_lo"]), "eta_hi": _num(r["eta_hi"]),
-                         "method": r["method"]}
+                         "method": r["method"], "n": int(r["n"]) if r["n"] else 0}
     for spec in a.eval:
         cand, cell, sc = spec.split(":")
         t0 = time.time()

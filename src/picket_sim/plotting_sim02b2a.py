@@ -51,7 +51,7 @@ def make_figures(study, out: Path, thr_rows, pfa_rows, pd_rows, loss_rows, gain_
         ax.set_yscale("log")
         ax.set_xticks(range(len(scen)), scen, rotation=45, fontsize=7)
         ax.set_title(f"{c} {m} {d}, C1 (B2, 1 s)", fontsize=9)
-    axes[0].set_ylabel("realized Pfa at target 1e-3 (95 %)")
+    axes[0].set_ylabel("realized Pfa at target 1e-3 (95 %); zero counts at 2e-5")
     axes[0].legend(fontsize=6)
     fig.tight_layout()
     _save(fig, out, "s2b2a_fig01_pfa_stability.png", names)
@@ -143,6 +143,7 @@ def make_figures(study, out: Path, thr_rows, pfa_rows, pd_rows, loss_rows, gain_
                         ax.plot([x["snr_db"] for x in rr], [x["pd"] for x in rr], ls, color=NCOL.get(nid, "k"),
                                 label=f"{nid} {sc}" if cl == "tone" else None)
             ax.set_title(f"P8-C beam search, {cl}, C1: STAT (dotted) and CONTAM (solid)", fontsize=9)
+            ax.set_xlabel("tone SNR per element (dB re 1 Hz)" if cl == "tone" else "in-band SNR per element (dB)")
             ax.grid(alpha=0.3)
         axes[0].set_ylabel("Pd at Pfa = 1e-3")
         axes[0].legend(fontsize=6)
