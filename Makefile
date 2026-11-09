@@ -1,7 +1,7 @@
 # Reproduction entry points (see README.md)
 PY ?= python
 
-.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke sim02b1-claims sim02b1-calibration sim02b2a sim02b2a-smoke validate
+.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke sim02b1-claims sim02b1-calibration sim02b2a sim02b2a-smoke sim02b2a-claims sim02b2a-repro-check sim02b2a-regression sim02b2a-d02 validate
 
 install:
 	$(PY) -m pip install -r requirements.lock && $(PY) -m pip install -e . --no-deps
@@ -70,3 +70,19 @@ sim02b2a: test    ## SIM-02B.2-A study of record into a NEW run directory (about
 
 sim02b2a-smoke:   ## fast SIM-02B.2-A pipeline check into results/_scratch (not for engineering use)
 	$(PY) -m picket_sim run configs/sim02b/sim02b2a_smoke.yaml --allow-dirty
+
+SIM02B2A_RUN ?= results/sim02b2a/20261109T003718Z_27abcd69_73fbe35
+
+sim02b2a-claims:  ## recheck every quantitative claim in the SIM-02B.2-A report, transmittal and reviewer message
+	$(PY) tools/check_sim02b2a_claims.py $(SIM02B2A_RUN)
+
+sim02b2a-repro-check: ## recompute selected SIM-02B.2-A cases and require identical table rows (~10 min, one core)
+	$(PY) tools/sim02b2a_repro_check.py $(SIM02B2A_RUN)
+
+sim02b2a-regression: ## ORACLE results of SIM-02B.2-A against the SIM-02B.1 run of record
+	$(PY) tools/sim02b2a_b1_regression.py $(SIM02B2A_RUN) --b1 $(SIM02B1_RUN) --out build/sim02b2a_b1_regression
+	cmp build/sim02b2a_b1_regression.csv reports/SIM-02B2A_b1_regression.csv
+
+sim02b2a-d02:     ## regenerate the D02 collection-plan design tables and require identical CSV output
+	$(PY) tools/d02_collection_design.py --out build/d02_design
+	for t in spacings coherence msc timing candidates; do cmp build/d02_design_$$t.csv reports/SIM-02B2A_d02_design_$$t.csv || exit 1; done

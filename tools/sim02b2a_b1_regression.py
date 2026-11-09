@@ -44,6 +44,7 @@ def main(argv=None):
     ap.add_argument("--out", default=str(REPO / "reports/SIM-02B2A_b1_regression"))
     a = ap.parse_args(argv)
     run, b1 = Path(a.run), Path(a.b1)
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads((run / "record.json").read_text())
     cells = {c["id"]: c for c in rec["config_resolved"]["sim02b2a"]["cells"]}
     b1rows = list(csv.DictReader(open(b1 / "tables/snr_required.csv")))

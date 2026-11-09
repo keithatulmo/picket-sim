@@ -53,6 +53,7 @@ def main(argv=None):
     ap.add_argument("--out", default=str(REPO / "reports/SIM-02B2A_d02_design"))
     a = ap.parse_args(argv)
     out = Path(a.out)
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     cfg = yaml.safe_load(open(REPO / "configs/sim02b/sim02b2a_baseline.yaml"))
     st = Sim02B2AStudy(cfg, log=lambda m: None)
     c0 = float(st.c0)
