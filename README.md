@@ -35,7 +35,7 @@ make test        # verification suite (must pass before results are used)
 make sim01       # regenerate all SIM-01 results into a new results/sim01/<run_id>/
 make sim02a      # regenerate all SIM-02A results into a new results/sim02a/<run_id>/
 make sim02b1     # SIM-02B.1 detection study (about 100 min on 4 cores) into results/sim02b1/<run_id>/
-make sim02b2a    # SIM-02B.2-A adaptive noise estimation study (about 3 h on 4 cores) into results/sim02b2a/<run_id>/
+make sim02b2a    # SIM-02B.2-A adaptive noise estimation study (about 2.3 h on 4 cores) into results/sim02b2a/<run_id>/
 make sim02a-claims sim02a-margin-check sim02a-repro-check   # SIM-02A reproduction checks
 ```
 

@@ -1,0 +1,120 @@
+PASS  run status, workers, clean commit                                       quoted ('complete', 4, '73fbe35', False)  computed ('complete', 4, '73fbe35', False)
+PASS  run total time (s)                                                      quoted 8172  computed 8172
+PASS  config sha256 prefix                                                    quoted 27abcd691b9aeefc  computed 27abcd691b9aeefc
+PASS  calibration and evaluation cases                                        quoted (12, 48)  computed (12, 48)
+PASS  provenance published, measured, assumed                                 quoted (4, 0, 27)  computed (4, 0, 27)
+PASS  calibration settings                                                    quoted (100000, 2000, 20000, 0.25)  computed (100000, 2000, 20000, 0.25)
+PASS  evaluation counts                                                       quoted (10000, 4000, 400)  computed (10000, 4000, 400)
+PASS  interference and contamination settings                                 quoted (0.25, 10.0, 24)  computed (0.25, 10.0, 24)
+PASS  normalizer settings                                                     quoted (16, 2, 12, 8, 2, 8)  computed (16, 2, 12, 8, 2, 8)
+PASS  A0 extra reference counts                                               quoted [4, 8, 16, 32, 64]  computed [4, 8, 16, 32, 64]
+PASS  C1 bins and search beams                                                quoted (1801, 24)  computed (1801, 24)
+PASS  run time (h)                                                            quoted 2.3  computed 2.3
+PASS  core-hours per array in C1 for 100,000 calibration trials               quoted (2.5, 3.0)  computed (2.5, 3.0)
+PASS  STAT rows                                                               quoted 1170  computed 1170
+PASS  STAT share of two-sided p < 0.05 (%)                                    quoted 4.3  computed 4.3
+PASS  STAT rows with a tail below 0.001                                       quoted 0  computed 0
+PASS  STAT Bonferroni smallest p (capped)                                     quoted 1.0  computed 1.0
+PASS  record self-check agrees                                                quoted 1.0  computed 1.0
+PASS  TREF-OS16 share p < 0.05 (%) of rows                                    quoted (8.3, 180)  computed (8.3, 180)
+PASS  TREF-OS16 smallest upper-tail p                                         quoted 0.0018  computed 0.0018
+PASS  ORACLE tail methods inside empirical interval                           quoted (33, 36)  computed (33, 36)
+PASS  largest tail-method difference (dB)                                     quoted 0.206  computed 0.206
+PASS  conditional Monte Carlo inside                                          quoted (17, 18)  computed (17, 18)
+PASS  exact quadratic form inside                                             quoted (16, 18)  computed (16, 18)
+PASS  threshold method counts                                                 quoted {'exact': 90, 'fast null simulation': 252, 'exact quadratic form': 54, 'conditional Monte Carlo': 54, 'empirical': 720, 'not estimated': 360}  computed {'fast null simulation': 252, 'exact': 90, 'conditional Monte Carlo': 54, 'empirical': 720, 'not estimated': 360, 'exact quadratic form': 54}
+PASS  not-estimated rows: arrays at 1e-4; adaptive, ORACLE/NOMINAL non-tonal  quoted (True, 252, 108)  computed (True, 252, 108)
+PASS  adaptive array interval medians (dB)                                    quoted (0.26, 0.4)  computed (0.26, 0.4)
+PASS  adaptive array interval max (dB)                                        quoted 0.74  computed 0.74
+PASS  every array case ran to the cap                                         quoted True  computed True
+PASS  CMC 95 % precision (dB)                                                 quoted (0.0007, 0.007)  computed (0.0007, 0.007)
+PASS  A0 tone TREF-CA16                                                       quoted 2.1  computed 2.1
+PASS  beam tone TREF-CA16                                                     quoted (2.51, 2.63)  computed (2.51, 2.63)
+PASS  incoherent tone TREF-CA16                                               quoted (1.16, 1.74)  computed (1.16, 1.74)
+PASS  broadband TREF-CA16 all                                                 quoted (0.11, 0.47)  computed (0.11, 0.47)
+PASS  A0 tone FREF-CA8                                                        quoted 2.27  computed 2.27
+PASS  beam tone FREF-CA8                                                      quoted (2.63, 2.8)  computed (2.63, 2.8)
+PASS  TREF-OS16 A0 and beam                                                   quoted (3.02, 3.47)  computed (3.02, 3.47)
+PASS  FREF-OS8 A0 and beam                                                    quoted (3.35, 3.94)  computed (3.35, 3.94)
+PASS  Pd 0.9 tone TREF-CA16                                                   quoted (1.08, 2.91)  computed (1.08, 2.91)
+PASS  Pd 0.9 tone FREF-CA8                                                    quoted (1.59, 3.16)  computed (1.59, 3.16)
+PASS  A0 tone TREF-CA16 at Pfa 1e-2, 1e-3, 1e-4                               quoted (1.78, 2.1, 2.39)  computed (1.78, 2.1, 2.39)
+PASS  exact CFAR loss C1 M=4                                                  quoted 9.953991  computed 9.953991
+PASS  exact CFAR loss C1 M=8                                                  quoted 4.481055  computed 4.481055
+PASS  exact CFAR loss C1 M=16                                                 quoted 2.100445  computed 2.100445
+PASS  exact CFAR loss C1 M=32                                                 quoted 1.013989  computed 1.013989
+PASS  exact CFAR loss C1 M=64                                                 quoted 0.497856  computed 0.497856
+PASS  exact CFAR loss C2 M=4                                                  quoted 8.11848  computed 8.11848
+PASS  exact CFAR loss C2 M=8                                                  quoted 3.692642  computed 3.692642
+PASS  exact CFAR loss C2 M=16                                                 quoted 1.746057  computed 1.746057
+PASS  exact CFAR loss C2 M=32                                                 quoted 0.847345  computed 0.847345
+PASS  exact CFAR loss C2 M=64                                                 quoted 0.417212  computed 0.417212
+PASS  exact CFAR loss C3 M=4                                                  quoted 9.298278  computed 9.298278
+PASS  exact CFAR loss C3 M=8                                                  quoted 4.200046  computed 4.200046
+PASS  exact CFAR loss C3 M=16                                                 quoted 1.974649  computed 1.974649
+PASS  exact CFAR loss C3 M=32                                                 quoted 0.955012  computed 0.955012
+PASS  exact CFAR loss C3 M=64                                                 quoted 0.469364  computed 0.469364
+PASS  measured vs exact CFAR loss, M 8 to 64, max diff (dB)                   quoted 0.13  computed 0.13
+PASS  C1 exact losses M=8,16,32,64                                            quoted (4.48, 2.1, 1.01, 0.5)  computed (4.48, 2.1, 1.01, 0.5)
+PASS  C1 exact loss M=4                                                       quoted 9.95  computed 9.95
+PASS  M=4 measured is censored                                                quoted True  computed True
+PASS  beam tonal/harmonic gain change C1,C3                                   quoted (-0.94, -0.19)  computed (-0.94, -0.19)
+PASS  beam broadband/chirp gain change C1,C3                                  quoted (-0.33, 0.18)  computed (-0.33, 0.18)
+PASS  incoherent tone gain change C1,C3                                       quoted (0.13, 1.8)  computed (0.13, 1.8)
+PASS  P8-C beam tone C1 ORACLE gain                                           quoted 3.42  computed 3.42
+PASS  P8-C beam tone C1 adaptive                                              quoted (2.83, 3.05)  computed (2.83, 3.05)
+PASS  P8-C beam broadband C1 ORACLE gain                                      quoted 4.3  computed 4.3
+PASS  P8-C beam broadband C1 adaptive                                         quoted (4.06, 4.12)  computed (4.06, 4.12)
+PASS  C2 adaptive gains                                                       quoted (-0.26, 0.72)  computed (-0.26, 0.72)
+PASS  beam-search ranking unchanged C1, C3                                    quoted True  computed True
+PASS  incoherent ranking not always unchanged                                 quoted False  computed False
+PASS  STEP+1 TREF tonal ratio at 1e-3                                         quoted (3.5, 11.25)  computed (3.5, 11.25)
+PASS  STEP+1 energy realized Pfa (TREF, NOMINAL)                              quoted (1.0, 1.0)  computed (1.0, 1.0)
+PASS  STEP+3 TREF tonal ratio at 1e-3                                         quoted (106, 355)  computed (106.0, 355.0)
+PASS  FREF flagged rows in step scenarios (all cells, Pfa)                    quoted (0, True)  computed (0, True)
+PASS  INTERF bias TREF-CA16                                                   quoted (4.55, 5.02)  computed (4.55, 5.02)
+PASS  INTERF bias TREF-OS16                                                   quoted (3.15, 3.84)  computed (3.15, 3.84)
+PASS  INTERF TREF ratio at 1e-2                                               quoted (0.0, 0.17)  computed (0.0, 0.17)
+PASS  INTERF TREF rows at 1e-2 all flagged conservative                       quoted True  computed True
+PASS  INTERF extra tonal loss TREF-CA16                                       quoted (4.52, 5.42)  computed (4.52, 5.42)
+PASS  INTERF extra tonal loss TREF-OS16                                       quoted (1.95, 2.83)  computed (1.95, 2.83)
+PASS  INTERF broadband TREF censored                                          quoted (12, 14)  computed (12, 14)
+PASS  INTERF FREF tonal relative to STAT                                      quoted (-0.18, 0.26)  computed (-0.18, 0.26)
+PASS  P(more than 4 of 16 disturbed) (%)                                      quoted 37  computed 37
+PASS  CONTAM tone top Pd guard 2                                              quoted (0.11, 0.13)  computed (0.11, 0.13)
+PASS  CONTAM tone top Pd guard 8                                              quoted (0.38, 0.39)  computed (0.38, 0.39)
+PASS  CONTAM tone top Pd order statistic                                      quoted (0.225, 0.2825)  computed (0.225, 0.2825)
+PASS  clean fractions g2, g8, OS                                              quoted (0.11, 0.38, 0.285)  computed (0.11, 0.38, 0.285)
+PASS  TREF never reaches Pd 0.5 on contaminated tones                         quoted True  computed True
+PASS  CONTAM FREF tone relative to STAT                                       quoted (-0.26, 0.46)  computed (-0.26, 0.46)
+PASS  CONTAM broadband TREF relative to STAT                                  quoted (4.59, 5.65)  computed (4.59, 5.65)
+PASS  CONTAM broadband guard 8 relative to STAT                               quoted (1.59, 1.95)  computed (1.59, 1.95)
+PASS  SHAPE adaptive flagged rows                                             quoted 0  computed 0
+PASS  SHAPE-HI NOMINAL realized Pfa                                           quoted (1.0, 1.0)  computed (1.0, 1.0)
+PASS  SHAPE-LO NOMINAL tone loss                                              quoted (5.05, 5.29)  computed (5.05, 5.29)
+PASS  COH incoherent zero-count rows at 1e-2                                  quoted (121, 132, {'4000'})  computed (121, 132, {'4000'})
+PASS  ORACLE among the zero-count rows                                        quoted True  computed True
+PASS  COH beam-search max ratio at 1e-2 (candidate, cell)                     quoted (2.93, 'A4', 'C2')  computed (2.93, 'A4', 'C2')
+PASS  false alerts per hour                                                   quoted (3.6, 36.0, 0.36)  computed (3.6, 36.0, 0.36)
+PASS  regression consistent, marginal, inconsistent of estimate rows          quoted (343, 5, 0, 348)  computed (343, 5, 0, 348)
+PASS  bounds held, max and median excess (dB)                                 quoted (48, 48, 3.53, 0.65)  computed (48, 48, 3.53, 0.65)
+PASS  bound rows that a two-sided test would call inconsistent                quoted 21  computed 21
+PASS  record self-check as written (ERRATA)                                   quoted 66 of 72  computed 66 of 72
+PASS  binomial SNR interval width median, max (dB)                            quoted (0.43, 1.07)  computed (0.43, 1.07)
+PASS  threshold SNR interval width median, max (dB)                           quoted (0.34, 0.93)  computed (0.34, 0.93)
+PASS  cell-averaging law bias, std (dB)                                       quoted (-0.137, 1.103)  computed (-0.137, 1.103)
+PASS  order-statistic law bias, std (dB)                                      quoted (0.923, 1.359)  computed (0.923, 1.359)
+PASS  measured TREF-CA16 bias within 0.02 dB of law                           quoted True  computed True
+PASS  ns per stream-bin                                                       quoted (7.33, 24.7, 109.92, 254.71)  computed (7.33, 24.7, 109.92, 254.71)
+PASS  operations 16, history 18 (time) and 0 (frequency)                      quoted (16, 18, 0)  computed (16, 18, 0)
+PASS  order statistic at least 10 times the average                           quoted True  computed True
+PASS  Wilson flags 3 (not 2) of 10,000 at Pfa 1e-4; probability               quoted (True, 0.08)  computed (np.True_, 0.08)
+PASS  increment tests (collected)                                             quoted 35  computed 35
+PASS  report: quotes every checked value                                      quoted []  computed []
+PASS  report: contains no forbidden phrase or em dash                         quoted []  computed []
+PASS  transmittal: quotes every checked value                                 quoted []  computed []
+PASS  transmittal: contains no forbidden phrase or em dash                    quoted []  computed []
+PASS  message: quotes every checked value                                     quoted []  computed []
+FAIL  message: contains no forbidden phrase or em dash                        quoted []  computed ['@']
+
+117 of 118 claims pass

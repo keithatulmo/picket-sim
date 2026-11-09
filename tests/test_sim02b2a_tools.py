@@ -103,3 +103,30 @@ def test_repro_comparison_detects_a_changed_value():
     assert prob and "eta" in prob[0]
     _, prob = rep.compare("thresholds.csv", run_rows, [], {"candidate": "A0", "cell": "C2"})
     assert prob and "row keys differ" in prob[0]
+
+
+RUN_SIM02B2A = REPO / "results/sim02b2a/20261109T003718Z_27abcd69_73fbe35"
+needs_run = pytest.mark.skipif(not (RUN_SIM02B2A / "tables").exists(), reason="run-of-record tables not present")
+
+
+@needs_run
+@pytest.mark.slow
+def test_claims_checker_recomputes_every_quoted_value_from_the_run():
+    claims = _load("check_sim02b2a_claims")
+    claims.RESULTS.clear()
+    claims.claims(claims.T(RUN_SIM02B2A))
+    failed = [r for r in claims.RESULTS if not r[0]]
+    assert len(claims.RESULTS) > 90 and not failed, failed
+
+
+@needs_run
+@pytest.mark.slow
+def test_claims_checker_detects_a_changed_number(tmp_path):
+    claims = _load("check_sim02b2a_claims")
+    rep = (REPO / "reports/SIM-02B2A_engineering_report.md").read_text(encoding="utf-8")
+    assert "2.51 to 2.63 dB with beam search" in rep
+    bad = tmp_path / "report.md"
+    bad.write_text(rep.replace("2.51 to 2.63 dB with beam search", "2.41 to 2.63 dB with beam search"), encoding="utf-8")
+    claims.RESULTS.clear()
+    claims.text_checks({"report": bad}, {"report": claims.REQUIRED["report"]}, claims.FORBIDDEN)
+    assert any(not ok and "quotes every checked value" in label for ok, label, _, _ in claims.RESULTS)

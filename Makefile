@@ -65,7 +65,7 @@ sim02b1-calibration: ## exact false-alarm calibration test of the SIM-02B.1 run 
 sim02b1-smoke:    ## fast SIM-02B.1 pipeline check into results/_scratch (not for engineering use)
 	$(PY) -m picket_sim run configs/sim02b/sim02b1_smoke.yaml --allow-dirty
 
-sim02b2a: test    ## SIM-02B.2-A study of record into a NEW run directory (about 2.5 h on 4 cores; clean tree)
+sim02b2a: test    ## SIM-02B.2-A study of record into a NEW run directory (about 2.3 h on 4 cores; clean tree)
 	$(PY) -m picket_sim run configs/sim02b/sim02b2a_baseline.yaml
 
 sim02b2a-smoke:   ## fast SIM-02B.2-A pipeline check into results/_scratch (not for engineering use)
