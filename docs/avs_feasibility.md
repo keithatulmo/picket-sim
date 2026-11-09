@@ -112,3 +112,38 @@ quantities are a program decision and are not proposed here. A "no-go" is the be
 hosts cannot offer a decoupled, low-vibration mount, because then the vibration evidence above predicts
 the sensor would not be ambient-limited where its benefit lies. Unit cost remains unfavorable for
 proliferation unless a lower-cost design proves adequate in the same test.
+
+## 7. Loaned-sensor bench evaluation: proposal outline (D05, SIM-02B.2)
+
+Status: proposal for the reviewer's decision. ADR-0018 defers purchase and dedicated collection; a borrowed or
+loaned sensor may be proposed for a limited bench evaluation with explicit objectives and cost. Nothing below is
+authorized until approved.
+
+**Objectives** (each reported with its measurement uncertainty; pass and fail values remain a program decision):
+
+1. Motion-channel self-noise from 20 Hz to 2 kHz on a decoupled mount, expressed as an equivalent plane-wave
+   pressure spectrum and compared with the published-reference ambient envelope used in SIM-02B (Wenz-type nominal,
+   shipping 0.5 and wind 5 m/s, and the D03 low and high variants).
+2. Noise added by a representative host mount under representative vibration: the same spectrum with the sensor on
+   the mount, machinery or a shaker driving it, against the decoupled case.
+3. Per-unit sensitivity and inter-channel (pressure and motion) phase repeatability by shaker and standing-wave
+   tube or comparison calibration, repeated after handling.
+4. Bearing error against a known source in a tank above about 500 Hz (tank size limits lower frequencies), with
+   the source direction measured independently.
+5. Optional, if the D02 collection is approved: co-deploy the loaned unit beside the D02 hydrophone line in
+   configurations K1 and K3 (Section 4 of `docs/coherence_collection_plan.md`) to measure in-water self-noise and
+   flow susceptibility against calibrated hydrophones in the same field.
+
+**Cost structure** (no supplier prices are public, Section 6; figures below are planning assumptions, not quotes):
+
+| Item | Basis | Status |
+|---|---|---|
+| Sensor loan, shipping, insurance | supplier or partner terms | quote required |
+| Calibration facility time (shaker, tube or comparison) | facility rates | quote required |
+| Tank time with a calibrated source and reference hydrophone | facility rates | quote required |
+| Engineering effort: test plan, setup, measurements, analysis, report | assumed 15 to 25 person-days | planning assumption |
+| Optional in-water co-deployment with D02 | marginal effort on top of D02 | depends on D02 approval |
+
+**Exit products:** measured spectra and calibration records labeled `measured` (ADR-0010) with instrument, date
+and configuration; a short report answering the four gaps of Section 6 with uncertainties; an updated go or no-go
+recommendation. No Picket hardware requirement follows without a separate review.

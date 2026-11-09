@@ -18,8 +18,13 @@ Increments:
 * **SIM-02B.1**, signal and detection-model foundation (authorized by the SIM-02A review, ADR-0014 to 0017):
   plan [`docs/SIM-02B_plan.md`](docs/SIM-02B_plan.md), input register
   [`docs/input_provenance_register.md`](docs/input_provenance_register.md), report
-  [`reports/SIM-02B1_engineering_report.md`](reports/SIM-02B1_engineering_report.md). SIM-02B.2 (broadband
-  bearing, TDOA, synchronization) is gated on review of SIM-02B.1 results.
+  [`reports/SIM-02B1_engineering_report.md`](reports/SIM-02B1_engineering_report.md). Accepted for its numerical
+  scope by the SIM-02B.1 review (ADR-0018).
+* **SIM-02B.2-A**, adaptive noise estimation and false-alarm control (authorized by the SIM-02B.1 review, ADR-0018
+  to 0020): plan [`docs/SIM-02B2A_plan.md`](docs/SIM-02B2A_plan.md), report
+  [`reports/SIM-02B2A_engineering_report.md`](reports/SIM-02B2A_engineering_report.md); D02 collection plan
+  [`docs/coherence_collection_plan.md`](docs/coherence_collection_plan.md). SIM-02B.2-B (broadband detection and
+  bearing) and -C (timing and calibration) start only after review of the SIM-02B.2-A results.
 
 ## Quick start
 
@@ -29,7 +34,8 @@ pip install -r requirements.lock && pip install -e . --no-deps
 make test        # verification suite (must pass before results are used)
 make sim01       # regenerate all SIM-01 results into a new results/sim01/<run_id>/
 make sim02a      # regenerate all SIM-02A results into a new results/sim02a/<run_id>/
-make sim02b1     # SIM-02B.1 detection study (about 75 min on 4 cores) into results/sim02b1/<run_id>/
+make sim02b1     # SIM-02B.1 detection study (about 100 min on 4 cores) into results/sim02b1/<run_id>/
+make sim02b2a    # SIM-02B.2-A adaptive noise estimation study (about 3 h on 4 cores) into results/sim02b2a/<run_id>/
 make sim02a-claims sim02a-margin-check sim02a-repro-check   # SIM-02A reproduction checks
 ```
 
@@ -42,8 +48,8 @@ so). Each run creates a new immutable directory; nothing is overwritten
 
 | Path | Content |
 |---|---|
-| `src/picket_sim/` | Library: `conventions`, `geometry`, `acoustics`, `beamforming`, `noise`, `grids`, `metrics`, `analysis`, `mismatch`, `plotting`, `records`, `config`, `cli`; SIM-02A: `params` (provenance), `sensor`, `noisefields`, `errors`, `stats`, `rag`, `avs`, `plotting_sim02a`; SIM-02B.1: `environment`, `signals`, `synthesis`, `detectors`, `detection`, `plotting_sim02b1` |
-| `src/picket_sim/experiments/` | Study orchestration (`sim01.py`, `sim02a.py`, `sim02b1.py`) |
+| `src/picket_sim/` | Library: `conventions`, `geometry`, `acoustics`, `beamforming`, `noise`, `grids`, `metrics`, `analysis`, `mismatch`, `plotting`, `records`, `config`, `cli`; SIM-02A: `params` (provenance), `sensor`, `noisefields`, `errors`, `stats`, `rag`, `avs`, `plotting_sim02a`; SIM-02B.1: `environment`, `signals`, `synthesis`, `detectors`, `detection`, `plotting_sim02b1`; SIM-02B.2-A: `noise_estimation`, `qforms`, `plotting_sim02b2a` |
+| `src/picket_sim/experiments/` | Study orchestration (`sim01.py`, `sim02a.py`, `sim02b1.py`, `sim02b2a.py`) |
 | `configs/` | Machine-readable experiment configurations (`*_baseline.yaml` are studies of record; `*_smoke.yaml` are coarse test fixtures) |
 | `tests/` | Verification suite |
 | `results/sim01/<run_id>/` | Run outputs: `record.json` (provenance and output hashes), `tables/`, `figures/`, `summary.md`; `RUN_INDEX.csv` lists all runs |
