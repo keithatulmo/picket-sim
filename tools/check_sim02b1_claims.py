@@ -278,14 +278,19 @@ def claims(T: Tables):
     check("transmittal: recorded self-check values", (5.72, 14.1, 3.09),
           (rd(sc0["pfa_empirical_max_abs_z"], 2), rd(100 * sc0["pfa_empirical_fraction_ci_excluding_target"], 1),
            rd(sc0["bound_max_upper_realized_over_target"], 2)))
+    # The quoted counts describe the SIM-02B.1 packaging baseline (a394c5e). They are checked against that
+    # baseline's recorded test inventory (copied from the delivered package, 05_verification/
+    # test_inventory_baseline.txt), and every test it lists must still exist in the tree being checked; later
+    # baselines may add tests. (Until SIM-02B.2-A this check counted the current tree and so passed only at a394c5e.)
     import subprocess
-    out = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider"],
-                         cwd=REPO, capture_output=True, text=True).stdout.strip().splitlines()
-    n_all = int(out[-1].split()[0]) if out else -1
-    supp = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider",
-                           "tests/test_supplementary_tools.py"], cwd=REPO, capture_output=True, text=True).stdout
-    check("tests collected (all / supplementary)", (214, 15),
-          (n_all, int(supp.strip().splitlines()[-1].split()[0])))
+    inv = (REPO / "tests/fixtures/sim02b1_test_inventory_a394c5e.txt").read_text().splitlines()
+    ids = [x for x in inv if "::" in x]
+    now = subprocess.run([sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider"],
+                         cwd=REPO, capture_output=True, text=True).stdout.splitlines()
+    missing = sorted(set(ids) - {x for x in now if "::" in x})
+    check("tests collected at the SIM-02B.1 baseline (all / supplementary)", (214, 15),
+          (len(ids), sum(1 for x in ids if x.startswith("tests/test_supplementary_tools.py::"))))
+    check("every SIM-02B.1 baseline test still collected", [], missing[:5])
 
     # Appendix A (SIM-02A D06 supplement)
     d06 = {r["array_id"]: r for r in csv.DictReader(open(REPO / "reports" / "SIM-02A_criteria_D06_bands.csv"))}

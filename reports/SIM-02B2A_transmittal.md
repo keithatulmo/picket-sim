@@ -57,6 +57,10 @@ cycle added `results/sim02b2a/ERRATA.md` only. SIM-02B.2-B and -C have not start
 * **Caught by the claims checker before delivery.** The draft report said the not-estimated thresholds were all
   adaptive (108 of the 360 are ORACLE and NOMINAL rows for statistics other than the tonal maximum), quoted the
   coherence-mismatch maximum as 2.40 times target (it is 2.93), and miscounted the increment tests. All corrected.
+* **SIM-02B.1 claims checker.** Its check of "214 tests at the packaging baseline" counted the tests of whatever
+  tree it ran in, so it could pass only at that baseline; the SIM-02B.2-A package build caught this when it ran
+  `make sim02b1-claims` from the new snapshot. It now checks the inventory recorded in the SIM-02B.1 package
+  (committed as a test fixture) and requires every test in it to still exist. No SIM-02B.1 number changes.
 * **Regression tool.** Its first version compared SIM-02B.1 union-bound rows as estimates and reported 21
   inconsistencies; bound rows are now tested one-sidedly (all 48 hold).
 * **Before the run of record** (found in self-review and the smoke run, none in a delivered result): the

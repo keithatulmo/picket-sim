@@ -21,7 +21,7 @@ Principal findings:
 
 Gap. D01 also asked for robust multichannel covariance estimation. This run does not include it, and the transmittal asks whether to close it as a stage A supplement or within stage B.
 
-Defects. The run tables carry a status column that uses a Wilson interval and over-flags small false-alarm counts, the same defect class we recorded for SIM-02B.1. No result value changes. The report uses the exact test, the errata file records the problem, and the code now writes the exact status. The claims checker caught three errors in the draft report before delivery, including the coherence-mismatch maximum, which the draft quoted as 2.40 times target instead of 2.93.
+Defects. The run tables carry a status column that uses a Wilson interval and over-flags small false-alarm counts, the same defect class we recorded for SIM-02B.1. No result value changes. The report uses the exact test, the errata file records the problem, and the code now writes the exact status. The claims checker caught three errors in the draft report before delivery, including the coherence-mismatch maximum, which the draft quoted as 2.40 times target instead of 2.93. The package build also showed that the SIM-02B.1 claims checker could pass only at its own packaging baseline, because it counted the tests in the current tree; it now checks the test inventory recorded in the SIM-02B.1 package, and no SIM-02B.1 number changes.
 
 Decisions requested before stage B (transmittal Section 7):
 1. Acceptance of the stage A exit requirement within the model scope, and authorization of stage B.

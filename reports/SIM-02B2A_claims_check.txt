@@ -22,7 +22,7 @@ PASS  ORACLE tail methods inside empirical interval                           qu
 PASS  largest tail-method difference (dB)                                     quoted 0.206  computed 0.206
 PASS  conditional Monte Carlo inside                                          quoted (17, 18)  computed (17, 18)
 PASS  exact quadratic form inside                                             quoted (16, 18)  computed (16, 18)
-PASS  threshold method counts                                                 quoted {'exact': 90, 'fast null simulation': 252, 'exact quadratic form': 54, 'conditional Monte Carlo': 54, 'empirical': 720, 'not estimated': 360}  computed {'conditional Monte Carlo': 54, 'exact': 90, 'exact quadratic form': 54, 'fast null simulation': 252, 'not estimated': 360, 'empirical': 720}
+PASS  threshold method counts                                                 quoted {'exact': 90, 'fast null simulation': 252, 'exact quadratic form': 54, 'conditional Monte Carlo': 54, 'empirical': 720, 'not estimated': 360}  computed {'conditional Monte Carlo': 54, 'fast null simulation': 252, 'empirical': 720, 'exact': 90, 'exact quadratic form': 54, 'not estimated': 360}
 PASS  not-estimated rows: arrays at 1e-4; adaptive, ORACLE/NOMINAL non-tonal  quoted (True, 252, 108)  computed (True, 252, 108)
 PASS  adaptive array interval medians (dB)                                    quoted (0.26, 0.4)  computed (0.26, 0.4)
 PASS  adaptive array interval max (dB)                                        quoted 0.74  computed 0.74

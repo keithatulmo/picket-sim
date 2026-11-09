@@ -52,6 +52,9 @@ Executed in an unpacked copy of the final-baseline archive (no `.git` directory)
     columns of `realized_pfa.csv` and carried into the loss and gain tables; the method-agreement self-check counts
     distinct ORACLE statistics (`results/sim02b2a/ERRATA.md`).
   * `src/picket_sim/plotting_sim02b2a.py`: axis labels.
+* `tools/check_sim02b1_claims.py`: the SIM-02B.1 test-count claim is checked against the inventory recorded in the
+  SIM-02B.1 package (`tests/fixtures/sim02b1_test_inventory_a394c5e.txt`) instead of counting the current tree,
+  which could pass only at `a394c5e`.
 * Report-generation tools added afterwards: `tools/sim02b2a_summary.py`, `tools/sim02b2a_supplement.py`,
   `tools/sim02b2a_b1_regression.py`, `tools/sim02b2a_repro_check.py`, `tools/check_sim02b2a_claims.py`,
   `tools/d02_collection_design.py`.
