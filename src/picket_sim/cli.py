@@ -38,6 +38,10 @@ def main(argv=None) -> int:
             from .experiments.sim02b1 import load_sim02b1_config
 
             cfg = load_sim02b1_config(args.config)
+        elif raw.get("experiment", {}).get("id") == "SIM-02B.2-A":
+            from .experiments.sim02b2a import load_sim02b2a_config
+
+            cfg = load_sim02b2a_config(args.config)
         else:
             cfg = load_config(args.config)
         print(f"OK {args.config} sha256={config_sha256(cfg)}")
@@ -53,8 +57,10 @@ def main(argv=None) -> int:
         from .experiments import sim01 as runner
     elif exp == "SIM-02A":
         from .experiments import sim02a as runner
-    elif exp == "SIM-02B.1":
-        from .experiments import sim02b1 as runner
+    elif exp in ("SIM-02B.1", "SIM-02B.2-A"):
+        from .experiments import sim02b1, sim02b2a
+
+        runner = sim02b1 if exp == "SIM-02B.1" else sim02b2a
 
         try:
             runner.run(args.config, args.output_root, args.allow_dirty, not args.no_figures,

@@ -23,3 +23,6 @@ supersede rather than edit.
 | [0015](0015-detection-snr-conventions-and-decision-opportunities.md) | Detection SNR conventions, decision opportunities and false-alarm estimation | Accepted |
 | [0016](0016-frequency-domain-multichannel-synthesis.md) | Frequency-domain multichannel synthesis with waveform access | Accepted |
 | [0017](0017-published-inputs-and-integrated-hydrophones.md) | Published-reference inputs and integrated hydrophone transfer functions | Accepted |
+| [0018](0018-sim02b1-review-disposition-and-sim02b2-authorization.md) | SIM-02B.1 review disposition and SIM-02B.2 authorization (D01 to D07) | Accepted |
+| [0019](0019-adaptive-noise-estimation-and-data-partitions.md) | Adaptive noise estimation, data partitions and ground-truth isolation | Accepted |
+| [0020](0020-threshold-calibration-methods.md) | Threshold calibration methods for low false-alarm probabilities | Accepted |

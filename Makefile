@@ -1,7 +1,7 @@
 # Reproduction entry points (see README.md)
 PY ?= python
 
-.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke sim02b1-claims sim02b1-calibration validate
+.PHONY: install test test-fast sim01 sim01-smoke sim02a sim02a-smoke sim02a-margin sim02a-margin-check sim02a-criteria-d06 sim02a-claims sim02a-repro-check sim02b1 sim02b1-smoke sim02b1-claims sim02b1-calibration sim02b2a sim02b2a-smoke validate
 
 install:
 	$(PY) -m pip install -r requirements.lock && $(PY) -m pip install -e . --no-deps
@@ -16,6 +16,7 @@ validate:
 	$(PY) -m picket_sim validate configs/sim01/sim01_baseline.yaml
 	$(PY) -m picket_sim validate configs/sim02a/sim02a_baseline.yaml
 	$(PY) -m picket_sim validate configs/sim02b/sim02b1_baseline.yaml
+	$(PY) -m picket_sim validate configs/sim02b/sim02b2a_baseline.yaml
 
 sim01: test      ## regenerate all SIM-01 results into a NEW run directory (requires a clean git tree)
 	$(PY) -m picket_sim run configs/sim01/sim01_baseline.yaml
@@ -63,3 +64,9 @@ sim02b1-calibration: ## exact false-alarm calibration test of the SIM-02B.1 run 
 
 sim02b1-smoke:    ## fast SIM-02B.1 pipeline check into results/_scratch (not for engineering use)
 	$(PY) -m picket_sim run configs/sim02b/sim02b1_smoke.yaml --allow-dirty
+
+sim02b2a: test    ## SIM-02B.2-A study of record into a NEW run directory (about 2.5 h on 4 cores; clean tree)
+	$(PY) -m picket_sim run configs/sim02b/sim02b2a_baseline.yaml
+
+sim02b2a-smoke:   ## fast SIM-02B.2-A pipeline check into results/_scratch (not for engineering use)
+	$(PY) -m picket_sim run configs/sim02b/sim02b2a_smoke.yaml --allow-dirty
