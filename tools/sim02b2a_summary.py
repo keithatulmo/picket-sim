@@ -109,11 +109,12 @@ def main(run_dir: str) -> int:
                        and math.isfinite(f(r["eta_interval_db"])))
             O.append(f"| {c} | {cell} | {rs[0]['n_sequential']} | {rs[0]['stop']} | "
                      + (f"{w[len(w) // 2]:.2f}, {w[-1]:.2f} |" if w else "n/a |"))
-    agree = [r for r in thr if r.get("empirical_eta") not in (None, "")]
+    agree = [r for r in thr if r.get("empirical_eta") not in (None, "") and r["normalizer"] == "ORACLE"]
     if agree:
-        O += ["", "ORACLE and NOMINAL exact or conditional Monte Carlo thresholds against the sequential empirical "
-              "threshold of the same statistic (Pfa where n p >= 10):", "",
-              "| Method | Rows | Inside empirical 95 % interval | Max abs difference (dB) |", "|---|---|---|---|"]
+        O += ["", "ORACLE exact or conditional Monte Carlo thresholds against the sequential empirical threshold of the "
+              "same statistic (Pfa where n p >= 10). NOMINAL rows are the same statistics under the nominal design and "
+              "are not counted twice.", "",
+              "| Method | Statistics | Inside empirical 95 % interval | Max abs difference (dB) |", "|---|---|---|---|"]
         for m in sorted({r["method"] for r in agree}):
             rs = [r for r in agree if r["method"] == m]
             ins = sum(1 for r in rs if f(r["empirical_eta_lo"]) <= f(r["eta"]) <= f(r["empirical_eta_hi"]))
