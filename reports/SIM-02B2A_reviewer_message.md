@@ -5,9 +5,9 @@ Subject: PCK-SIM-001: SIM-02B.2-A adaptive noise estimation results for review
 Your SIM-02B.1 review made adaptive noise estimation the first SIM-02B.2 activity and set a gate: show false-alarm control with estimated backgrounds and quantify the detection loss against A0 and the oracle before stage B begins. SIM-02B.2-A is complete and ready for that review. Stages B and C have not started.
 
 Attachments:
-1. SIM-02B2A_transmittal.pdf (@TP@ pages). Start here. It maps each deliverable and additional requirement to evidence, records the D01 to D07 dispositions, and lists the defects found this cycle and the decisions needed for stage B.
-2. SIM-02B2A_engineering_report.pdf (@RP@ pages). Methods, findings, robustness by scenario, verification, limitations and recommendations.
-3. @ZIP@ (@ZS@ MB). The documents above plus figures, run tables, summary tables, the supplement and regression tables, the D02 collection plan with its design tables, both source baselines with embedded run-of-record tables, and the test and snapshot-check logs. SHA256SUMS.txt verifies every file.
+1. SIM-02B2A_transmittal.pdf (4 pages). Start here. It maps each deliverable and additional requirement to evidence, records the D01 to D07 dispositions, and lists the defects found this cycle and the decisions needed for stage B.
+2. SIM-02B2A_engineering_report.pdf (8 pages). Methods, findings, robustness by scenario, verification, limitations and recommendations.
+3. PCK-SIM-001_SIM-02B.2-A_Review_Package_20261109T003718Z_27abcd69_73fbe35.zip (18.8 MB). The documents above plus figures, run tables, summary tables, the supplement and regression tables, the D02 collection plan with its design tables, both source baselines with embedded run-of-record tables, and the test and snapshot-check logs. SHA256SUMS.txt verifies every file.
 
 Scope and assumptions. The noise is stationary circular Gaussian inside every window. Spectra follow the published Wenz-type equations with assumed shipping and wind values; coherence, scenario parameters and estimator settings are assumed (4 published records, 27 assumed, none measured). Thresholds are fixed at design time under the nominal model, and every Pfa is per decision window. Results are input-SNR ratios at one element, and none of them supports an operational conclusion.
 
@@ -33,7 +33,7 @@ Decisions requested before stage B (transmittal Section 7):
 7. In-principle approval of the D02 collection plan, with candidate sites and host access.
 8. Approval to request quotes for the loaned-sensor bench evaluation (D05).
 
-Claude Code produced this increment under your authorization, and a qualified acoustic engineer needs to review it before it informs requirements. All @NT@ verification tests pass at the packaging baseline and @NC@ at the run's code commit. "make sim02b2a" reproduces the study in about 2.3 hours on four cores. The package builder unpacked the source snapshot without git and ran "make sim02b2a-claims", which rechecks every number quoted in the report, the transmittal and this message, and "make sim02b2a-repro-check", which recomputes five work units of the run and matches every table row. The repository is keithatulmo/picket-sim, branch claude/beautiful-darwin-vbeoue.
+Claude Code produced this increment under your authorization, and a qualified acoustic engineer needs to review it before it informs requirements. All 249 verification tests pass at the packaging baseline and 241 at the run's code commit. "make sim02b2a" reproduces the study in about 2.3 hours on four cores. The package builder unpacked the source snapshot without git and ran "make sim02b2a-claims", which rechecks every number quoted in the report, the transmittal and this message, and "make sim02b2a-repro-check", which recomputes five work units of the run and matches every table row. The repository is keithatulmo/picket-sim, branch claude/beautiful-darwin-vbeoue.
 
 Please send comments and decisions by [date].
 

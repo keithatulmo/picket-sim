@@ -490,7 +490,9 @@ REQUIRED["message"] = [
     "within 0.13 dB", "keeps 2.83 to 3.05 dB of its 3.42 dB tonal gain", "(-0.26 to 0.72 dB)", "by 3.50 to 11.25",
     "121 of 132 incoherent rows", "up to 2.93 times its target", "3.6 false alerts per hour", "quoted as 2.40 times target instead of 2.93",
     "2.5 to 3.0 core-hours per array", "about 2.3 hours on four cores", "[date]", "keithatulmo/picket-sim",
-    "branch claude/beautiful-darwin-vbeoue",
+    "branch claude/beautiful-darwin-vbeoue", "SIM-02B2A_transmittal.pdf (4 pages)", "SIM-02B2A_engineering_report.pdf (8 pages)",
+    "PCK-SIM-001_SIM-02B.2-A_Review_Package_20261109T003718Z_27abcd69_73fbe35.zip (18.8 MB)",
+    "All 249 verification tests pass at the packaging baseline and 241 at the run's code commit",
 ]
 FORBIDDEN = [chr(0x2014), "detection range of", "km detection", "earn their keep", "@"]
 

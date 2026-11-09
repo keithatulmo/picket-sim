@@ -42,3 +42,28 @@ Executed in an unpacked copy of the final-baseline archive (no `.git` directory)
 * `make sim02a-repro-check`: reruns the SIM-02A study from the final baseline and requires every run table to
   be byte-identical to the run of record, except the Monte Carlo bearing columns documented in
   `results/sim02a/ERRATA.md` (none expected; any difference fails the check).
+
+## SIM-02B.2-A
+
+* Run of record `20261109T003718Z_27abcd69_73fbe35`, code commit `73fbe35` (clean tree).
+* Changes after `73fbe35` that touch the study code (none changes a value in the run tables; the partial
+  reproduction check below proves it for the recomputed work units):
+  * `src/picket_sim/experiments/sim02b2a.py`: exact predictive tails and an exact false-alarm status added as new
+    columns of `realized_pfa.csv` and carried into the loss and gain tables; the method-agreement self-check counts
+    distinct ORACLE statistics (`results/sim02b2a/ERRATA.md`).
+  * `src/picket_sim/plotting_sim02b2a.py`: axis labels.
+* Report-generation tools added afterwards: `tools/sim02b2a_summary.py`, `tools/sim02b2a_supplement.py`,
+  `tools/sim02b2a_b1_regression.py`, `tools/sim02b2a_repro_check.py`, `tools/check_sim02b2a_claims.py`,
+  `tools/d02_collection_design.py`.
+
+## Reproduction checks shipped with the SIM-02B.2-A package
+
+Executed in an unpacked copy of the final-baseline archive (no `.git` directory):
+
+* `make sim02b2a-claims`: every number quoted in the SIM-02B.2-A report, transmittal and reviewer message.
+* `make sim02b2a-repro-check`: recomputes two calibration and three evaluation work units from the resolved
+  configuration in the run record and requires every table row to match the run as text (a full rerun takes
+  about 2.3 hours on 4 cores: `make sim02b2a`).
+* `make sim02b2a-regression`: regenerates the SIM-02B.1 regression table and requires an identical CSV file.
+* `make sim02b2a-d02`: regenerates the D02 design tables and requires identical CSV files.
+* `make sim02b1-claims` and `make sim02a-claims`: the earlier increments' claims still pass.
